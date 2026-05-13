@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>學習卡系統</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;}
+.hero{background:linear-gradient(135deg,#4f46e5,#7c3aed);padding:50px 20px 100px;text-align:center;}
+.hero p{color:rgba(255,255,255,0.75);font-size:0.85rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
+.hero h1{color:white;font-size:2rem;font-weight:900;margin-bottom:6px;}
+.hero small{color:rgba(255,255,255,0.75);font-size:0.95rem;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;max-width:860px;margin:-60px auto 40px;padding:0 20px;}
+.card{background:white;border-radius:1.8rem;padding:32px 24px;box-shadow:0 20px 40px rgba(0,0,0,0.12);text-decoration:none;display:flex;flex-direction:column;align-items:center;text-align:center;transition:transform 0.2s;}
+.card:active{transform:scale(0.97);}
+.icon{width:68px;height:68px;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-size:1.8rem;}
+.card h2{font-size:1.3rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
+.card p{font-size:0.85rem;color:#64748b;margin-bottom:16px;line-height:1.6;}
+.badge{font-size:0.75rem;font-weight:700;padding:5px 16px;border-radius:99px;}
+.foot{text-align:center;color:#94a3b8;font-size:0.8rem;padding-bottom:40px;}
+</style>
+</head>
+<body>
+<div class="hero">
+    <p>114 學年度</p>
+    <h1>學習卡系統</h1>
+    <small>選擇要練習的科目</small>
+</div>
+<div class="grid">
+    <a href="小四下_第六課_走過就知道_學習卡.html" class="card">
+        <div class="icon" style="background:#fff1f2;">✍️</div>
+        <h2>國語・第六課</h2>
+        <p>走過就知道<br>寫國字・改錯字・選擇題</p>
+        <span class="badge" style="background:#fff1f2;color:#e11d48;">109 題</span>
+    </a>
+    <a href="小四下_小數乘法_乘數是一位數_學習卡.html" class="card">
+        <div class="icon" style="background:#eff6ff;">🔢</div>
+        <h2>數學・小數乘法</h2>
+        <p>乘數是一位數<br>是非・選擇・填充・計算・應用</p>
+        <span class="badge" style="background:#eff6ff;color:#3b82f6;">108 題</span>
+    </a>
+    <a href="小四下_周長與面積_簡單複合圖形面積_學習卡.html" class="card">
+        <div class="icon" style="background:#f0fdf4;">📐</div>
+        <h2>數學・面積計算</h2>
+        <p>簡單複合圖形面積<br>是非・選擇・計算・應用・看圖</p>
+        <span class="badge" style="background:#f0fdf4;color:#22c55e;">103 題</span>
+    </a>
+</div>
+<p class="foot">點選科目即可開始練習 ✦ 支援手機、平板、電腦</p>
+</body>
+</html>
