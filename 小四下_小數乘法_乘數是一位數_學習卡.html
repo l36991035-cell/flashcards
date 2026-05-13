@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>小數乘法 學習卡</title>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
+.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
+.hero{border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;}
+.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
+.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
+.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.setup-icon{width:64px;height:64px;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;}
+.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
+.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
+.setup-sub b{font-weight:800;}
+.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
+.start-btn{width:100%;color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.start-btn:active{opacity:0.85;}
+.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
+.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
+.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
+.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
+.progress-wrap{margin-bottom:14px;}
+.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
+.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
+.card-wrap{perspective:1400px;height:500px;margin-bottom:18px;}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
+.card.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
+.card-back{transform:rotateY(180deg);background:#fafafa;}
+.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
+.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
+.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 28px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.face-inner::-webkit-scrollbar{display:none;}
+.q-text{font-size:1.15rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.7;text-align:center;white-space:pre-wrap;}
+.q-img{max-height:260px;max-width:92%;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin:8px auto;display:block;}
+.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
+.opt-btn{font-size:1rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;position:relative;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
+.opt-btn.selected{background:#eff6ff;border-color:#6366f1;color:#4338ca;}
+.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
+.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
+.answer-box{border:2px solid #6366f1;border-radius:1rem;padding:14px 20px;width:100%;text-align:center;font-size:1.3rem;font-weight:900;color:#4338ca;background:#eff6ff;margin-top:14px;display:none;white-space:pre-wrap;line-height:1.8;}
+.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
+.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.btn-wrong-j{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #6366f1;white-space:pre-wrap;overflow-y:auto;max-height:360px;-webkit-overflow-scrolling:touch;margin-top:8px;}
+.back-title{font-size:0.75rem;font-weight:700;color:#6366f1;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
+.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
+.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.action-btn .icon{font-size:1.3rem;}
+.btn-check-style{background:#10b981;color:white;}
+.btn-flip-style{background:#6366f1;color:white;}
+.hidden{display:none!important;}
+
+.hero{ background:linear-gradient(135deg,#2563eb,#1d4ed8); }
+.corner-tag{ color:'#4f46e5'; }
+.start-btn{ background:; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>小數乘法 學習卡</h1>
+</div>
+<div class="page">
+  <div id="setupSection" class="setup-card">
+    <div class="setup-icon">🔢</div>
+    <div class="setup-title">設定測驗範圍</div>
+    <div class="setup-sub">題庫共有 <b>108</b> 題</div>
+    <label class="input-label">欲測驗題目數量</label>
+    <input type="number" id="countInput" class="count-input" value="10" min="1" max="108">
+    <button class="start-btn" id="startBtn">開始測驗</button>
+  </div>
+  <div id="resultSection" class="result-card hidden">
+    <div class="trophy">🏆</div>
+    <h2>測驗完成！</h2>
+    <p id="scoreText"></p>
+    <button id="reviewBtn" class="btn-review hidden">重測錯題</button>
+    <button id="homeBtn" class="btn-home">返回首頁</button>
+  </div>
+  <div id="studySection" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span id="modeText">Normal Mode</span>
+        <span id="progressText">0 / 0</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <div class="card-face">
+          <div class="corner-tag" id="frontTag"></div>
+          <div class="face-inner">
+            <div id="frontMain"></div>
+            <div class="opts" id="optsArea"></div>
+            <div class="answer-box" id="answerBox"></div>
+            <div class="self-judge" id="selfJudge">
+              <button class="btn-correct" id="correctBtn">✓ 我答對了</button>
+              <button class="btn-wrong-j" id="wrongBtn">✗ 我答錯了</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-corner-tag">答案</div>
+          <div class="face-inner">
+            <div class="back-title">詳細解析</div>
+            <div class="explanation" id="explanation"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="action-btn" id="prevBtn"><span class="icon">◀</span>PREV</button>
+      <button class="action-btn btn-check-style" id="checkBtn"><span class="icon">📢</span>公布答案</button>
+      <button class="action-btn btn-flip-style" id="flipBtn" disabled><span class="icon">📖</span>FLIP詳解</button>
+      <button class="action-btn" id="nextBtn"><span class="icon">▶</span>NEXT</button>
+    </div>
+  </div>
+</div>
+<script>
+
+const DECK = [["小數乘法", "是非題", "(   ) 0.48×5　的答案是　0.24。", "", "", "", "", "╳"], ["小數乘法", "是非題", "(   ) 8　個　0.1　是　0.8。", "", "", "", "", "○；(   ) 0.76×4　的答案是　30.4。"], ["小數乘法", "是非題", "(   ) 0.86×9　的答案為二位小數。", "", "", "", "", "○"], ["小數乘法", "是非題", "(   ) 計算　3.26×4　時，可以將　3.26　看作是　326　個　0.01，算出　326×4＝1304，是　1304　個　0.01，在答案上點上小數點，3.26×4＝13.04。", "", "", "", "", "○"], ["小數乘法", "填填看", "可以記成：（　　　　）×（　　　　）＝（　　　　）", "", "", "", "", "0.9；4；3.6"], ["小數乘法", "填填看", "0.09　的　8　倍是（　　　　）個　0.01　的　8　倍，也就是（　　　　）個　0.01，是（　　　　）。", "", "", "", "", "9；72；0.72"], ["小數乘法", "填填看", "8.14　是　8　個　1、1　個　0.1　和（　　　　）個　0.01　合起來的。", "", "", "", "", "4"], ["小數乘法", "填填看", "10　個　0.01　是（　　　　）。", "", "", "", "", "0.1"], ["小數乘法", "填填看", "7　個　1　和　2　個　0.01　合起來是（　　　　）。", "", "", "", "", "7.02"], ["小數乘法", "填填看", "25.63　是　25　個　1、（　　　　）個　0.1　和　3　個　0.01　合起來的。", "", "", "", "", "6"], ["小數乘法", "填填看", "9　個　0.01　是（　　　　）。", "", "", "", "", "0.09"], ["小數乘法", "填填看", "524.06　是　524　個　1、（　　　　）個　0.1　和（　　　　）個　0.01　合起來的。", "", "", "", "", "0；6"], ["小數乘法", "填填看", "0.08　的　5　倍是（　　　　）個　0.01　的　5　倍，也就是（　　　　）個　0.01，是（　　　　）。", "", "", "", "", "8；40；0.4；2.1＋2.1＋2.1＝6.3"], ["小數乘法", "填填看", "可以記成：（　　　　）×（　　　　）＝（　　　　）", "", "", "", "", "2.1；3；6.3"], ["小數乘法", "填填看", "0.3　的　7　倍可以看成（　　　　）個　0.1　的　7　倍，也就是（　　　　）個　0.1，是（　　　　）。", "", "", "", "", "3；21；2.1；3.7＋3.7＋3.7＋3.7＝14.8；3.7　的　4　倍是　14.8，可以記成：（　　　　）×（　　　　）＝（　　　　）"], ["小數乘法", "填填看", "可以記成：（　　　　）×（　　　　）＝（　　　　）", "", "", "", "", "0.6；7；4.2；0.8×9　是　0.8　的（　　　　）倍。"], ["小數乘法", "填填看", "（　　　　）個　0.1　就是（　　　　）。", "", "", "", "", "9；8；72；72；7.2；0.9×5　是　0.9　的（　　　　）倍。；0.9　是（　　　　）個　0.1，9×5＝（　　　　），"], ["小數乘法", "填填看", "（　　　　）個　0.1　就是（　　　　）。", "", "", "", "", "5；9；45；45；4.5；0.7×5　是　0.7　的（　　　　）倍。"], ["小數乘法", "填填看", "（　　　　）個　0.1　就是（　　　　）。", "", "", "", "", "5；7；35；35；3.5"], ["小數乘法", "填充題", "水果攤一籃西瓜重　3.5　公斤，7　籃西瓜共重（　　　　）公斤。", "", "", "", "", "24.5"], ["小數乘法", "填充題", "0.1×9＝（　　　　）", "", "", "", "", "0.9"], ["小數乘法", "填充題", "一間教室的走廊約長　8.4　公尺，6　間教室的走廊約長（　　　　）公尺。", "", "", "", "", "50.4"], ["小數乘法", "填充題", "1.4×4＝（　　　　）", "", "", "", "", "5.6"], ["小數乘法", "填充題", "0.2×7＝（　　　　）", "", "", "", "", "1.4"], ["小數乘法", "填充題", "0.2×3＝（　　　　）", "", "", "", "", "0.6"], ["小數乘法", "填充題", "8.73＋8.73＋8.73＋8.73，可以記成（　　　　）×4＝（　　　　）。", "", "", "", "", "8.73；34.92"], ["小數乘法", "填充題", "4.7＋4.7＋4.7，可以記成（　　　　）×3＝（　　　　）。", "", "", "", "", "4.7；14.1"], ["小數乘法", "填充題", "3.5＋3.5＋3.5＋3.5＝14，3.5　的　4　倍是　14，可以記成：（　　　　）×（　　　　）＝（　　　　）", "", "", "", "", "3.5；4；14；0.7＋0.7＋0.7＝2.1，0.7　的　3　倍是　2.1，可以記成：（　　　　）×（　　　　）＝（　　　　）"], ["小數乘法", "填充題", "0.2×6　是　0.2　的（　　　　）倍。0.2　是（　　　　）個　0.1，2×6＝（　　　　），（　　　　）個　0.1　就是（　　　　）。", "", "", "", "", "6；2；12；12；1.2；0.4×7　是　0.4　的（　　　　）倍。0.4　是（　　　　）個　0.1，4×7＝（　　　　），（　　　　）個　0.1　就是（　　　　）。"], ["小數乘法", "填充題", "9.7×6　是　9.7　的（　　　　）倍。9.7　是（　　　　）個　0.1，97×6＝（　　　　），（　　　　）個　0.1　就是（　　　　）。", "", "", "", "", "6；97；582；582；58.2"], ["小數乘法", "填充題", "剛上完體育課的小華流了大量的汗，為了補充水分，於是一口氣喝了　2　杯水，一杯水是　0.35　公升，小華共喝了（　　　　）公升的水。", "", "", "", "", "0.7"], ["小數乘法", "填充題", "一箱芒果　7.54　公斤，仁仁買了　9　箱，共重（　　　　）公斤。", "", "", "", "", "67.86"], ["小數乘法", "填充題", "線香點燃後，每分鐘固定燃燒　0.6　公分，6　分鐘後，這根線香燃燒了（　　　　）公分。", "", "", "", "", "3.6"], ["小數乘法", "填充題", "煮一鍋南瓜濃湯需要　0.61　公斤的南瓜，今天姑姑要煮　4　鍋南瓜濃湯，共需要（　　　　）公斤的南瓜。", "", "", "", "", "2.44"], ["小數乘法", "填充題", "0.71＋0.71＋0.71　是　0.71　的（　　　　）倍，也就是　0.71×（　　　　）＝（　　　　）。", "", "", "", "", "3；3；2.13"], ["小數乘法", "填充題", "5　個　1.4　可以用乘法算式記成（　　　　）×（　　　　）＝（　　　　）。", "", "", "", "", "1.4；5；7"], ["小數乘法", "填充題", "小美寫下：0.7＋0.7＋0.7＋0.7＋0.7，然後得到答案，可以將　0.7　的　5　倍用乘法表示為：（　　　　）×（　　　　）＝（　　　　）。", "", "", "", "", "0.7；5；3.5；小林寫下：1.6＋1.6＋1.6＋1.6，然後得到答案。如果他改用乘法，1.6　的　4　倍也可以表示為：（　　　　）×（　　　　）＝（　　　　）。"], ["小數乘法", "填充題", "3.8＋3.8＋3.8＋3.8＋3.8　是　3.8　的（　　　）倍，可以記成（　　　）×（　　　）＝（　　　）。", "", "", "", "", "5；3.8；5；19"], ["小數乘法", "填充題", "0.4＋0.4＋0.4＋0.4＋0.4　是　0.4　的（　　　　）倍，可以記成（　　　　）×（　　　　）＝（　　　　）。", "", "", "", "", "5；0.4；5；2"], ["小數乘法", "計算題", "(２)　0.9×8", "", "", "", "", "(１)　；(２)"], ["小數乘法", "計算題", "(２)　1.28×7", "", "", "", "", "(１)　；(２)"], ["小數乘法", "計算題", "(２)　4.3×5", "", "", "", "", "(１)　；(２)；(１)"], ["小數乘法", "計算題", "(２)\ndata:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEQAAAAoCAAAAABiTgNPAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAACYktHRAD/h4/MvwAAAAd0SU1FB+oFCQkuBbpflJIAAAHPSURBVEjH7ZZPSFRRFMa/51NmlEF4MJMPQtpUGxFe7USQInBkZKgIE1y2EJQWwux0p9BKELQJF8HsEiLFxbRwQAbBBBFm8k8DCqmQJghSofP0qdPnYsSuz6GOuhDCszr3O9zfO/eed8+9oND6q1yCBwCGSJLFkNlc5y2Xcr8bQHXel+VhB9vdmTT+cYtkiUQ6jb9EZcsZ8dcl3NrC8/2DYFuJGPItNnpWzJThe8PSa+meHIZXyK6qApGoJ0eSEsjn428nz0TeY1Na4rtpANHkh9uqOKnXABs+PwBIqlNqWZZV4bV8APDq5hYAwB4DdmIvNXl1ClhlPFn+qzkCANB4UYpiwp/tGnINuVLIm4chqyfv5s/07/5dkqmEtPeT7K21uf2CSj9ZN+t3mTJa5IwfvjjJnAphxgxOGU/35ZBhZE/8k86WMfHkHAz2+PpC954tk1SujD1Ht3Pn2NafpY0fZ7RwTq1O+lHdTPrxnhzi1e5Ab/2yqFRnzQg7nA80yZfztsghU5hQ9yTmkJz7JId8xTQ5jlWSvHh7bME7dMwmgcv02GxktUwfMC8HUeyqD+B/C0GixK3cCKijilPvLLMcAB6cnjBZ4H0y+M/RoGvGEYLz7m0ffGwUAAAAAElFTkSuQmCC", "", "", "", "", "(１)　；(２)"], ["小數乘法", "計算題", "(２)　5.23×6", "", "", "", "", "(１)　；(２)"], ["小數乘法", "計算題", "(２)　0.65×8", "", "", "", "", "(１)　；(２)"], ["小數乘法", "計算題", "(２)　3.08×7", "", "", "", "", "(１)　；(２)"], ["小數乘法", "計算題", "(２)　2.23×3", "", "", "", "", "(１)　；(２)"], ["小數乘法", "計算題", "7.5×9＝（　　　　）", "", "", "", "", "67.5；"], ["小數乘法", "計算題", "6.09×8＝（　　　　）", "", "", "", "", "48.72；"], ["小數乘法", "計算題", "3.45＋7.26＝（　　　　）", "", "", "", "", "10.71；"], ["小數乘法", "計算題", "0.36×7＝（　　　　）", "", "", "", "", "2.52；"], ["小數乘法", "計算題", "4.6×5＝（　　　　）", "", "", "", "", "23；"], ["小數乘法", "計算題", "36－5.02＝（　　　　）", "", "", "", "", "30.98；"], ["小數乘法", "計算題", "3.2×4＝（　　　　）", "", "", "", "", "12.8；"], ["小數乘法", "計算題", "1.8×9＝（　　　　）", "", "", "", "", "16.2；"], ["小數乘法", "計算題", "2.3×6＝（　　　　）", "", "", "", "", "13.8；"], ["小數乘法", "計算題", "4.2×3＝（　　　　）", "", "", "", "", "12.6；"], ["小數乘法", "計算題", "4.1×7＝（　　　　）", "", "", "", "", "28.7；"], ["小數乘法", "計算題", "9.8×5＝（　　　　）", "", "", "", "", "49；"], ["小數乘法", "計算題", "5.8×9＝（　　　　）", "", "", "", "", "52.2；"], ["小數乘法", "計算題", "10.5×6＝（　　　　）", "", "", "", "", "63；"], ["小數乘法", "應用題", "一箱月餅有　6　盒，每盒月餅大約重　0.5　公斤，一箱月餅大約重幾公斤？", "", "", "", "", "0.5×6＝3；答：大約重　3　公斤"], ["小數乘法", "應用題", "一塊紅色積木長　0.02　公尺，4　塊接起來共長多少公尺？", "", "", "", "", "0.02×4＝0.08；答：0.08　公尺"], ["小數乘法", "應用題", "一包三合一隨身包咖啡重　0.03　公斤，6　包共重多少公斤？", "", "", "", "", "0.03×6＝0.18；答：0.18　公斤"], ["小數乘法", "應用題", "一條橘色積木長　0.2　公尺，7　條共長幾公尺？", "", "", "", "", "0.2×7＝1.4；答：1.4　公尺"], ["小數乘法", "應用題", "自助餐每天煮飯用掉　0.9　公斤的米，6　天共用掉多少公斤？", "", "", "", "", "0.9×6＝5.4；答：5.4　公斤"], ["小數乘法", "應用題", "一瓶檸檬紅茶重　0.46　公斤，7　瓶共重多少公斤？", "", "", "", "", "0.46×7＝3.22；答：3.22　公斤"], ["小數乘法", "應用題", "一瓶牛奶　1.5　公升，媽媽買　6　瓶，共有幾公升？", "", "", "", "", "1.5×6＝9；答：9　公升"], ["小數乘法", "應用題", "一根木條長　0.8　公尺，9　根木條連接起來共長多少公尺？", "", "", "", "", "0.8×9＝7.2；答：7.2　公尺"], ["小數乘法", "應用題", "一瓶果汁　0.75　公升，8　瓶共有多少公升？", "", "", "", "", "0.75×8＝6；答：6　公升"], ["小數乘法", "應用題", "永明在暑假時參加小海豚游泳訓練營，營隊每天上課　2.5　小時，每週要上課　5　天，他一週在游泳訓練營總共花了多少小時？", "", "", "", "", "2.5×5＝12.5"], ["小數乘法", "應用題", "一包池上米重　1.5　公斤，媽媽買了　3　包，共重幾公斤？", "", "", "", "", "1.5×3＝4.5"], ["小數乘法", "應用題", "一罐礦泉水的容量是　1.78　公升，3　罐的容量是幾公升？", "", "", "", "", "1.78×3＝5.34；答：5.34　公升"], ["小數乘法", "應用題", "一包糖果重　0.1　公斤，8　包糖果共重幾公斤？", "", "", "", "", "0.1×8＝0.8；答：0.8　公斤"], ["小數乘法", "應用題", "一瓶礦泉水有　0.6　公升，將　4　瓶礦泉水倒入空水壺中，正好可以裝滿，水壺可以裝多少公升的水？", "", "", "", "", "0.6×4＝2.4；答：2.4　公升"], ["小數乘法", "應用題", "一包巧克力重　0.38　公斤，6　包共重多少公斤？", "", "", "", "", "0.38×6＝2.28；答：2.28　公斤"], ["小數乘法", "應用題", "大小二數，小數是　0.72，大數是小數的　3　倍，大數是多少？", "", "", "", "", "0.72×3＝2.16；答：2.16"], ["小數乘法", "應用題", "一杯汽水　0.3　公升，凱莉喝了　9　杯，惠妮喝了　6　杯，各喝了幾公升？", "", "", "", "", "0.3×9＝2.7；0.3×6＝1.8；答：凱莉　2.7　公升；惠妮　1.8　公升"], ["小數乘法", "應用題", "伶伶每天喝　2.5　公升的水，一星期共喝多少公升的水？", "", "", "", "", "2.5×7＝17.5"], ["小數乘法", "應用題", "媽媽去菜市場買鳳梨，老闆說：「現在鳳梨一公斤賣　34.5　元。」媽媽選了一顆鳳梨重　2　公斤，這顆鳳梨要多少元？", "", "", "", "", "34.5×2＝69"], ["小數乘法", "應用題", "早餐店一桶鮮奶茶的容量是　4.8　公升，今天賣掉　3　桶，是賣出多少公升的鮮奶茶？", "", "", "", "", "4.8×3＝14.4"], ["小數乘法", "應用題", "小龍每天走路上學，小龍家到學校的路程來回是　2.4　公里，一星期上學　5　天，小龍一星期上學總共走了多少公里？", "", "", "", "", "2.4×5＝12"], ["小數乘法", "應用題", "有一根柱子的外圍長度是　2.03　公尺，啵啵拿一條繩子圍柱子，正好可以圍　6　圈，這條繩子長幾公尺？", "", "", "", "", "2.03×6＝12.18"], ["小數乘法", "應用題", "媽媽將一捆緞帶每　1.03　公尺剪成一段，剛好剪成　9　段，緞帶原來長多少公尺？", "", "", "", "", "1.03×9＝9.27"], ["小數乘法", "應用題", "百香果每公斤售價　25.4　元，媽媽買了　5　公斤，付一張　200　元鈔票，應該找回多少元？", "", "", "", "", "25.4×5＝127；200－127＝73；答：73　元"], ["小數乘法", "應用題", "森林步道長約　2.53　公里，爸爸來回走　2　趟，大約走多少公里？", "", "", "", "", "2.53×4＝10.12；答：大約走　10.12　公里"], ["小數乘法", "應用題", "火柴一根長　3.6　公分，9　根相同長的火柴排成一直線，總長多少公分？", "", "", "", "", "3.6×9＝32.4；答：32.4　公分"], ["小數乘法", "應用題", "小如每天騎自行車上學，來回一趟的路程是　4.2　公里，一星期上學　5　天，共騎了多少公里？", "", "", "", "", "4.2×5＝21"], ["小數乘法", "應用題", "一塊磁磚重　6.4　公斤，明明買了　9　塊鋪地板，共重多少公斤？", "", "", "", "", "6.4×9＝57.6"], ["小數乘法", "應用題", "一包綠豆重　3.5　公斤，6　包綠豆共重幾公斤？", "", "", "", "", "3.5×6＝21"], ["小數乘法", "應用題", "繞公園一圈是　4.8　公里，瑄瑄為馬拉松比賽做訓練，今天跑了　8　圈，共跑了幾公里？", "", "", "", "", "4.8×8＝38.4"], ["小數乘法", "應用題", "幼兒園老師為學生準備點心，一個學生分　0.25　公升的牛奶，企鵝班有　9　個學生，共需要多少公升的牛奶？", "", "", "", "", "0.25×9＝2.25"], ["小數乘法", "應用題", "爸爸每天走路上、下班，來回一趟的路程是　4.2　公里，一星期上　6　天班，共要走幾公里的路？", "", "", "", "", "4.2×6＝25.2"], ["小數乘法", "應用題", "水龍頭一分鐘注水　9.2　公升，4　分鐘共可注入多少公升的水？", "", "", "", "", "9.2×4＝36.8；答：36.8　公升"], ["小數乘法", "應用題", "金金國小舉辦運動會，由於參觀人數眾多，學校將　6　條紅色警戒繩相接，用來維持現場秩序，每條紅色警戒繩的長度是　1.9　公尺，相接後的總長度是多少公尺？", "", "", "", "", "1.9×6＝11.4"], ["小數乘法", "應用題", "一圈球場為　0.4　公里，小文為了一個月後的運動會做準備，每天跑球場　8　圈，小文一天跑幾公里？", "", "", "", "", "0.4×8＝3.2"], ["小數乘法", "應用題", "弟弟每天吃　1.5　顆的蘋果，一星期他共吃了多少顆蘋果？", "", "", "", "", "1.5×7＝10.5；答：10.5　顆"], ["小數乘法", "應用題", "小銘家到學校的路程是　1.3　公里，他每天來回走一趟，共走了幾公里？", "", "", "", "", "1.3×2＝2.6"], ["小數乘法", "應用題", "飲料店一桶珍珠重　2.6　公斤，今天賣掉　5　桶，共賣掉多少公斤的珍珠？", "", "", "", "", "2.6×5＝13"], ["小數乘法", "應用題", "一桶果糖有　24.3　公升，5　桶共有多少公升？", "", "", "", "", "24.3×5＝121.5；答：121.5　公升"], ["小數乘法", "應用題", "小儒每天喝　0.7　公升的牛奶，一星期共喝多少公升的牛奶？", "", "", "", "", "0.7×7＝4.9"], ["小數乘法", "應用題", "包裝一個禮物需要　13.2　公分的緞帶，今天有　7　個禮物要包裝，共需要幾公分的緞帶？君君有一條　72.3　公分的緞帶，她的緞帶夠不夠包裝　7　個禮物？", "", "", "", "", "13.2×7＝92.4"], ["小數乘法", "應用題", "(４)接第(１)～(３)題，米奇今天的碳排放量總共是幾公斤？", "", "", "", "", "(１)　0.1×2＝0.2；答：0.2　公斤；；(２)　0.2×1＝0.2；答：0.2　公斤；；(３)　0.04×4＝0.16；答：0.16　公斤；；(４)　0.2＋0.2＋0.16＝0.56；答：0.56　公斤"], ["小數乘法", "應用題", "大小二數，小數是　11.72，大數是小數的　3　倍，大、小二數的差是多少？", "", "", "", "", "11.72×3＝35.16；35.16－11.72＝23.44；答：23.44"], ["小數乘法", "應用題", "一塊邊長　0.5　公尺的正方形磁磚重　0.64　公斤，博文買了　8　塊回家鋪浴室地板，他買的磁磚共重幾公斤？", "", "", "", "", "0.64×8＝5.12"], ["小數乘法", "應用題", "大小二數，小數是　1.62，大數是小數的　7　倍，大、小二數的和是多少？", "", "", "", "", "1.62×7＝11.34；11.34＋1.62＝12.96；答：12.96"], ["小數乘法", "應用題", "月華和朋友們在一款名為《非洲探險》的遊戲中組成一支探險隊，遊戲開始前，她必須到遊戲商店購買物資，確保團隊的補給。一袋糧食需要耗費　2.3　格的體力值，一個水袋需要耗費　3.7　格的體力值，月華買了　4　袋糧食和　5　個水袋，共耗費多少格體力值？", "", "", "", "", "2.3×4＝9.2；3.7×5＝18.5；9.2＋18.5＝27.7；答：27.7　格"], ["小數乘法", "應用題", "小豪準備使用純水和食鹽製作生理食鹽水，小豪需要　5　公升的純水，但他在實驗室中只找到　1　公升純水，純水的價格是每公升　1.5　元。小豪還需要花多少錢購買不足的純水？", "", "", "", "", "5－1＝4；1.5×4＝6；答：6　元"]];
+let currentDeck=[], wrongDeck=[], currentIndex=0;
+let selectedIdx=null, isAnswered=false, isReview=false;
+const card=document.getElementById('card');
+
+function startQuiz(){
+  var n=parseInt(document.getElementById('countInput').value)||10;
+  n=Math.min(n,DECK.length);
+  var tmp=DECK.slice(); tmp.sort(function(){return Math.random()-0.5;});
+  currentDeck=tmp.slice(0,n);
+  isReview=false; currentIndex=0; wrongDeck=[];
+  document.getElementById('setupSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  showCard();
+}
+
+function startReview(){
+  isReview=true; currentDeck=wrongDeck.slice(); currentIndex=0; wrongDeck=[];
+  document.getElementById('resultSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  showCard();
+}
+
+function showCard(){
+  isAnswered=false; selectedIdx=null;
+  card.classList.remove('flipped');
+  document.getElementById('flipBtn').disabled=true;
+  document.getElementById('checkBtn').disabled=false;
+  document.getElementById('answerBox').style.display='none';
+  document.getElementById('selfJudge').style.display='none';
+  document.getElementById('optsArea').innerHTML='';
+
+  var d=currentDeck[currentIndex];
+  document.getElementById('frontTag').textContent=d[0]+'｜'+d[1];
+
+  var fm=document.getElementById('frontMain');
+  fm.innerHTML='';
+  var lines=d[2].split('\n');
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim();
+    if(!line) continue;
+    if(line.startsWith('data:image')){
+      var img=document.createElement('img');
+      img.src=line; img.className='q-img';
+      fm.appendChild(img);
+    } else {
+      var p=document.createElement('p');
+      p.className='q-text'; p.textContent=line;
+      fm.appendChild(p);
+    }
+  }
+
+  var oa=document.getElementById('optsArea');
+  var hasOpts=false;
+  for(var j=3;j<=6;j++){
+    if(d[j]&&d[j].trim()){
+      hasOpts=true;
+      var btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.textContent=d[j];
+      (function(idx,b){ b.addEventListener('click',function(){ selectOpt(idx,b); }); })(j-2,btn);
+      oa.appendChild(btn);
+    }
+  }
+  card.dataset.qtype=hasOpts?'choice':'write';
+
+  var exp='正確答案：'+d[7];
+  document.getElementById('explanation').textContent=exp;
+
+  var pct=((currentIndex+1)/currentDeck.length*100).toFixed(0);
+  document.getElementById('progressBar').style.width=pct+'%';
+  document.getElementById('progressText').textContent=(currentIndex+1)+' / '+currentDeck.length;
+  document.getElementById('modeText').textContent=isReview?'Review Mode':'Normal Mode';
+}
+
+function selectOpt(idx,el){
+  if(isAnswered) return;
+  selectedIdx=idx;
+  var btns=document.querySelectorAll('.opt-btn');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('selected');
+  el.classList.add('selected');
+}
+
+function checkAnswer(){
+  if(isAnswered) return;
+  isAnswered=true;
+  var d=currentDeck[currentIndex];
+  if(card.dataset.qtype==='choice'){
+    if(selectedIdx===null){isAnswered=false;alert('請先選擇一個選項！');return;}
+    var ci=parseInt(d[7]);
+    var btns=document.querySelectorAll('.opt-btn');
+    btns[ci-1].classList.add('correct');
+    if(selectedIdx!==ci){ btns[selectedIdx-1].classList.add('wrong'); if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d); }
+  } else {
+    var ab=document.getElementById('answerBox');
+    ab.textContent='正確答案：'+d[7];
+    ab.style.display='block';
+    document.getElementById('selfJudge').style.display='flex';
+  }
+  document.getElementById('checkBtn').disabled=true;
+  document.getElementById('flipBtn').disabled=false;
+}
+
+function selfJudgeCorrect(){ document.getElementById('selfJudge').style.display='none'; }
+function selfJudgeWrong(){
+  document.getElementById('selfJudge').style.display='none';
+  var d=currentDeck[currentIndex]; if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+}
+
+function flipCard(){ if(isAnswered) card.classList.toggle('flipped'); }
+
+function nextCard(){
+  if(currentIndex<currentDeck.length-1){ currentIndex++; showCard(); }
+  else showResults();
+}
+
+function prevCard(){ if(currentIndex>0){ currentIndex--; showCard(); } }
+
+function showResults(){
+  document.getElementById('studySection').classList.add('hidden');
+  document.getElementById('resultSection').classList.remove('hidden');
+  var t=currentDeck.length, w=wrongDeck.length;
+  document.getElementById('scoreText').innerHTML='本次測驗：<b>'+t+' 題</b><br>答對：<b style="color:#22c55e">'+(t-w)+'</b>　答錯：<b style="color:#ef4444">'+w+'</b>';
+  var rb=document.getElementById('reviewBtn');
+  if(w>0) rb.classList.remove('hidden'); else rb.classList.add('hidden');
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('startBtn').addEventListener('click',startQuiz);
+  document.getElementById('checkBtn').addEventListener('click',checkAnswer);
+  document.getElementById('flipBtn').addEventListener('click',flipCard);
+  document.getElementById('prevBtn').addEventListener('click',prevCard);
+  document.getElementById('nextBtn').addEventListener('click',nextCard);
+  document.getElementById('correctBtn').addEventListener('click',selfJudgeCorrect);
+  document.getElementById('wrongBtn').addEventListener('click',selfJudgeWrong);
+  document.getElementById('reviewBtn').addEventListener('click',startReview);
+  document.getElementById('homeBtn').addEventListener('click',function(){ location.reload(); });
+});
+
+</script>
+</body>
+</html>
