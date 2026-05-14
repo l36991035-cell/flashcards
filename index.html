@@ -12,235 +12,137 @@
 :root {
   --bg: #f7f4ee;
   --surface: #ffffff;
-  --surface2: #f0ece3;
   --border: #ddd8cc;
   --text: #1c1a16;
   --text2: #5a5650;
   --text3: #9c9890;
   --ink: #2c2a26;
-  --red: #c0392b;
-  --red-bg: #fdf0ee;
-  --blue: #1a5fa8;
-  --blue-bg: #eaf2fb;
-  --green: #1a7a50;
-  --green-bg: #e8f6f0;
-  --gold: #8a6a00;
-  --gold-bg: #fdf7e3;
+  --red: #c0392b;    --red-bg: #fdf0ee;
+  --blue: #1a5fa8;   --blue-bg: #eaf2fb;
+  --green: #1a7a50;  --green-bg: #e8f6f0;
+  --gold: #8a6a00;   --gold-bg: #fdf7e3;
+  --purple: #6b3fa0; --purple-bg: #f3eefb;
   --shadow: 0 2px 8px rgba(0,0,0,0.07);
   --shadow-hover: 0 6px 20px rgba(0,0,0,0.13);
 }
 
-body {
-  font-family: 'Noto Sans TC', sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  min-height: 100vh;
-}
+body { font-family: 'Noto Sans TC', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
 header {
-  background: var(--ink);
-  color: #fff;
-  padding: 2rem 2rem 1.5rem;
-  position: relative;
-  overflow: hidden;
+  background: var(--ink); color: #fff;
+  padding: 2rem 2rem 1.5rem; position: relative; overflow: hidden;
 }
 header::before {
-  content: '';
-  position: absolute;
-  top: -50px; right: -50px;
-  width: 220px; height: 220px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.04);
-  pointer-events: none;
+  content: ''; position: absolute; top: -50px; right: -50px;
+  width: 220px; height: 220px; border-radius: 50%;
+  background: rgba(255,255,255,0.04); pointer-events: none;
 }
-.header-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  position: relative;
-}
-.header-sub {
-  font-size: 0.8rem;
-  color: rgba(255,255,255,0.45);
-  margin-top: 0.35rem;
-  letter-spacing: 0.12em;
-  position: relative;
-}
+.header-title { font-family: 'Noto Serif TC', serif; font-size: 2rem; font-weight: 700; letter-spacing: 0.06em; position: relative; }
+.header-sub { font-size: 0.8rem; color: rgba(255,255,255,0.45); margin-top: 0.35rem; letter-spacing: 0.12em; position: relative; }
 
+/* ── 步驟列 ── */
+.steps-bar {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 0.75rem 2rem; display: flex; align-items: center; gap: 0; overflow-x: auto;
+  white-space: nowrap;
+}
+.step {
+  display: flex; align-items: center; gap: 0.4rem;
+  font-size: 0.78rem; color: var(--text3); padding: 4px 10px;
+  border-radius: 20px; transition: all 0.15s; cursor: default; flex-shrink: 0;
+}
+.step.done { color: var(--blue); cursor: pointer; }
+.step.done:hover { background: var(--blue-bg); }
+.step.active { color: var(--ink); font-weight: 700; }
+.step-num {
+  width: 20px; height: 20px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.68rem; font-weight: 700; flex-shrink: 0;
+  background: var(--border); color: var(--text3);
+}
+.step.done .step-num { background: var(--blue-bg); color: var(--blue); }
+.step.active .step-num { background: var(--ink); color: #fff; }
+.step-arrow { color: var(--text3); font-size: 0.7rem; padding: 0 2px; }
+
+/* ── 麵包屑 ── */
 #breadcrumb {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 0.25rem;
-  padding: 0.85rem 2rem;
-  background: var(--surface);
-  border-bottom: 1px solid var(--border);
-  font-size: 0.82rem;
-  min-height: 44px;
+  display: flex; align-items: center; flex-wrap: wrap; gap: 0.25rem;
+  padding: 0.65rem 2rem; background: var(--bg);
+  border-bottom: 1px solid var(--border); font-size: 0.8rem; min-height: 38px;
 }
-.bc-item {
-  color: var(--blue);
-  cursor: pointer;
-  padding: 2px 7px;
-  border-radius: 5px;
-  transition: background 0.15s;
-  font-weight: 500;
-}
+.bc-item { color: var(--blue); cursor: pointer; padding: 2px 6px; border-radius: 4px; transition: background 0.15s; font-weight: 500; }
 .bc-item:hover { background: var(--blue-bg); }
-.bc-sep { color: var(--text3); padding: 0 1px; }
+.bc-sep { color: var(--text3); }
 .bc-current { color: var(--text2); }
 
-main {
-  max-width: 960px;
-  margin: 0 auto;
-  padding: 2rem;
-}
+main { max-width: 960px; margin: 0 auto; padding: 2rem; }
 
 .level-title {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 1.05rem;
-  font-weight: 600;
-  color: var(--text2);
-  margin-bottom: 1.2rem;
-  padding-bottom: 0.6rem;
-  border-bottom: 2px solid var(--border);
-  letter-spacing: 0.04em;
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
+  font-family: 'Noto Serif TC', serif; font-size: 1.05rem; font-weight: 600;
+  color: var(--text2); margin-bottom: 1.2rem; padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--border); letter-spacing: 0.04em;
+  display: flex; align-items: center; gap: 0.6rem;
 }
 .level-badge {
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 2px 9px;
-  border-radius: 20px;
-  letter-spacing: 0.06em;
-  font-family: 'Noto Sans TC', sans-serif;
+  font-size: 0.68rem; font-weight: 700; padding: 2px 9px;
+  border-radius: 20px; letter-spacing: 0.06em; font-family: 'Noto Sans TC', sans-serif;
 }
-.badge-red   { background: var(--red-bg);   color: var(--red); }
-.badge-blue  { background: var(--blue-bg);  color: var(--blue); }
-.badge-green { background: var(--green-bg); color: var(--green); }
-.badge-gold  { background: var(--gold-bg);  color: var(--gold); }
+.badge-red    { background: var(--red-bg);    color: var(--red); }
+.badge-blue   { background: var(--blue-bg);   color: var(--blue); }
+.badge-green  { background: var(--green-bg);  color: var(--green); }
+.badge-gold   { background: var(--gold-bg);   color: var(--gold); }
+.badge-purple { background: var(--purple-bg); color: var(--purple); }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-  gap: 1rem;
-}
-.grid-wide {
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-}
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1rem; }
+.grid-wide { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
 
 .card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 1.2rem 1.1rem 1rem;
-  cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+  padding: 1.2rem 1.1rem 1rem; cursor: pointer;
   transition: transform 0.18s, box-shadow 0.18s, border-color 0.18s;
-  box-shadow: var(--shadow);
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
+  box-shadow: var(--shadow); display: flex; flex-direction: column; gap: 0.45rem;
   animation: fadeUp 0.22s ease both;
 }
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--blue);
-}
+.card:hover { transform: translateY(-4px); box-shadow: var(--shadow-hover); border-color: var(--blue); }
 .card-icon { font-size: 1.9rem; line-height: 1; }
-.card-label {
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: var(--text);
-  line-height: 1.4;
-}
-.card-count {
-  font-size: 0.72rem;
-  color: var(--text3);
-  margin-top: auto;
-  padding-top: 0.5rem;
-  border-top: 1px solid var(--border);
-}
+.card-label { font-size: 0.95rem; font-weight: 700; color: var(--text); line-height: 1.4; }
+.card-count { font-size: 0.72rem; color: var(--text3); margin-top: auto; padding-top: 0.5rem; border-top: 1px solid var(--border); }
 
 .leaf-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 0.95rem 1.1rem;
-  cursor: pointer;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1rem 1.1rem; cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
-  box-shadow: var(--shadow);
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-  animation: fadeUp 0.22s ease both;
-  text-decoration: none;
-  color: inherit;
+  box-shadow: var(--shadow); display: flex; align-items: center; gap: 0.85rem;
+  animation: fadeUp 0.22s ease both; text-decoration: none; color: inherit;
 }
-.leaf-card:hover {
-  transform: translateY(-3px);
-  box-shadow: var(--shadow-hover);
-  border-color: var(--green);
-}
+.leaf-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-hover); border-color: var(--green); }
 .leaf-icon {
-  width: 40px; height: 40px;
-  background: var(--green-bg);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 1.25rem;
-  flex-shrink: 0;
+  width: 40px; height: 40px; background: var(--green-bg); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; font-size: 1.25rem; flex-shrink: 0;
 }
-.leaf-name {
-  font-size: 0.88rem;
-  font-weight: 500;
-  color: var(--text);
-  line-height: 1.5;
-}
+.leaf-name { font-size: 0.88rem; font-weight: 500; color: var(--text); line-height: 1.5; }
 
-#loading {
-  text-align: center;
-  padding: 4rem 2rem;
-  color: var(--text2);
-}
+#loading { text-align: center; padding: 4rem 2rem; color: var(--text2); }
 .spinner {
-  width: 30px; height: 30px;
-  border: 3px solid var(--border);
-  border-top-color: var(--blue);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-  margin: 0 auto 1rem;
+  width: 30px; height: 30px; border: 3px solid var(--border); border-top-color: var(--blue);
+  border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 1rem;
 }
 #error-msg {
-  background: var(--red-bg);
-  border: 1px solid #f5c6c2;
-  border-radius: 10px;
-  padding: 1.2rem 1.4rem;
-  color: var(--red);
-  font-size: 0.88rem;
-  line-height: 1.6;
-  display: none;
+  background: var(--red-bg); border: 1px solid #f5c6c2; border-radius: 10px;
+  padding: 1.2rem 1.4rem; color: var(--red); font-size: 0.88rem;
+  line-height: 1.6; display: none;
 }
+.empty-msg { color: var(--text3); font-size: 0.9rem; padding: 1.5rem 0; }
 
-.empty-msg {
-  color: var(--text3);
-  font-size: 0.9rem;
-  padding: 1.5rem 0;
-}
-
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes spin { to { transform: rotate(360deg); } }
 
 @media (max-width: 600px) {
   header { padding: 1.4rem 1rem 1.1rem; }
   .header-title { font-size: 1.5rem; }
   main { padding: 1.2rem 1rem; }
-  #breadcrumb { padding: 0.7rem 1rem; }
+  .steps-bar { padding: 0.6rem 1rem; }
+  #breadcrumb { padding: 0.6rem 1rem; }
   .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
 }
 </style>
@@ -252,6 +154,10 @@ main {
   <div class="header-sub">FLASHCARD LEARNING SYSTEM</div>
 </header>
 
+<!-- 步驟進度列 -->
+<div class="steps-bar" id="steps-bar"></div>
+
+<!-- 麵包屑 -->
 <nav id="breadcrumb"></nav>
 
 <main>
@@ -262,85 +168,54 @@ main {
 
 <script>
 // ══════════════════════════════════════════════
-// ★ 設定你的 GitHub 帳號與 Repo 名稱
+// ★ 修改這裡：你的 GitHub 帳號與 Repo
 const GITHUB_USER = 'l36991035-cell';
 const GITHUB_REPO = 'flashcards';
 // ══════════════════════════════════════════════
 
-// ─── 解析檔名 ───────────────────────────────
-// 支援格式（_分隔）：
-//   國小：版本_年級_科目_大章_小節
-//         版本_年級_大章_小節
-//   國中：年級_科目_大章_小節（無版本）
-// 若有欄位不足，能容錯解析
+// ── 步驟定義（共 6 層）──
+const STEPS = [
+  { label: '學習階段', icon: '🏫' },
+  { label: '年級',     icon: '📅' },
+  { label: '科目',     icon: '📚' },
+  { label: '版本',     icon: '🏷️' },
+  { label: '大章',     icon: '📑' },
+  { label: '小節',     icon: '🃏' },
+];
 
-const PUBLISHER_KEYS   = ['翰林','南一','康軒','龍騰','三民','全華','建宏','育達'];
-const JUNIOR_GRADE_KEYS  = ['七','八','九','國一','國二','國三'];
-const ELEM_GRADE_KEYS    = ['小一','小二','小三','小四','小五','小六'];
-const SUBJECT_KEYS       = ['數學','國語','英語','英文','社會','自然','生活','科技','健體','藝文','本土'];
+// ── 解析檔名 ──
+// 正確格式（必須含科目）：
+//   國小：版本_年級_科目_大章_小節.html
+//   國中：年級_科目_大章_小節.html（無版本）
+const PUBLISHER_KEYS = ['翰林','南一','康軒','龍騰','三民','全華','建宏','育達'];
+const JUNIOR_KEYS    = ['七年級','八年級','九年級','國一','國二','國三'];
+const ELEM_KEYS      = ['小一','小二','小三','小四','小五','小六'];
 
 function parseFilename(filename) {
   const raw = filename.replace(/\.html$/i, '');
   const parts = raw.split('_');
-  if (parts.length < 2) return null;
+  if (parts.length < 4) return null; // 最少需要 4 段（版本/年級 + 年級 + 科目 + 大章）
 
-  let schoolLevel, grade, publisher = null, subject = null, chapter = null, section = null;
-
-  const isPublisher = s => PUBLISHER_KEYS.some(k => s.includes(k));
-  const isJunior    = s => JUNIOR_GRADE_KEYS.some(k => s.includes(k));
-  const isElem      = s => ELEM_GRADE_KEYS.some(k => s.includes(k));
-  const isSubject   = s => SUBJECT_KEYS.some(k => s.includes(k));
-
+  const hasPublisher = PUBLISHER_KEYS.some(k => parts[0].includes(k));
   let idx = 0;
 
-  // 判斷版本
-  if (isPublisher(parts[idx])) { publisher = parts[idx++]; }
+  const publisher = hasPublisher ? parts[idx++] : null;
+  const grade     = parts[idx++] || '';
+  const subject   = parts[idx++] || '';
+  const chapter   = parts[idx++] || '';
+  const section   = parts.slice(idx).join('_') || '';
 
-  // 年級
-  grade = parts[idx] || '';
-  idx++;
+  const schoolLevel = JUNIOR_KEYS.some(k => grade.includes(k)) ? '國中' : '國小';
 
-  // 學習階段
-  schoolLevel = isJunior(grade) ? '國中' : '國小';
-
-  // 國中沒版本
-  if (schoolLevel === '國中') publisher = null;
-
-  // 剩餘欄位
-  const remaining = parts.slice(idx);
-
-  if (remaining.length === 0) {
-    chapter = grade; grade = '';
-  } else if (remaining.length === 1) {
-    chapter = remaining[0];
-  } else if (remaining.length === 2) {
-    // 可能是 [科目, 大章] 或 [大章, 小節]
-    if (isSubject(remaining[0])) {
-      subject = remaining[0]; chapter = remaining[1];
-    } else {
-      chapter = remaining[0]; section = remaining[1];
-    }
-  } else {
-    // 3+欄位：[科目, 大章, 小節...]
-    if (isSubject(remaining[0])) {
-      subject  = remaining[0];
-      chapter  = remaining[1];
-      section  = remaining.slice(2).join('_');
-    } else {
-      chapter  = remaining[0];
-      section  = remaining.slice(1).join('_');
-    }
-  }
-
-  return { schoolLevel, grade, publisher, subject, chapter: chapter || '', section: section || '', filename };
+  return { schoolLevel, grade, publisher, subject, chapter, section, filename };
 }
 
-// ─── 年級排序 ──────────────────────────────
+// ── 年級排序 ──
 const GRADE_ORDER = [
   '小一上','小一下','小二上','小二下','小三上','小三下',
   '小四上','小四下','小五上','小五下','小六上','小六下',
   '國一上','國一下','國二上','國二下','國三上','國三下',
-  '七年級上','七年級下','八年級上','八年級下','九年級上','九年級下'
+  '七年級上','七年級下','八年級上','八年級下','九年級上','九年級下',
 ];
 function gradeSort(a, b) {
   const ai = GRADE_ORDER.findIndex(g => a.includes(g));
@@ -350,22 +225,23 @@ function gradeSort(a, b) {
   return ai - bi;
 }
 
-// ─── 全域資料 ──────────────────────────────
-let parsed = [];
-let navPath = [];
+// ── 工具函式 ──
+let parsed   = [];
+let navPath  = [];
+const $      = id => document.getElementById(id);
+const el     = (tag, cls) => { const e = document.createElement(tag); if (cls) e.className = cls; return e; };
+const unique = arr => [...new Set(arr.filter(x => x != null && x !== ''))];
 
-const $  = id => document.getElementById(id);
-const el = (tag, cls) => { const e = document.createElement(tag); if (cls) e.className = cls; return e; };
-const unique = arr => [...new Set(arr.filter(x => x !== null && x !== undefined && x !== ''))];
-
-// ─── 取得 GitHub 檔案清單 ──────────────────
+// ── 取得 GitHub 檔案 ──
 async function fetchFiles() {
   const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/git/trees/HEAD?recursive=1`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`GitHub API 錯誤 (HTTP ${res.status})`);
   const data = await res.json();
   if (!data.tree) throw new Error('無法取得檔案樹');
-  return data.tree.filter(f => f.type === 'blob' && /\.html$/i.test(f.path) && f.path !== 'index.html').map(f => f.path);
+  return data.tree
+    .filter(f => f.type === 'blob' && /\.html$/i.test(f.path) && f.path !== 'index.html')
+    .map(f => f.path);
 }
 
 async function init() {
@@ -382,21 +258,52 @@ async function init() {
     $('loading').style.display = 'none';
     const err = $('error-msg');
     err.style.display = 'block';
-    err.innerHTML = `⚠️ 無法讀取檔案清單：${e.message}<br><small>請確認 GitHub Repo 為 <b>公開(Public)</b>，且帳號/Repo 名稱正確。</small>`;
+    err.innerHTML = `⚠️ 無法讀取檔案清單：${e.message}<br><small>請確認 GitHub Repo 為 <b>公開(Public)</b>，且帳號名稱正確。</small>`;
   }
 }
 
-// ─── 導覽 ──────────────────────────────────
+// ── 導覽 ──
 function navigate(path) { navPath = path; render(); }
 
-// ─── 渲染主控 ──────────────────────────────
+// ── 主渲染 ──
 function render() {
-  // 麵包屑
+  renderStepsBar();
+  renderBreadcrumb();
+  const content = $('content');
+  content.innerHTML = '';
+  const depth = navPath.length;
+  if      (depth === 0) renderSchoolLevel(content);
+  else if (depth === 1) renderGrade(content);
+  else if (depth === 2) renderSubject(content);
+  else if (depth === 3) renderPublisher(content);
+  else if (depth === 4) renderChapter(content);
+  else if (depth === 5) renderSection(content);
+}
+
+// ── 步驟列 ──
+function renderStepsBar() {
+  const bar = $('steps-bar');
+  bar.innerHTML = '';
+  STEPS.forEach((step, i) => {
+    if (i > 0) {
+      const arr = el('span','step-arrow'); arr.textContent = '›'; bar.appendChild(arr);
+    }
+    const s = el('div', 'step' + (i < navPath.length ? ' done' : i === navPath.length ? ' active' : ''));
+    if (i < navPath.length) s.onclick = () => navigate(navPath.slice(0, i));
+    const num = el('span','step-num'); num.textContent = i + 1;
+    const lbl = document.createTextNode(' ' + step.label);
+    s.appendChild(num); s.appendChild(lbl);
+    bar.appendChild(s);
+  });
+}
+
+// ── 麵包屑 ──
+function renderBreadcrumb() {
   const bc = $('breadcrumb');
   bc.innerHTML = '';
-  const labels = ['首頁', ...navPath.filter(p => p && !p.startsWith('__skip'))];
+  const labels = ['首頁', ...navPath];
   labels.forEach((label, i) => {
-    if (i > 0) { const s = el('span','bc-sep'); s.textContent = '›'; bc.appendChild(s); }
+    if (i > 0) { const s = el('span','bc-sep'); s.textContent = ' › '; bc.appendChild(s); }
     if (i === labels.length - 1) {
       const c = el('span','bc-current'); c.textContent = label; bc.appendChild(c);
     } else {
@@ -406,40 +313,28 @@ function render() {
       bc.appendChild(item);
     }
   });
-
-  const content = $('content');
-  content.innerHTML = '';
-  const depth = navPath.length;
-
-  if (depth === 0) renderSchoolLevel(content);
-  else if (depth === 1) renderGrade(content);
-  else if (depth === 2) renderSubject(content);
-  else if (depth === 3) renderPublisher(content);
-  else if (depth === 4) renderChapter(content);
-  else if (depth === 5) renderSection(content);
 }
 
-// ─── 層 0：國小 / 國中 ──────────────────────
+// ── 層 0：學習階段 ──
 function renderSchoolLevel(content) {
-  content.appendChild(makeTitle('選擇學習階段', '📖', 'badge-red', 'STEP 1'));
+  content.appendChild(makeTitle('選擇學習階段', '📖', 'badge-red'));
   const grid = el('div','grid');
   [['國小','🏫','#eaf2fb'],['國中','🎒','#e8f6f0']].forEach(([lv,icon,bg]) => {
-    const count = parsed.filter(p => p.schoolLevel === lv).length;
-    if (!count) return;
-    const c = makeCard(icon, lv, `${count} 份閃卡`, bg);
+    const cnt = parsed.filter(p => p.schoolLevel === lv).length;
+    if (!cnt) return;
+    const c = makeCard(icon, lv, `${cnt} 份閃卡`, bg);
     c.onclick = () => navigate([lv]);
     grid.appendChild(c);
   });
   content.appendChild(grid);
 }
 
-// ─── 層 1：年級 ─────────────────────────────
+// ── 層 1：年級 ──
 function renderGrade(content) {
   const [sl] = navPath;
-  const pool = parsed.filter(p => p.schoolLevel === sl);
+  const pool   = parsed.filter(p => p.schoolLevel === sl);
   const grades = unique(pool.map(p => p.grade)).sort(gradeSort);
-
-  content.appendChild(makeTitle('選擇年級', '📅', 'badge-blue', 'STEP 2'));
+  content.appendChild(makeTitle('選擇年級', '📅', 'badge-blue'));
   const grid = el('div','grid');
   grades.forEach((g, i) => {
     const cnt = pool.filter(p => p.grade === g).length;
@@ -450,97 +345,91 @@ function renderGrade(content) {
   content.appendChild(grid);
 }
 
-// ─── 層 2：科目 ─────────────────────────────
+// ── 層 2：科目 ──
 function renderSubject(content) {
   const [sl, grade] = navPath;
-  const pool = parsed.filter(p => p.schoolLevel === sl && p.grade === grade);
-  const subjects = unique(pool.map(p => p.subject));
+  const pool     = parsed.filter(p => p.schoolLevel === sl && p.grade === grade);
+  const subjects = unique(pool.map(p => p.subject)).sort((a,b) => a.localeCompare(b,'zh-TW'));
+  content.appendChild(makeTitle('選擇科目', '📚', 'badge-green'));
+  const grid = el('div','grid');
+  const SUBJ_ICONS = {'數學':'🔢','國語':'📝','英語':'🔤','英文':'🔤','社會':'🌏','自然':'🔬','生活':'🌈','科技':'⚙️','健體':'🏃','藝文':'🎨','本土':'🗣️','地理':'🗺️','歷史':'📜','公民':'⚖️','物理':'⚡','化學':'🧪','生物':'🧬'};
+  const SUBJ_BG   = {'數學':'#eaf2fb','國語':'#fdf7e3','英語':'#f3eefb','英文':'#f3eefb','社會':'#fdf0ee','自然':'#e8f6f0','生活':'#fff8e8','地理':'#eaf2fb','歷史':'#fdf7e3','公民':'#f3eefb','物理':'#e8f6f0','化學':'#fdf0ee','生物':'#e8f6f0'};
+  subjects.forEach((s, i) => {
+    const cnt  = pool.filter(p => p.subject === s).length;
+    const icon = Object.entries(SUBJ_ICONS).find(([k]) => s.includes(k))?.[1] || '📖';
+    const bg   = Object.entries(SUBJ_BG).find(([k]) => s.includes(k))?.[1] || null;
+    const c    = makeCard(icon, s, `${cnt} 份閃卡`, bg, i);
+    c.onclick  = () => navigate([...navPath, s]);
+    grid.appendChild(c);
+  });
+  content.appendChild(grid);
+}
 
-  if (subjects.length === 0) {
-    // 無科目欄位，跳過此層
-    navigate([...navPath, '__skip_subject']);
+// ── 層 3：版本（出版商） ──
+function renderPublisher(content) {
+  const [sl, grade, subject] = navPath;
+
+  // 國中沒有版本，直接跳到大章
+  if (sl === '國中') {
+    navigate([...navPath, '（無版本）']);
     return;
   }
 
-  content.appendChild(makeTitle('選擇科目', '📚', 'badge-green', 'STEP 3'));
+  const pool = parsed.filter(p => p.schoolLevel === sl && p.grade === grade && p.subject === subject);
+  const pubs = unique(pool.map(p => p.publisher).filter(Boolean));
+
+  if (pubs.length === 0) {
+    navigate([...navPath, '（無版本）']);
+    return;
+  }
+
+  content.appendChild(makeTitle('選擇版本', '🏷️', 'badge-gold'));
   const grid = el('div','grid');
-  const icons = {'數學':'🔢','國語':'📝','英語':'🔤','英文':'🔤','社會':'🌏','自然':'🔬','生活':'🌈','科技':'⚙️','健體':'🏃','藝文':'🎨','本土':'🗣️'};
-  subjects.forEach((s, i) => {
-    const cnt = pool.filter(p => p.subject === s).length;
-    const icon = Object.entries(icons).find(([k]) => s.includes(k))?.[1] || '📖';
-    const c = makeCard(icon, s, `${cnt} 份閃卡`, null, i);
-    c.onclick = () => navigate([...navPath, s]);
-    grid.appendChild(c);
-  });
-  content.appendChild(grid);
-}
-
-// ─── 層 3：版本（出版商）────────────────────
-function renderPublisher(content) {
-  const [sl, grade, subject] = navPath;
-  const realSubject = subject.startsWith('__skip') ? null : subject;
-
-  // 國中無版本，直接跳
-  if (sl === '國中') { navigate([...navPath, '__skip_publisher']); return; }
-
-  const pool = parsed.filter(p =>
-    p.schoolLevel === sl && p.grade === grade &&
-    (realSubject ? p.subject === realSubject : !p.subject)
-  );
-  const pubs = unique(pool.map(p => p.publisher));
-  if (pubs.length === 0) { navigate([...navPath, '__skip_publisher']); return; }
-
-  content.appendChild(makeTitle('選擇版本', '🏷️', 'badge-gold', 'STEP 4'));
-  const grid = el('div','grid');
-  const bgMap = {'翰林':'#fdf7e3','南一':'#fdf0ee','康軒':'#eaf2fb','龍騰':'#e8f6f0'};
+  const PUB_BG = {'翰林':'#fdf7e3','南一':'#fdf0ee','康軒':'#eaf2fb','龍騰':'#e8f6f0','三民':'#f3eefb'};
+  const PUB_ICON = {'翰林':'📗','南一':'📕','康軒':'📘','龍騰':'📙','三民':'📒'};
   pubs.forEach((p, i) => {
-    const cnt = pool.filter(x => x.publisher === p).length;
-    const bg = Object.entries(bgMap).find(([k]) => p.includes(k))?.[1] || null;
-    const c = makeCard('📗', p, `${cnt} 份閃卡`, bg, i);
-    c.onclick = () => navigate([...navPath, p]);
+    const cnt  = pool.filter(x => x.publisher === p).length;
+    const bg   = Object.entries(PUB_BG).find(([k]) => p.includes(k))?.[1] || null;
+    const icon = Object.entries(PUB_ICON).find(([k]) => p.includes(k))?.[1] || '📗';
+    const c    = makeCard(icon, p, `${cnt} 份閃卡`, bg, i);
+    c.onclick  = () => navigate([...navPath, p]);
     grid.appendChild(c);
   });
   content.appendChild(grid);
 }
 
-// ─── 層 4：大章 ─────────────────────────────
+// ── 層 4：大章 ──
 function renderChapter(content) {
   const [sl, grade, subject, publisher] = navPath;
-  const realSubject   = subject.startsWith('__skip')   ? null : subject;
-  const realPublisher = publisher.startsWith('__skip')  ? null : publisher;
-
+  const realPub = publisher === '（無版本）' ? null : publisher;
   const pool = parsed.filter(p =>
-    p.schoolLevel === sl && p.grade === grade &&
-    (realSubject   ? p.subject   === realSubject   : !p.subject) &&
-    (realPublisher ? p.publisher === realPublisher : !p.publisher)
+    p.schoolLevel === sl && p.grade === grade && p.subject === subject &&
+    (realPub ? p.publisher === realPub : true)
   );
   const chapters = unique(pool.map(p => p.chapter)).sort((a,b) => a.localeCompare(b,'zh-TW'));
-
-  content.appendChild(makeTitle('選擇大章', '📑', 'badge-blue', 'STEP 5'));
+  content.appendChild(makeTitle('選擇大章', '📑', 'badge-purple'));
   const grid = el('div','grid grid-wide');
   chapters.forEach((ch, i) => {
     const cnt = pool.filter(p => p.chapter === ch).length;
-    const c = makeCard('📂', ch, `${cnt} 個小節`, null, i);
+    const c   = makeCard('📂', ch, `${cnt} 個小節`, null, i);
     c.onclick = () => navigate([...navPath, ch]);
     grid.appendChild(c);
   });
   content.appendChild(grid);
 }
 
-// ─── 層 5：小節（閃卡連結）──────────────────
+// ── 層 5：小節（閃卡連結） ──
 function renderSection(content) {
   const [sl, grade, subject, publisher, chapter] = navPath;
-  const realSubject   = subject.startsWith('__skip')   ? null : subject;
-  const realPublisher = publisher.startsWith('__skip')  ? null : publisher;
-
+  const realPub = publisher === '（無版本）' ? null : publisher;
   const pool = parsed.filter(p =>
-    p.schoolLevel === sl && p.grade === grade &&
-    (realSubject   ? p.subject   === realSubject   : !p.subject) &&
-    (realPublisher ? p.publisher === realPublisher : !p.publisher) &&
-    p.chapter === chapter
+    p.schoolLevel === sl && p.grade === grade && p.subject === subject &&
+    (realPub ? p.publisher === realPub : true) && p.chapter === chapter
   );
-
-  content.appendChild(makeTitle('選擇小節', '🃏', 'badge-green', 'STEP 6'));
+  content.appendChild(makeTitle('選擇小節', '🃏', 'badge-green'));
+  if (!pool.length) {
+    const m = el('div','empty-msg'); m.textContent = '此章節尚無閃卡。'; content.appendChild(m); return;
+  }
   const grid = el('div','grid grid-wide');
   pool.forEach((item, i) => {
     const a = el('a','leaf-card');
@@ -552,22 +441,20 @@ function renderSection(content) {
     a.appendChild(iconEl); a.appendChild(nameEl);
     grid.appendChild(a);
   });
-  if (!pool.length) {
-    const m = el('div','empty-msg'); m.textContent = '此章節尚無閃卡內容。'; content.appendChild(m);
-  } else {
-    content.appendChild(grid);
-  }
+  content.appendChild(grid);
 }
 
-// ─── UI 元件 ───────────────────────────────
-function makeTitle(text, emoji, badgeClass, step) {
+// ── UI 元件 ──
+function makeTitle(text, emoji, badgeClass) {
   const d = el('div','level-title');
-  d.innerHTML = `<span>${emoji} ${text}</span><span class="level-badge ${badgeClass}">${step}</span>`;
+  const stepIdx = ['badge-red','badge-blue','badge-green','badge-gold','badge-purple','badge-green'].indexOf(badgeClass);
+  const stepLabel = STEPS[['badge-red','badge-blue','badge-green','badge-gold','badge-purple','badge-green'].indexOf(badgeClass)]?.label || '';
+  d.innerHTML = `<span>${emoji} ${text}</span><span class="level-badge ${badgeClass}">STEP ${navPath.length + 1}</span>`;
   return d;
 }
 function makeCard(icon, label, count, bg, delay) {
   const d = el('div','card');
-  if (bg) d.style.background = bg;
+  if (bg)    d.style.background    = bg;
   if (delay !== undefined) d.style.animationDelay = (delay * 0.045) + 's';
   d.innerHTML = `<div class="card-icon">${icon}</div><div class="card-label">${label}</div><div class="card-count">${count}</div>`;
   return d;
