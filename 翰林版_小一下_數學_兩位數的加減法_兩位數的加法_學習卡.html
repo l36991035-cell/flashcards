@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>兩位數的加法 學習卡</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
+.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
+.hero{border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;background:linear-gradient(135deg,#f97316,#ea580c);}
+.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
+.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
+.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.setup-icon{width:64px;height:64px;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;background:#fff7ed;}
+.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
+.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
+.setup-sub b{font-weight:800;}
+.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
+.start-btn{width:100%;background:linear-gradient(135deg,#f97316,#ea580c);color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.start-btn:active{opacity:0.85;}
+.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
+.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
+.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
+.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
+.progress-wrap{margin-bottom:14px;}
+.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
+.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
+.card-wrap{perspective:1400px;height:520px;margin-bottom:18px;}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
+.card.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
+.card-back{transform:rotateY(180deg);background:#fafafa;}
+.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;font-weight:800;background:rgba(249,115,22,0.1);color:#ea580c;padding:5px 14px;border-radius:10px;z-index:2;}
+.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
+.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.face-inner::-webkit-scrollbar{display:none;}
+.q-text{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.7;text-align:center;white-space:pre-wrap;}
+.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
+.opt-btn{font-size:1rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
+.opt-btn.selected{background:#fff7ed;border-color:#f97316;color:#ea580c;}
+.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
+.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
+.answer-box{border:2px solid #f97316;border-radius:1rem;padding:14px 20px;width:100%;text-align:center;font-size:1.1rem;font-weight:900;color:#ea580c;background:#fff7ed;margin-top:14px;display:none;white-space:pre-wrap;line-height:1.8;}
+.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
+.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.btn-wrong-j{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #f97316;white-space:pre-wrap;overflow-y:auto;max-height:380px;-webkit-overflow-scrolling:touch;margin-top:8px;}
+.back-title{font-size:0.75rem;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
+.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
+.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.action-btn .icon{font-size:1.3rem;}
+.btn-check-style{background:#10b981;color:white;}
+.btn-flip-style{background:#6366f1;color:white;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>➕ 兩位數的加法 學習卡</h1>
+  <p>翰林版・小一下數學・兩位數的加減法</p>
+</div>
+<div class="page">
+
+  <div id="setupSection" class="setup-card">
+    <div class="setup-icon">🔢</div>
+    <div class="setup-title">設定測驗範圍</div>
+    <div class="setup-sub">題庫共有 <b>86</b> 題</div>
+    <label class="input-label">欲測驗題目數量</label>
+    <input type="number" id="countInput" class="count-input" value="10" min="1" max="86">
+    <button class="start-btn" id="startBtn">開始測驗</button>
+  </div>
+
+  <div id="resultSection" class="result-card hidden">
+    <div class="trophy">🏆</div>
+    <h2 id="resultTitle">測驗結束！</h2>
+    <p id="scoreText"></p>
+    <button id="reviewBtn" class="btn-review hidden">重測錯題</button>
+    <button id="homeBtn" class="btn-home">返回首頁</button>
+  </div>
+
+  <div id="studySection" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span id="modeText">一般模式</span>
+        <span id="progressText">0 / 0</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <div class="card-face">
+          <div class="corner-tag" id="frontTag"></div>
+          <div class="face-inner">
+            <div id="frontMain"></div>
+            <div class="opts" id="optsArea"></div>
+            <div class="answer-box" id="answerBox"></div>
+            <div class="self-judge" id="selfJudge">
+              <button class="btn-correct" id="correctBtn">✓ 我答對了</button>
+              <button class="btn-wrong-j" id="wrongBtn">✗ 我答錯了</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-corner-tag">詳解</div>
+          <div class="face-inner">
+            <div class="back-title">解題過程</div>
+            <div class="explanation" id="explanation"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn" id="prevBtn"><span class="icon">◀</span>PREV</button>
+      <button class="action-btn btn-check-style" id="checkBtn"><span class="icon">📢</span>公布答案</button>
+      <button class="action-btn btn-flip-style" id="flipBtn" disabled><span class="icon">📖</span>FLIP詳解</button>
+      <button class="action-btn" id="nextBtn"><span class="icon">▶</span>NEXT</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DECK=[
+  ["選擇題","選擇題","宰宰的文具箱裡有 17 張色紙，又買了 20 張，宰宰共有幾張色紙？","①  17 張","②  37 張","③  41 張","","2","17＋20＝37（張）"],
+  ["選擇題","選擇題","虹虹原有 12 條髮帶，奶奶又送虹虹 8 條髮帶，虹虹現在有幾條髮帶？","①  12 條","②  18 條","③  20 條","","3","12＋8＝20（條）"],
+  ["選擇題","選擇題","小瑋的點心桶裡原有 24 片餅乾，再放進 42 片餅乾後，全部有幾片餅乾？","①  66 片","②  68 片","③  70 片","","1","24＋42＝66（片）"],
+  ["選擇題","選擇題","合起來有多少？可以用哪一個算式來表示？\n（圖示：15個豆豆加上20個豆豆）","①  15＋20＝35","②  5＋12＝17","③  5＋22＝27","","1","15個加上20個，共35個\n算式：15＋20＝35"],
+  ["選擇題","選擇題","思思的撲滿有 38 元，媽媽再給她 51 元，思思現在有幾元？","①  86 元","②  88 元","③  89 元","","3","38＋51＝89（元）"],
+  ["選擇題","選擇題","一杯黑糖牛奶 42 元，琵琶買了 2 杯，共要付多少元？","①  44 元","②  84 元","③  86 元","","2","42＋42＝84（元）"],
+  ["選擇題","選擇題","36＋8＝□，□的答案要填入？","①  34","②  44","③  48","","2","36＋8＝44"],
+  ["選擇題","選擇題","小文有 27 元，小莉有 6 元，兩人一共有多少元？","①  31 元","②  32 元","③  33 元","","3","27＋6＝33（元）"],
+  ["選擇題","選擇題","一包彈珠 23 元，小花買 2 包彈珠，共要付多少元？","①  23 元","②  25 元","③  46 元","","3","23＋23＝46（元）"],
+  ["選擇題","選擇題","小珍有 27 張色紙，姐姐有 31 張色紙，兩人共有幾張色紙？","①  55 張","②  56 張","③  58 張","","3","27＋31＝58（張）"],
+  ["選擇題","選擇題","一盒花生糖 34 元，小丸子買 2 盒花生糖，共要付多少元？","①  34 元","②  64 元","③  68 元","","3","34＋34＝68（元）"],
+  ["選擇題","選擇題","草莓冰淇淋一球 23 元，巧克力冰淇淋一球 35 元，兩樣都買一球，共要花多少元？","①  58 元","②  64 元","③  70 元","","1","23＋35＝58（元）"],
+  ["選擇題","選擇題","小玉買了一杯 52 元的綜合果汁，哥哥買了一杯 35 元的冬瓜檸檬，兩人共花了多少元？","①  77 元","②  82 元","③  87 元","","3","52＋35＝87（元）"],
+  ["選擇題","選擇題","82＋12＝？","①  84","②  90","③  94","","3","82＋12＝94"],
+  ["選擇題","選擇題","冰箱裡有 12 顆百香果，爸爸又買了 24 顆百香果，家裡現在共有幾顆百香果？","①  12 顆","②  24 顆","③  36 顆","","3","12＋24＝36（顆）"],
+  ["選擇題","選擇題","姐姐有 15 顆紅番茄，妹妹有 5 顆黃番茄，兩人一共有多少顆番茄？","①  20 顆","②  25 顆","③  30 顆","","1","15＋5＝20（顆）"],
+  ["選擇題","選擇題","小珠原有 33 元的零用錢，因為上課認真，得到爺爺的獎勵金 15 元，小珠一共有幾元？","①  43 元","②  48 元","③  53 元","","2","33＋15＝48（元）"],
+  ["選擇題","選擇題","小雅第一次跳繩跳 29 下，第二次跳 8 下，兩次共跳幾下？","①  29 下","②  35 下","③  37 下","","3","29＋8＝37（下）"],
+  ["選擇題","選擇題","合起來有多少？可以用哪一個算式來表示？\n（圖示：33個豆豆加上20個豆豆）","①  33＋20＝53","②  20＋20＝40","③  30＋20＝50","","1","33個加上20個，共53個\n算式：33＋20＝53"],
+  ["填填看","填填看","妙麗的錢包裡有 90 元，她到超市買一瓶 55 元的牛奶和一包 32 元的餅乾，一共花了幾元？","","","","","87 元","55＋32＝87（元）"],
+  ["填填看","填填看","奶奶先包了 20 顆粽子，又包了 17 顆粽子，奶奶一共包了幾顆粽子？","","","","","37 顆","20＋17＝37（顆）"],
+  ["填填看","填填看","一袋牛奶糖有 42 顆，2 袋牛奶糖共有幾顆？","","","","","84 顆","42＋42＝84（顆）"],
+  ["填填看","填填看","一個漢堡 43 元，一杯奶茶 25 元，哥哥買了一個漢堡和一杯奶茶當早餐，共花了幾元？","","","","","68 元","43＋25＝68（元）"],
+  ["填填看","填填看","妹妹原來有 25 顆糖果，姐姐又給她 6 顆，妹妹現在共有幾顆糖果？","","","","","31 顆","25＋6＝31（顆）"],
+  ["填填看","填填看","小胖撈到 25 條金魚，多多撈到 13 條金魚，兩人一共撈了幾條金魚？","","","","","38 條","25＋13＝38（條）"],
+  ["填填看","填填看","一盒鉛筆有 12 枝，媽媽買了 2 盒，共有幾枝鉛筆？","","","","","24 枝","12＋12＝24（枝）"],
+  ["填填看","填填看","黃色珠子有 33 顆，藍色珠子有 25 顆，妹妹共用了幾顆珠子串項鍊？","","","","","58 顆","33＋25＝58（顆）"],
+  ["填填看","填填看","爸爸煮了 21 杯紅茶和 27 杯綠茶，爸爸共煮了幾杯茶？","","","","","48 杯","21＋27＝48（杯）"],
+  ["填填看","填填看","一個原味甜甜圈 24 元，一個草莓甜甜圈 35 元，萱萱要買 1 個原味和 1 個草莓甜甜圈，共要花幾元？","","","","","59 元","24＋35＝59（元）"],
+  ["填填看","填填看","甲遊覽車有 49 個座位，乙遊覽車有 42 個座位。一年一班 23 人、一年二班 22 人一起參加校外教學，要選哪一輛遊覽車，座位才夠？（甲或乙）","","","","","甲","23＋22＝45（人）\n甲遊覽車49個座位，乙遊覽車42個座位\n45≤49，選甲座位才夠"],
+  ["填填看","填填看","上個星期姐姐存了 54 元、哥哥存了 36 元，這個星期姐姐存了 35 元、哥哥存了 61 元，這兩個星期誰存的錢比較多？（哥哥或姐姐）","","","","","哥哥","姐姐：54＋35＝89（元）\n哥哥：36＋61＝97（元）\n97＞89，哥哥存的比較多"],
+  ["計算練習","填填看","9＋53＝？","","","","","62","9＋53＝62"],
+  ["計算練習","填填看","64＋21＝？","","","","","85","64＋21＝85"],
+  ["計算練習","填填看","34＋40＝？","","","","","74","34＋40＝74"],
+  ["計算練習","填填看","36＋63＝？","","","","","99","36＋63＝99"],
+  ["計算練習","填填看","56＋7＝？","","","","","63","56＋7＝63"],
+  ["計算練習","填填看","25＋9＝？","","","","","34","25＋9＝34"],
+  ["計算練習","填填看","56＋9＝？","","","","","65","56＋9＝65"],
+  ["計算練習","填填看","58＋8＝？","","","","","66","58＋8＝66"],
+  ["計算練習","填填看","85＋6＝？","","","","","91","85＋6＝91"],
+  ["計算練習","填填看","35＋20＝？","","","","","55","35＋20＝55"],
+  ["計算練習","填填看","74＋8＝？","","","","","82","74＋8＝82"],
+  ["計算練習","填填看","24＋24＝？","","","","","48","24＋24＝48"],
+  ["計算練習","填填看","34＋8＝？","","","","","42","34＋8＝42"],
+  ["計算練習","填填看","23＋11＝？","","","","","34","23＋11＝34"],
+  ["計算練習","填填看","46＋4＝？","","","","","50","46＋4＝50"],
+  ["計算練習","填填看","24＋8＝？","","","","","32","24＋8＝32"],
+  ["計算練習","填填看","44＋11＝？","","","","","55","44＋11＝55"],
+  ["計算練習","填填看","27＋12＝？","","","","","39","27＋12＝39"],
+  ["計算練習","填填看","24＋9＝？","","","","","33","24＋9＝33"],
+  ["計算練習","填填看","43＋30＝？","","","","","73","43＋30＝73"],
+  ["計算練習","填填看","8＋63＝？","","","","","71","8＋63＝71"],
+  ["計算練習","填填看","26＋13＝？","","","","","39","26＋13＝39"],
+  ["計算練習","填填看","76＋7＝？","","","","","83","76＋7＝83"],
+  ["計算練習","填填看","18＋11＝？","","","","","29","18＋11＝29"],
+  ["計算練習","填填看","34＋33＝？","","","","","67","34＋33＝67"],
+  ["計算練習","填填看","15＋14＝？","","","","","29","15＋14＝29"],
+  ["計算練習","填填看","56＋33＝？","","","","","89","56＋33＝89"],
+  ["計算練習","填填看","17＋42＝？","","","","","59","17＋42＝59"],
+  ["計算練習","填填看","37＋21＝？","","","","","58","37＋21＝58"],
+  ["計算練習","填填看","26＋12＝？","","","","","38","26＋12＝38"],
+  ["計算練習","填填看","24＋55＝？","","","","","79","24＋55＝79"],
+  ["計算練習","填填看","35＋41＝？","","","","","76","35＋41＝76"],
+  ["計算練習","填填看","23＋13＝？","","","","","36","23＋13＝36"],
+  ["計算練習","填填看","44＋14＝？","","","","","58","44＋14＝58"],
+  ["計算練習","填填看","44＋8＝？","","","","","52","44＋8＝52"],
+  ["計算練習","填填看","36＋23＝？","","","","","59","36＋23＝59"],
+  ["計算練習","填填看","15＋24＝？","","","","","39","15＋24＝39"],
+  ["計算練習","填填看","35＋53＝？","","","","","88","35＋53＝88"],
+  ["計算練習","填填看","64＋6＝？","","","","","70","64＋6＝70"],
+  ["計算練習","填填看","45＋42＝？","","","","","87","45＋42＝87"],
+  ["計算練習","填填看","41＋28＝？","","","","","69","41＋28＝69"],
+  ["計算練習","填填看","53＋11＝？","","","","","64","53＋11＝64"],
+  ["計算練習","填填看","44＋25＝？","","","","","69","44＋25＝69"],
+  ["計算練習","填填看","43＋34＝？","","","","","77","43＋34＝77"],
+  ["計算練習","填填看","24＋54＝？","","","","","78","24＋54＝78"],
+  ["計算練習","填填看","18＋81＝？","","","","","99","18＋81＝99"],
+  ["計算練習","填填看","37＋41＝？","","","","","78","37＋41＝78"],
+  ["應用題","填填看","一個筆筒裡有 16 枝紅筆和 13 枝藍筆，共有幾枝筆？","","","","","29 枝","16＋13＝29（枝）"],
+  ["應用題","填填看","一本筆記本 21 元，姐姐買 2 本筆記本，共要花多少元？","","","","","42 元","21＋21＝42（元）"],
+  ["應用題","填填看","東東有 27 顆糖果，老師又給他 4 顆，東東現在有多少顆糖果？","","","","","31 顆","27＋4＝31（顆）"],
+  ["應用題","填填看","哥哥想要買一個書包（38元）和一枝鉛筆（9元），要付多少元？","","","","","47 元","38＋9＝47（元）"],
+  ["應用題","填填看","小瑜媽媽做了 42 個布丁，小瑛爸爸做了 36 個布丁，兩人共做了幾個布丁？","","","","","78 個","42＋36＝78（個）"],
+  ["應用題","填填看","一年乙班有 14 個女生和 13 個男生，全班有多少個人？","","","","","27 人","14＋13＝27（人）"],
+  ["應用題","填填看","看電影前，小維媽媽買了 41 元的爆米花和 32 元的果汁，共花了多少元？","","","","","73 元","41＋32＝73（元）"],
+  ["應用題","填填看","冰箱裡原有 17 枝冰棒，爺爺又買了 31 枝冰棒，現在共有幾枝冰棒？","","","","","48 枝","17＋31＝48（枝）"]
+];
+
+var card;
+var currentDeck=[], currentIndex=0, selectedIdx=null, isAnswered=false, wrongDeck=[];
+
+function shuffle(a){
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i]; a[i]=a[j]; a[j]=t;
+  }
+  return a;
+}
+
+function startQuiz(){
+  var n=parseInt(document.getElementById("countInput").value)||10;
+  n=Math.max(1,Math.min(n,DECK.length));
+  var pool=shuffle(DECK.slice()).slice(0,n);
+  currentDeck=pool; currentIndex=0; wrongDeck=[];
+  document.getElementById("setupSection").classList.add("hidden");
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("studySection").classList.remove("hidden");
+  document.getElementById("modeText").textContent="一般模式";
+  showCard();
+}
+
+function startReview(){
+  if(wrongDeck.length===0) return;
+  currentDeck=shuffle(wrongDeck.slice()); currentIndex=0; wrongDeck=[];
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("studySection").classList.remove("hidden");
+  document.getElementById("modeText").textContent="錯題重測";
+  showCard();
+}
+
+function renderContent(el,text){
+  el.innerHTML="";
+  var lines=text.split("\n");
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim();
+    if(!line) continue;
+    var p=document.createElement("p");
+    p.className="q-text";
+    p.textContent=line;
+    el.appendChild(p);
+  }
+}
+
+function showCard(){
+  selectedIdx=null; isAnswered=false;
+  card.classList.remove("flipped");
+  document.getElementById("flipBtn").disabled=true;
+  document.getElementById("checkBtn").disabled=false;
+  document.getElementById("answerBox").style.display="none";
+  document.getElementById("selfJudge").style.display="none";
+
+  var d=currentDeck[currentIndex];
+  document.getElementById("frontTag").textContent=d[0];
+
+  var fm=document.getElementById("frontMain");
+  renderContent(fm,d[2]);
+
+  var oa=document.getElementById("optsArea");
+  oa.innerHTML="";
+  if(d[1]==="選擇題"){
+    for(var j=3;j<=5;j++){
+      if(!d[j]) continue;
+      var btn=document.createElement("button");
+      btn.className="opt-btn";
+      btn.textContent=d[j];
+      (function(idx,b){ b.addEventListener("click",function(){ selectOpt(idx,b); }); })(j-2,btn);
+      oa.appendChild(btn);
+    }
+  }
+
+  var pct=((currentIndex+1)/currentDeck.length*100).toFixed(0);
+  document.getElementById("progressText").textContent=(currentIndex+1)+" / "+currentDeck.length;
+  document.getElementById("progressBar").style.width=pct+"%";
+
+  var expEl=document.getElementById("explanation");
+  var expText=(d[8]||d[7]);
+  renderContent(expEl,expText||"");
+}
+
+function selectOpt(idx,el){
+  if(isAnswered) return;
+  selectedIdx=idx;
+  var btns=document.querySelectorAll(".opt-btn");
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove("selected");
+  el.classList.add("selected");
+}
+
+function checkAnswer(){
+  if(isAnswered) return;
+  isAnswered=true;
+  document.getElementById("flipBtn").disabled=false;
+  document.getElementById("checkBtn").disabled=true;
+  var d=currentDeck[currentIndex];
+
+  if(d[1]==="選擇題"){
+    var ci=parseInt(d[7]);
+    var btns=document.querySelectorAll(".opt-btn");
+    for(var i=0;i<btns.length;i++){
+      var optIdx=i+1;
+      if(optIdx===ci) btns[i].classList.add("correct");
+      else if(optIdx===selectedIdx) btns[i].classList.add("wrong");
+    }
+    if(selectedIdx!==ci){
+      if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+    }
+  } else {
+    var ab=document.getElementById("answerBox");
+    ab.style.display="block";
+    ab.textContent=d[7];
+    document.getElementById("selfJudge").style.display="flex";
+  }
+}
+
+function selfJudgeCorrect(){ document.getElementById("selfJudge").style.display="none"; }
+function selfJudgeWrong(){
+  document.getElementById("selfJudge").style.display="none";
+  var d=currentDeck[currentIndex];
+  if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+}
+
+function flipCard(){ if(isAnswered) card.classList.toggle("flipped"); }
+
+function nextCard(){
+  if(currentIndex<currentDeck.length-1){ currentIndex++; showCard(); }
+  else showResults();
+}
+
+function prevCard(){ if(currentIndex>0){ currentIndex--; showCard(); } }
+
+function showResults(){
+  document.getElementById("studySection").classList.add("hidden");
+  document.getElementById("resultSection").classList.remove("hidden");
+  var t=currentDeck.length, w=wrongDeck.length, c=t-w;
+  document.getElementById("scoreText").textContent="答對 "+c+" 題，答錯 "+w+" 題，共 "+t+" 題。";
+  var rb=document.getElementById("reviewBtn");
+  if(w>0){ rb.classList.remove("hidden"); rb.textContent="重測錯題（"+w+"題）"; }
+  else rb.classList.add("hidden");
+  var pct=Math.round(c/t*100);
+  document.getElementById("resultTitle").textContent=pct>=90?"太棒了！":pct>=70?"不錯喔！":"繼續加油！";
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  card=document.getElementById("card");
+  document.getElementById("startBtn").addEventListener("click",startQuiz);
+  document.getElementById("checkBtn").addEventListener("click",checkAnswer);
+  document.getElementById("flipBtn").addEventListener("click",flipCard);
+  document.getElementById("prevBtn").addEventListener("click",prevCard);
+  document.getElementById("nextBtn").addEventListener("click",nextCard);
+  document.getElementById("correctBtn").addEventListener("click",selfJudgeCorrect);
+  document.getElementById("wrongBtn").addEventListener("click",selfJudgeWrong);
+  document.getElementById("reviewBtn").addEventListener("click",startReview);
+  document.getElementById("homeBtn").addEventListener("click",function(){ location.reload(); });
+});
+</script>
+</body>
+</html>
