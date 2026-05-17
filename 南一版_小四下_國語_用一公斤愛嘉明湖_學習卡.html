@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>用一公斤愛嘉明湖 學習卡</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
+.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
+.hero{border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;background:linear-gradient(135deg,#10b981,#065f46);}
+.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
+.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
+.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.setup-icon{width:64px;height:64px;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;background:#ecfdf5;}
+.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
+.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
+.setup-sub b{font-weight:800;}
+.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
+.start-btn{width:100%;background:linear-gradient(135deg,#10b981,#065f46);color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.start-btn:active{opacity:0.85;}
+.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
+.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
+.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
+.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
+.progress-wrap{margin-bottom:14px;}
+.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
+.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
+.card-wrap{perspective:1400px;height:520px;margin-bottom:18px;}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
+.card.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
+.card-back{transform:rotateY(180deg);background:#fafafa;}
+.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;font-weight:800;background:rgba(16,185,129,0.12);color:#065f46;padding:5px 14px;border-radius:10px;z-index:2;}
+.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
+.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.face-inner::-webkit-scrollbar{display:none;}
+.q-text{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.7;text-align:center;white-space:pre-wrap;}
+.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
+.opt-btn{font-size:0.95rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
+.opt-btn.selected{background:#ecfdf5;border-color:#10b981;color:#065f46;}
+.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
+.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
+.answer-box{border:2px solid #10b981;border-radius:1rem;padding:14px 20px;width:100%;text-align:left;font-size:1.05rem;font-weight:700;color:#065f46;background:#ecfdf5;margin-top:14px;display:none;white-space:pre-wrap;line-height:1.8;}
+.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
+.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.btn-wrong-j{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #10b981;white-space:pre-wrap;overflow-y:auto;max-height:380px;-webkit-overflow-scrolling:touch;margin-top:8px;}
+.back-title{font-size:0.75rem;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
+.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
+.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.action-btn .icon{font-size:1.3rem;}
+.btn-check-style{background:#10b981;color:white;}
+.btn-flip-style{background:#6366f1;color:white;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>🏔️ 用一公斤愛嘉明湖 學習卡</h1>
+  <p>南一版・小四下國語・課文綜合測驗</p>
+</div>
+<div class="page">
+
+  <!-- 設定畫面 -->
+  <div id="setupSection" class="setup-card">
+    <div class="setup-icon">📖</div>
+    <div class="setup-title">設定測驗範圍</div>
+    <div class="setup-sub">題庫共有 <b>85</b> 題</div>
+    <label class="input-label">欲測驗題目數量</label>
+    <input type="number" id="countInput" class="count-input" value="10" min="1" max="85">
+    <button class="start-btn" id="startBtn">開始測驗</button>
+  </div>
+
+  <!-- 結果畫面 -->
+  <div id="resultSection" class="result-card hidden">
+    <div class="trophy">🏆</div>
+    <h2 id="resultTitle">測驗結束！</h2>
+    <p id="scoreText"></p>
+    <button id="reviewBtn" class="btn-review hidden">重測錯題</button>
+    <button id="homeBtn" class="btn-home">返回首頁</button>
+  </div>
+
+  <!-- 測驗畫面 -->
+  <div id="studySection" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span id="modeText">一般模式</span>
+        <span id="progressText">0 / 0</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <!-- 正面 -->
+        <div class="card-face">
+          <div class="corner-tag" id="frontTag"></div>
+          <div class="face-inner">
+            <div id="frontMain"></div>
+            <div class="opts" id="optsArea"></div>
+            <div class="answer-box" id="answerBox"></div>
+            <div class="self-judge" id="selfJudge">
+              <button class="btn-correct" id="correctBtn">✓ 我答對了</button>
+              <button class="btn-wrong-j" id="wrongBtn">✗ 我答錯了</button>
+            </div>
+          </div>
+        </div>
+        <!-- 背面 -->
+        <div class="card-face card-back">
+          <div class="back-corner-tag">詳解</div>
+          <div class="face-inner">
+            <div class="back-title">解題過程</div>
+            <div class="explanation" id="explanation"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn" id="prevBtn"><span class="icon">◄</span>PREV</button>
+      <button class="action-btn btn-check-style" id="checkBtn"><span class="icon">📢</span>公布答案</button>
+      <button class="action-btn btn-flip-style" id="flipBtn" disabled><span class="icon">📖</span>FLIP詳解</button>
+      <button class="action-btn" id="nextBtn"><span class="icon">►</span>NEXT</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DECK=[
+  ["改錯字","選擇題","這篇文章十分雋詠，值得人一讀再讀。\n「詠」字錯了，應改成哪個字？","水","永","泳","咏","2","「雋永」意指回味無窮，用「永」字。"],
+  ["改錯字","選擇題","有些傷害一旦造成了，就會留下泳久且難以磨滅的傷痕。\n「泳」字錯了，應改成哪個字？","庸","鏞","永","勇","3","「永久」意指長久，用「永」字。"],
+  ["改錯字","選擇題","剛跑完操場的大家全都又累又端，坐在地上一動也不想動。\n「端」字錯了，應改成哪個字？","喘","瑞","湍","端","1","「氣喘」用「喘」字，表示呼吸急促。"],
+  ["改錯字","選擇題","這部科喚電影講述的是有關時間旅行的故事。\n「喚」字錯了，應改成哪個字？","幼","幻","換","奐","2","「科幻」用「幻」字，表示幻想的。"],
+  ["改錯字","選擇題","這隻小狗是格壁鄰居養的，性格非常乖巧。\n「格」字錯了，應改成哪個字？","隔","格","鎘","膈","1","「隔壁」用「隔」字，表示相鄰。"],
+  ["改錯字","選擇題","我作墨也沒想到自己居然能獲得科展的優勝。\n「墨」字錯了，應改成哪個字？","莫","漠","夢","默","3","「做夢」用「夢」字。"],
+  ["改錯字","選擇題","森林深處有一座美麗的湖伯。\n「伯」字錯了，應改成哪個字？","泊","拍","柏","迫","1","「湖泊」用「泊」字。"],
+  ["改錯字","選擇題","這間餐廳的布置有如仙境一般，十分夢幼。\n「幼」字錯了，應改成哪個字？","幼","幻","換","奂","2","「夢幻」用「幻」字，表示如夢境般美麗。"],
+  ["改錯字","選擇題","媽媽要求弟弟將床上的衣服斤好並放整齊。\n「斤」字錯了，應改成哪個字？","斤","巾","折","析","3","「折好」用「折」字，表示折疊整齊。"],
+  ["改錯字","選擇題","學校的扶河隊終於在全國運動會上拿下了冠軍。\n「扶」字錯了，應改成哪個字？","捕","拔","扶","伏","2","「拔河」用「拔」字。"],
+  ["改錯字","選擇題","他因為收到傳幻而需要去警察局接受調查。\n「幻」字錯了，應改成哪個字？","換","幻","喚","奐","3","「傳喚」用「喚」字，表示被呼叫傳喚。"],
+  ["改錯字","選擇題","我好像聽見有人在呼渙我。\n「渙」字錯了，應改成哪個字？","渙","奐","換","喚","4","「呼喚」用「喚」字。"],
+  ["改錯字","選擇題","聖母峰是許多凳山客都想造訪的世界第一高峰。\n「凳」字錯了，應改成哪個字？","澄","燈","登","鄧","3","「登山」用「登」字。"],
+  ["改錯字","選擇題","每次比賽開始前，哥哥都會緊張的在一旁來回沓步。\n「沓」字錯了，應改成哪個字？","沓","搭","踏","蹋","3","「踏步」用「踏」字，表示腳步走動。"],
+  ["改錯字","選擇題","讚藍是哥哥最喜歡的顏色。\n「讚」字錯了，應改成哪個字？","站","讚","湛","占","3","「湛藍」用「湛」字，表示深藍色。"],
+  ["改錯字","選擇題","曲子已經譜好，接下來只要田好詞，這首歌就完成了。\n「田」字錯了，應改成哪個字？","田","典","填","展","3","「填詞」用「填」字。"],
+  ["改錯字","選擇題","忙碌了這麼久，現在終於有時間可以稍微瑞氣一下了。\n「瑞」字錯了，應改成哪個字？","瑞","喘","端","湍","2","「喘氣」用「喘」字，表示呼吸喘息。"],
+  ["改錯字","選擇題","在炎熱的天氣下打球，讓我一下子就汗流鋏背了。\n「鋏」字錯了，應改成哪個字？","鋏","夾","頰","浹","4","「汗流浹背」用「浹」字，表示汗水濕透背部。"],
+  ["改錯字","選擇題","爺爺每天都會去巡視菜園，並把除雜草、清潔環境。\n「把」字錯了，應改成哪個字？","拔","把","扒","伐","1","「拔除」用「拔」字，表示除去雜草。"],
+  ["改錯字","選擇題","小狗那澄徹的雙眼，散發出天真無邪的氣息。\n「澄」字錯了，應改成哪個字？","澄","清","澈","撤","3","「清澈」用「澈」字，表示清晰透明。"],
+  ["改錯字","選擇題","姐姐從小就蒙想著能站上國際舞臺演奏音樂。\n「蒙」字錯了，應改成哪個字？","蒙","懵","夢","夜","3","「夢想」用「夢」字。"],
+  ["改錯字","選擇題","工程單位正在顛平坑洞，因此這條路要暫時封閉一段時間。\n「顛」字錯了，應改成哪個字？","顛","填","奠","典","2","「填平」用「填」字，表示把坑填滿弄平。"],
+  ["改錯字","選擇題","每當百貨公司週年慶時，許多商品都會打拆，可以趁這段時間去採購。\n「拆」字錯了，應改成哪個字？","折","拆","析","哲","1","「打折」用「折」字，表示折扣。"],
+  ["改錯字","選擇題","大將軍出面燈高一呼後，全軍的士氣便立刻振作了起來。\n「燈」字錯了，應改成哪個字？","燈","鄧","登","澄","3","「登高一呼」用「登」字。"],
+  ["改錯字","選擇題","那名演員的表現精椹，獲得評審們的一致肯定。\n「椹」字錯了，應改成哪個字？","椹","湛","堪","甚","2","「精湛」用「湛」字，表示技術高超。"],
+  ["改錯字","選擇題","無論距離相鎘多遠，我們永遠都是彼此的好朋友。\n「鎘」字錯了，應改成哪個字？","隔","鎘","膈","格","1","「相隔」用「隔」字，表示距離分隔。"],
+  ["選詞填空","選擇題","下列哪一個選項的句子最通順、合理？","我加強體能，充滿期待的迎向這場做夢幻挑戰","登山客的踩踏和雨水的沖洗刷，使得步道土石流失","這座湖淡泊隱身在海拔三千多公尺的高山上","隨著山路向上爬升高，我漸漸氣喘如牛，腳步也越來越沉重","2","②登山客的踩踏和雨水的沖刷，使得步道土石流失——語意最通順合理。\n①「做夢幻挑戰」用法錯誤；③「淡泊」描述湖不合適；④「爬升高」重複。"],
+  ["選詞填空","選擇題","下列選項「　」內的字，哪一個是錯別字？","媽媽大聲呼「喚」著在空地上玩耍的弟弟","山上的河水清「澈」，可以看見魚兒在裡面游著","這次的事件對我而言是一個夢「幻」的經歷","這間房間的「格」音效果很差，走廊上的聲音都聽得一清二楚","4","④「格音」應為「隔音」，「格」是錯別字。"],
+  ["注音辨識","選擇題","下列選項「　」中的字，哪一個字的注音是正確的？","汗流「浹」背：轄","山路曲「折」，行走在此是非常辛苦的一件事：則","老鷹在這片「湛」藍的天空中飛翔著：湛","我「凝」望著遠方，看著那美麗的餘暉發呆：玲","3","③湛的讀音正確（ㄓㄢˋ）。\n①浹應讀ㄐㄧㄚ；②折應讀ㄓㄜˊ；④凝應讀ㄋㄧㄥˊ。"],
+  ["讀音辨識","選擇題","下列語詞「　」中的字，哪一個讀音與其他三個不同？","論及婚「嫁」","汗流「浹」背","招「架」不住","國定「假」日","2","②浹（ㄐㄧㄚ）讀音與其他三個（都讀ㄐㄧㄚˋ）不同。"],
+  ["選詞填空","選擇題","「我每天都騎腳□車去上學。」□中應填入哪個字？","誻","錔","涾","踏","4","「腳踏車」用「踏」字，表示用腳踩踏。"],
+  ["注音辨識","選擇題","「老師一大早就忙得汗流『浹』背，十分辛苦。」『浹』寫成國字後，是下列哪一個字？","夾","浹","頰","筴","2","「汗流浹背」的「浹」就是②浹（ㄐㄧㄚ），意思是濕透。"],
+  ["量詞辨識","選擇題","「一項」最不適合用來形容下列何者？","活動","石塊","考驗","食材","2","「一項」通常搭配抽象或可數事項，不適合形容具體物品「石塊」。"],
+  ["詞性辨識","選擇題","下列「　」中的字，哪一個和「回填」的「填」一樣，都是代表動作的字？","「湛」藍","夢「幻」","踩「踏」","湖「泊」","3","③「踏」是動作字（動詞），和「填」同為動詞。"],
+  ["語詞應用","選擇題","下列哪一個情形不適合覺得「感動」？","發現國家公園的土石流失嚴重","見到壯闊的雲海美景","努力練習後得到了優勝","吃著辛勤工作所換來的美味佳餚","1","①土石流失嚴重應感到憂心，而非感動。感動通常是受到美景或努力成果觸動。"],
+  ["量詞辨識","選擇題","「一滴」最不適合用來形容下列何者？","光","淚","汗","水","1","①「一滴光」說法不通，「光」無法用「滴」計量。"],
+  ["注音辨識","選擇題","下列「　」中的注音寫成國字後，哪一組用字相同？","「脖」父／停「脖」","呼「換」／夢「換」","「站」藍／「站」爭","「踏」實／「踏」青","4","④「踏」實／「踏」青，兩者均用「踏」字。\n①伯／泊；②喚／幻；③湛／戰。"],
+  ["部首筆畫","選擇題","哪一個字去掉部首以後，讀音不變？","湛","登","喚","填","3","③喚去掉口部後剩「奐」，讀音ㄏㄨㄢˋ不變。\n①湛→甚；②登→豆；④填→真，讀音均改變。"],
+  ["注音辨識","選擇題","「我想和海龜一起在清『澈』的海水中游泳。」『澈』的讀音是什麼？","測","色","澈","設","3","「澈」的讀音是ㄔㄜˋ（③澈）。"],
+  ["標點符號","選擇題","「為了維護這裡的生物□景觀，我們將會限制上山的人數。」□中應該填入哪個標點符號？","、","！","？","。","1","「生物、景觀」之間應填頓號「、」，表示並列。"],
+  ["部首辨識","選擇題","下列哪一個字與「夢」的部首相同？","草","直","多","官","3","「夢」的部首是「夕」部，③「多」也是夕部。\n①草：艸部；②直：目部；④官：宀部。"],
+  ["注音辨識","選擇題","「我『登』山的目的是為了尋找那些隱身在高山裡的美麗湖『泊』。」『　』中字的讀音分別是什麼？","鄧／博","燈／跛","燈／博","鄧／跛","3","登讀ㄉㄥ（燈），泊讀ㄅㄛˊ（博）。"],
+  ["成語應用","選擇題","下列「　」中的語詞，哪個使用不恰當？","兩間公司提出的企畫案都相當出色，該怎麼挑選真是讓人「左右為難」","今天實在太熱了，在外頭稍微跑跑步就令我「汗流浹背」","這箱貨物相當沉重，大家用盡全力、「咬緊牙關」才終於搬動了它","她的呼吸平穩、「氣喘如牛」，一點也不像剛做完激烈運動的樣子","4","④「氣喘如牛」是呼吸急促、大聲喘氣，與「呼吸平穩」矛盾，使用不當。"],
+  ["注音辨識","選擇題","下列「　」中的注音，何者錯誤？","「喘」息：喘","「湛」藍：讚","「登」峰造極：登","汗流「浹」背：浹","2","②「湛」的正確讀音是ㄓㄢˋ（站），不是「讚」（ㄗㄢˋ）。"],
+  ["部首筆畫","選擇題","下列總筆畫數何者錯誤？","喘：十二畫","喚：十三畫","澈：十四畫","踏：十五畫","2","②喚共十二畫，非十三畫。"],
+  ["詞性辨識","選擇題","下列「　」中的語詞，哪一個和「我們會在火車站相會」的「相會」一樣，表示一種動作？","朝陽發出「迷人」的金光","山中的河流「清澈」見底","這個團體堪稱是「夢幻」組合","我大聲的「呼喚」著遠方的好友","4","④「呼喚」是動詞（動作）。①迷人：形容詞；②清澈：形容詞；③夢幻：形容詞。"],
+  ["部首筆畫","選擇題","下列哪個選項的總筆畫數和「湛」相同？","夢","填","隔","登","4","「湛」共十二畫，④「登」也是十二畫。\n①夢：十四畫；②填：十三畫；③隔：十三畫。"],
+  ["部首辨識","選擇題","下列哪一個字與「泊」的部首不同？","澈","折","湛","浹","2","「泊」是水部，②「折」是手部，部首不同。\n①澈：水部；③湛：水部；④浹：水部。"],
+  ["詞語結構","選擇題","下列哪一個選項和「滿滿的愛」結構相同？","緩緩的走","沉沉的書","慢慢的說","輕輕的轉","2","「滿滿的愛」是「疊字形容詞＋名詞」，②「沉沉的書」也是相同結構。\n①③④均為疊字副詞＋動詞。"],
+  ["改錯字","選擇題","「鎘天一早，我們就出發前往比賽場地，準備爭奪此次跋河大賽的冠軍。」句中共有幾個錯字？","兩個","三個","四個","五個","1","錯字共兩個：「鎘」應為「隔」，「跋」應為「拔」。"],
+  ["注音辨識","選擇題","下列哪一個字讀二聲？","精「湛」","美「夢」","「踏」板","「填」滿","4","④「填」讀二聲ㄊㄧㄢˊ。\n①湛：ㄓㄢˋ（四聲）；②夢：ㄇㄥˋ（四聲）；③踏：ㄊㄚˋ（四聲）。"],
+  ["選詞填空","選擇題","「這場意外對她的身體造成了一些□□性的傷害。」□中應填入哪一個語詞？","永眠","永晝","永別","永久","4","「永久性的傷害」表示持續長久的傷害，應填「永久」。"],
+  ["注音辨識","選擇題","下列「　」中的注音，何者錯誤？","「踏」步：踏","「填」平：填","「折」返：則","停「泊」：泊","3","③「折」的讀音是ㄓㄜˊ，不是「則」（ㄗㄜˊ）。"],
+  ["語詞應用","選擇題","下列何者最適合用來形容「湖泊」？","夢幻的","難過的","感動的","沉重的","1","①「夢幻的湖泊」形容如夢似幻的美麗湖景，最為貼切。"],
+  ["注音辨識","選擇題","下列哪一個字讀三聲？","海「拔」","「永」續","「隔」天","呼「喚」","2","②「永」讀三聲ㄩㄥˇ。\n①拔：ㄅㄚˊ（二聲）；③隔：ㄍㄜˊ（二聲）；④喚：ㄏㄨㄢˋ（四聲）。"],
+  ["部首辨識","選擇題","下列部首何者錯誤？","拔：手部","踏：足部","夢：艸部","喘：口部","3","③「夢」的部首是「夕」部，非艸部。"],
+  ["注音辨識","選擇題","「我希望大家都能好好做環保，讓這片海維持『湛』藍的樣貌。」『湛』的讀音是什麼？","詹","讚","湛","讚","3","「湛」的正確讀音是ㄓㄢˋ（選③湛）。"],
+  ["讀音辨識","選擇題","下列語詞「　」中的字，哪一個讀音與其他三個不同？","「曲」球","「曲」直","「曲」目","「曲」尺","3","③「曲」目的「曲」讀ㄑㄩˇ，其他三個均讀ㄑㄩ（一聲）。"],
+  ["部首筆畫","選擇題","下列哪個選項的總筆畫數和「折」不同？","吐","弄","吞","把","1","「折」共七畫，①「吐」共六畫，筆畫數不同。\n②弄：七畫；③吞：七畫；④把：七畫。"],
+  ["注音辨識","選擇題","「才跑沒多久，大奇就氣『喘』吁吁的說他必須停下來休息才行。」『喘』寫成國字後，是下列哪一個字？","喘","湍","端","瑞","1","「喘」就是①喘（ㄔㄨㄢˇ），表示呼吸急促。"],
+  ["選詞填空","選擇題","「雖然這座山的□□不高，但是站在山頂時，視野卻十分開闊。」□中應填入哪一個語詞？","拔尖","拔除","海拔","提拔","3","「海拔」表示相對於海平面的高度，最符合語意。"],
+  ["選詞填空","選擇題","「這個週末，讓我們一起到澎湖旅行，奔向□藍大海的懷抱，你覺得如何呢？」□中應填入哪個字？","堪","嵁","湛","椹","3","「湛藍」表示深藍色，形容大海最為貼切。"],
+  ["量詞辨識","選擇題","關於「　」中的量詞，下列哪一個使用錯誤？","「一段」平緩的道路","「一位」熱情的山友","「一顆」冰涼的溪流","「一座」高聳的青山","3","③「一顆溪流」量詞錯誤，應使用「一條溪流」。"],
+  ["語詞應用","選擇題","下列何者用「興沖沖」來形容最貼切？","排隊排了好久，卻還是沒能吃到美食","站在臺上不知該說些什麼才好","努力準備了許久卻還是考不好","即將要和好久不見的朋友見面","4","「興沖沖」形容興奮的樣子，④即將見到朋友的期待心情最貼切。"],
+  ["課文理解","選擇題","根據《用一公斤愛嘉明湖》課文的敘述，「一人一公斤」的「一公斤」指的是什麼東西的重量？","金錢","土石","垃圾","行李","2","「一公斤」指的是土石的重量。登山者背著一公斤土石回填步道，幫助山林回復原貌。"],
+  ["課文理解","選擇題","根據《用一公斤愛嘉明湖》課文描述，發起這項特別活動的主因為何？","氣候變遷過於快速","步道的沿線土石流失","動物的足跡逐漸消失","來此旅遊的登山客太少","2","主因是步道沿線的土石流失，需要登山客幫助回填，讓山林恢復原來的面貌。"],
+  ["課文理解","選擇題","在《用一公斤愛嘉明湖》一文中，當作者將土石背到指定地點時，他的心情如何？","無奈","悲傷","氣憤","自豪","4","作者將土石背到指定地點後，感到自豪，因為他為保護嘉明湖出了一份力。"],
+  ["課文理解","選擇題","根據《用一公斤愛嘉明湖》課文描述，嘉明湖的另外一個美稱是什麼？","上帝的眼睛","精靈的笑容","天使的眼淚","仙人的丹藥","3","嘉明湖的美稱是「天使的眼淚」，因為湖水湛藍清澈，如天使落下的淚珠。"],
+  ["課文理解","選擇題","根據《用一公斤愛嘉明湖》課文描述，作者登山時的感受有何變化？","興奮→為難→滿足","為難→期待→失望","興奮→氣憤→為難","期待→失望→感動","1","作者一開始充滿興奮期待，看到負重活動覺得為難，最後完成後感到滿足自豪。"],
+  ["課文理解","選擇題","根據《用一公斤愛嘉明湖》課文描述，嘉明湖位於海拔多高的山上？","五千五百多公尺","四千四百多公尺","三千三百多公尺","一千一百多公尺","3","嘉明湖位於海拔三千三百多公尺的高山上。"],
+  ["課文理解","選擇題","在《用一公斤愛嘉明湖》一文，作者入山時，在服務站發現了特別的活動，這項活動的目的為何？","鍛鍊登山客的意志力","讓山林回復原貌","減少山林中的垃圾","救助飢餓的野生動物","2","這項活動的目的是讓登山客背一公斤土石回填步道，使山林回復原來的面貌。"],
+  ["課文理解","選擇題","在《用一公斤愛嘉明湖》一文中，作者花了多久的時間，才將土石背到指定地點？","兩天","十五分鐘","三個小時","五個小時","4","作者花了五個小時，才將土石背到指定地點。"],
+  ["課文理解","選擇題","在《用一公斤愛嘉明湖》一文中，作者透過負重活動來實踐愛護山林的想法。除此之外，下列何者是愛護山林的最適當作法？","請遊客多踩踏土地以增加土壤的緊密度","將步道覆蓋在草地上以增加行走範圍","大量砍伐樹木，多蓋山屋給遊客們住宿","遵守無痕山林守則，不任意破壞及干擾","4","遵守無痕山林守則（Leave No Trace）、不任意破壞及干擾，是最正確的愛護山林做法。"],
+  ["課文理解","選擇題","下列關於《用一公斤愛嘉明湖》一文的描述，何者錯誤？","嘉明湖周圍因為有溪流注入，所以終年清澈湛藍","為嘉明湖而背的活動是為了回復山林原來的面貌","作者起先很為難，但最終還是背起了這一公斤的土石","作者努力加強體能，是為了要親眼看看嘉明湖","1","①錯誤：嘉明湖沒有溪流注入，但仍終年清澈湛藍，原因是地下水補充。"],
+  ["課文理解","選擇題","在《用一公斤愛嘉明湖》一文中，已背了近十公斤裝備的作者，最後仍決定多負重一公斤，你覺得主要原因是什麼？","想得到天使的禮物","想為回復山林原貌出一份力","想鍛鍊自己的體力","想獲得服務站提供的小禮物","2","作者的主要原因是想為回復山林原貌出一份力，展現對嘉明湖的愛護之情。"],
+  ["課文理解","選擇題","《用一公斤愛嘉明湖》一文的主旨為何？","介紹嘉明湖的形成原因","透過響應負重活動，展現對山林的愛","講解登山的注意事項以及裝備","以嘉明湖的變化，提醒大家珍惜時間","2","本文主旨是作者透過響應「一人一公斤」負重活動，展現對山林的深厚愛護之情。"],
+  ["課文理解","選擇題","在《用一公斤愛嘉明湖》一文中，當作者到達期待已久的嘉明湖，凝望湖水時，心裡有何想法？","希望大家都能好好愛惜身邊的花草樹木","希望大家來感受一下天使落淚的原因","希望大家來登山時，都能背上一公斤的土石，幫助山林回復原貌","希望大家能好好欣賞金色晨光和滿山綠意","3","作者凝望湖水時，希望更多人能響應負重活動，幫助山林回復原貌。"],
+  ["課文理解","選擇題","在《用一公斤愛嘉明湖》一文中，作者用了許多色彩來描述景色，下列何者並不是文中提及的顏色？","金色","綠色","白色","藍色","3","文中提到了金色（晨光）、綠色（滿山綠意）、藍色（湛藍），沒有提到白色。"],
+  ["修辭","選擇題","「區區的一公斤，在這段路上格外有分量。」此句使用了「映襯」技巧。下列哪一個選項也用了相同的技巧？","調皮的弟弟像猴子一樣在樹上爬上爬下","生活中的苦痛都是我們成長的良藥","媽媽的歌聲悅耳，讓我們都沉醉其中","我的心中充滿了對爸爸的愛與敬意","2","②「苦痛」與「良藥」形成對比映襯，與題目「區區一公斤」對比「格外有分量」的手法相同。"],
+  ["修辭","選擇題","「迷人的嘉明湖一直呼喚著我」一句使用「擬人」修辭法，運用這種修辭法會有什麼效果？","將物以人的動作描述，賦予人類形象","仔細描寫所見，使讀者有如身歷其境","透過誇張的渲染，藉以給人強烈的感受","引用名言以加強自己的論點","1","①擬人是將物賦予人的特質或動作，使描述生動形象。②是摹寫；③是誇飾；④是引用。"],
+  ["修辭","選擇題","「轉化」是在描寫事物時，轉變其原本的性質，變成另一種截然不同的事物的修辭法。下列哪一個句子運用了「轉化」修辭？","雖然沒有溪流注入，卻終年清澈湛藍","在這兒，我發現了一項特別的活動","隨著曲折的山路爬升，我漸漸汗流浹背","背起對嘉明湖滿滿的愛，負重前行","4","④「愛」是抽象情感，轉化成可以「背起」的具體重量，是轉化修辭。\n①視覺摹寫；②無修辭；③無特別修辭。"],
+  ["修辭","選擇題","「在金色晨光和滿山綠意中，終於和那一池夢幻的湛藍相會。」此句使用「視覺摹寫」，運用這種修辭法會有什麼效果？","援用名言以加強自己的論點","用其他事物比喻，讓讀者易於想像","仔細描寫所見，使讀者有如身歷其境","重複字句以加強語氣，使行文更有節奏感","3","③視覺摹寫仔細描寫所見的景色，讓讀者有如身歷其境。①是引用；②是譬喻；④是類疊。"],
+  ["修辭","選擇題","因描寫方式不同，摹寫修辭可分為視覺、聽覺、觸覺、味覺、嗅覺等。下列哪個句子屬於「視覺」摹寫？","我們在金色晨光中，和湛藍的湖水相會","我滿懷期待的迎向這場夢幻的挑戰","走了五個小時，我總算將土石背到指定處","說不定會讓天使感動的落下淚來","1","①「金色晨光」、「湛藍的湖水」均是視覺描寫。②③④均無摹寫修辭。"],
+  ["修辭","選擇題","「區區的一公斤，在這段路上格外有分量。」這句話運用了哪兩種修辭法？","映襯、借代","對偶、類疊","借代、對偶","類疊、映襯","4","「區區」是類疊（疊字）；「區區一公斤」對比「格外有分量」是映襯。故選④類疊、映襯。"],
+  ["修辭","選擇題","下列何者與「氣喘如牛」運用的修辭法不同？","生不如死","骨瘦如柴","身輕如燕","貌美如花","1","「氣喘如牛」是譬喻（明喻），②③④也都是譬喻。\n①「生不如死」是比較，不是譬喻修辭。"]
+];
+var card;
+var currentDeck=[], wrongDeck=[], currentIndex=0, isAnswered=false, isReview=false;
+
+function shuffle(arr){
+  for(var i=arr.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var tmp=arr[i];arr[i]=arr[j];arr[j]=tmp;
+  }
+  return arr;
+}
+
+function startQuiz(){
+  var n=parseInt(document.getElementById("countInput").value)||10;
+  n=Math.max(1,Math.min(n,DECK.length));
+  currentDeck=shuffle(DECK.slice()).slice(0,n);
+  wrongDeck=[];
+  currentIndex=0;
+  isReview=false;
+  document.getElementById("modeText").textContent="一般模式";
+  document.getElementById("setupSection").classList.add("hidden");
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("studySection").classList.remove("hidden");
+  showCard();
+}
+
+function startReview(){
+  if(wrongDeck.length===0) return;
+  currentDeck=shuffle(wrongDeck.slice());
+  wrongDeck=[];
+  currentIndex=0;
+  isReview=true;
+  document.getElementById("modeText").textContent="錯題重練";
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("studySection").classList.remove("hidden");
+  showCard();
+}
+
+function showCard(){
+  isAnswered=false;
+  card.classList.remove("flipped");
+  var d=currentDeck[currentIndex];
+  var total=currentDeck.length;
+  document.getElementById("progressText").textContent=(currentIndex+1)+" / "+total;
+  document.getElementById("progressBar").style.width=((currentIndex+1)/total*100)+"%";
+  document.getElementById("frontTag").textContent=d[0];
+  document.getElementById("flipBtn").disabled=true;
+  document.getElementById("answerBox").style.display="none";
+  document.getElementById("selfJudge").style.display="none";
+  var frontMain=document.getElementById("frontMain");
+  frontMain.innerHTML="";
+  var lines=d[2].split("\n");
+  for(var li=0;li<lines.length;li++){
+    var lnTxt=lines[li];
+    if(lnTxt.trim()===""){continue;}
+    var p=document.createElement("p");
+    p.className="q-text";
+    p.textContent=lnTxt;
+    frontMain.appendChild(p);
+  }
+  var optsArea=document.getElementById("optsArea");
+  optsArea.innerHTML="";
+  if(d[1]==="選擇題"){
+    var nums=["①","②","③","④"];
+    for(var oi=0;oi<4;oi++){
+      (function(idx){
+        var btn=document.createElement("button");
+        btn.className="opt-btn";
+        btn.textContent=nums[idx]+" "+d[3+idx];
+        btn.addEventListener("click",function(){
+          if(isAnswered) return;
+          var chosen=idx+1;
+          var correct=parseInt(d[7]);
+          isAnswered=true;
+          var btns=optsArea.querySelectorAll(".opt-btn");
+          btns.forEach(function(b,bi){
+            if(bi+1===correct) b.classList.add("correct");
+            else if(bi+1===chosen) b.classList.add("wrong");
+          });
+          if(chosen!==correct){
+            if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+          }
+          document.getElementById("flipBtn").disabled=false;
+          var expl=document.getElementById("explanation");
+          expl.textContent=(d[8]||d[7]);
+        });
+        optsArea.appendChild(btn);
+      })(oi);
+    }
+  } else {
+    document.getElementById("flipBtn").disabled=false;
+    document.getElementById("selfJudge").style.display="flex";
+    var expl=document.getElementById("explanation");
+    expl.textContent=(d[8]||d[7]);
+  }
+}
+
+function checkAnswer(){
+  if(isAnswered) return;
+  var d=currentDeck[currentIndex];
+  if(d[1]==="選擇題"){
+    var correct=parseInt(d[7]);
+    var btns=document.getElementById("optsArea").querySelectorAll(".opt-btn");
+    btns.forEach(function(b,bi){
+      if(bi+1===correct) b.classList.add("correct");
+    });
+    isAnswered=true;
+    document.getElementById("flipBtn").disabled=false;
+    var expl=document.getElementById("explanation");
+    expl.textContent=(d[8]||d[7]);
+    if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+  } else {
+    var ab=document.getElementById("answerBox");
+    ab.style.display="block";
+    ab.textContent="答案："+d[7];
+    document.getElementById("selfJudge").style.display="flex";
+    var expl2=document.getElementById("explanation");
+    expl2.textContent=(d[8]||d[7]);
+    isAnswered=true;
+    document.getElementById("flipBtn").disabled=false;
+  }
+}
+
+function selfJudgeCorrect(){ document.getElementById("selfJudge").style.display="none"; }
+function selfJudgeWrong(){
+  document.getElementById("selfJudge").style.display="none";
+  var d=currentDeck[currentIndex];
+  if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+}
+
+function flipCard(){ if(isAnswered) card.classList.toggle("flipped"); }
+
+function nextCard(){
+  if(currentIndex<currentDeck.length-1){ currentIndex++; showCard(); }
+  else showResults();
+}
+
+function prevCard(){ if(currentIndex>0){ currentIndex--; showCard(); } }
+
+function showResults(){
+  document.getElementById("studySection").classList.add("hidden");
+  document.getElementById("resultSection").classList.remove("hidden");
+  var t=currentDeck.length, w=wrongDeck.length, c=t-w;
+  document.getElementById("scoreText").textContent="答對 "+c+" 題，答錯 "+w+" 題，共 "+t+" 題。";
+  var rb=document.getElementById("reviewBtn");
+  if(w>0){ rb.classList.remove("hidden"); rb.textContent="重測錯題（"+w+"題）"; }
+  else rb.classList.add("hidden");
+  var title=document.getElementById("resultTitle");
+  var pct=Math.round(c/t*100);
+  title.textContent=pct>=90?"太棒了！":pct>=70?"不錯喔！":"繼續加油！";
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+  card=document.getElementById("card");
+  document.getElementById("startBtn").addEventListener("click",startQuiz);
+  document.getElementById("checkBtn").addEventListener("click",checkAnswer);
+  document.getElementById("flipBtn").addEventListener("click",flipCard);
+  document.getElementById("prevBtn").addEventListener("click",prevCard);
+  document.getElementById("nextBtn").addEventListener("click",nextCard);
+  document.getElementById("correctBtn").addEventListener("click",selfJudgeCorrect);
+  document.getElementById("wrongBtn").addEventListener("click",selfJudgeWrong);
+  document.getElementById("reviewBtn").addEventListener("click",startReview);
+  document.getElementById("homeBtn").addEventListener("click",function(){ location.reload(); });
+});
+</script>
+</body>
+</html>
