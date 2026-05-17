@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>周長與面積 學習卡</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
+.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
+.hero{border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;background:linear-gradient(135deg,#10b981,#047857);}
+.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
+.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
+.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.setup-icon{width:64px;height:64px;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;background:#ecfdf5;}
+.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
+.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
+.setup-sub b{font-weight:800;}
+.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
+.start-btn{width:100%;background:linear-gradient(135deg,#10b981,#047857);color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.start-btn:active{opacity:0.85;}
+.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
+.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
+.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
+.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
+.progress-wrap{margin-bottom:14px;}
+.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
+.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
+.card-wrap{perspective:1400px;height:520px;margin-bottom:18px;}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
+.card.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
+.card-back{transform:rotateY(180deg);background:#fafafa;}
+.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;font-weight:800;background:rgba(16,185,129,0.1);color:#047857;padding:5px 14px;border-radius:10px;z-index:2;}
+.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
+.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.face-inner::-webkit-scrollbar{display:none;}
+.q-text{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.7;text-align:center;white-space:pre-wrap;}
+.q-img{max-height:200px;max-width:90%;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin:8px auto;display:block;}
+.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
+.opt-btn{font-size:1rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
+.opt-btn.selected{background:#ecfdf5;border-color:#10b981;color:#047857;}
+.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
+.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
+.answer-box{border:2px solid #10b981;border-radius:1rem;padding:14px 20px;width:100%;text-align:center;font-size:1.1rem;font-weight:900;color:#047857;background:#ecfdf5;margin-top:14px;display:none;white-space:pre-wrap;line-height:1.8;text-align:left;}
+.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
+.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.btn-wrong-j{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #10b981;white-space:pre-wrap;overflow-y:auto;max-height:380px;-webkit-overflow-scrolling:touch;margin-top:8px;}
+.back-title{font-size:0.75rem;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.explanation img{max-height:160px;max-width:90%;display:block;margin:8px auto;border-radius:8px;}
+.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
+.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
+.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.action-btn .icon{font-size:1.3rem;}
+.btn-check-style{background:#10b981;color:white;}
+.btn-flip-style{background:#6366f1;color:white;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>📐 周長與面積 學習卡</h1>
+  <p>小四數學・周長與面積</p>
+</div>
+<div class="page">
+
+  <div id="setupSection" class="setup-card">
+    <div class="setup-icon">📏</div>
+    <div class="setup-title">設定測驗範圍</div>
+    <div class="setup-sub">題庫共有 <b>49</b> 題</div>
+    <label class="input-label">欲測驗題目數量</label>
+    <input type="number" id="countInput" class="count-input" value="10" min="1" max="49">
+    <button class="start-btn" id="startBtn">開始測驗</button>
+  </div>
+
+  <div id="resultSection" class="result-card hidden">
+    <div class="trophy">🏆</div>
+    <h2 id="resultTitle">測驗結束！</h2>
+    <p id="scoreText"></p>
+    <button id="reviewBtn" class="btn-review hidden">重測錯題</button>
+    <button id="homeBtn" class="btn-home">返回首頁</button>
+  </div>
+
+  <div id="studySection" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span id="modeText">一般模式</span>
+        <span id="progressText">0 / 0</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <div class="card-face">
+          <div class="corner-tag" id="frontTag"></div>
+          <div class="face-inner">
+            <div id="frontMain"></div>
+            <div class="opts" id="optsArea"></div>
+            <div class="answer-box" id="answerBox"></div>
+            <div class="self-judge" id="selfJudge">
+              <button class="btn-correct" id="correctBtn">✓ 我答對了</button>
+              <button class="btn-wrong-j" id="wrongBtn">✗ 我答錯了</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-corner-tag">詳解</div>
+          <div class="face-inner">
+            <div class="back-title">解題過程</div>
+            <div class="explanation" id="explanation"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn" id="prevBtn"><span class="icon">◀</span>PREV</button>
+      <button class="action-btn btn-check-style" id="checkBtn"><span class="icon">📢</span>公布答案</button>
+      <button class="action-btn btn-flip-style" id="flipBtn" disabled><span class="icon">📖</span>FLIP詳解</button>
+      <button class="action-btn" id="nextBtn"><span class="icon">▶</span>NEXT</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const DECK=[
+  ["面積概念","選擇題","下列哪一個說法正確？","面積是指圖形的外框長度","面積是指圖形所占平面的大小","面積和周長是一樣的意思","面積只能用來測量正方形","2","面積是指圖形所占平面的大小；周長是指圖形外框的長度，兩者不同。"],
+  ["面積概念","選擇題","下列哪一個單位是面積單位？","公分","公尺","平方公分","公斤","3","面積的單位是平方單位，例如平方公分（cm²）、平方公尺（m²）。"],
+  ["面積概念","選擇題","1 平方公分是指邊長幾公分的正方形面積？","2 公分","4 公分","0.5 公分","1 公分","4","1 平方公分＝邊長 1 公分的正方形面積。"],
+  ["面積概念","選擇題","下列哪一個圖形的面積最大？","邊長 3 公分的正方形","長 4 公分、寬 2 公分的長方形","邊長 4 公分的正方形","長 5 公分、寬 2 公分的長方形","3","①3×3＝9平方公分\n②4×2＝8平方公分\n③4×4＝16平方公分（最大）\n④5×2＝10平方公分"],
+  ["長方形面積","選擇題","長方形面積的公式是什麼？","長＋寬","（長＋寬）×2","長×寬","長×4","3","長方形面積＝長×寬"],
+  ["長方形面積","選擇題","一個長方形，長 8 公分、寬 5 公分，面積是幾平方公分？","26 平方公分","40 平方公分","13 平方公分","80 平方公分","2","8×5＝40（平方公分）"],
+  ["長方形面積","選擇題","一塊長方形地毯，長 12 公尺、寬 7 公尺，面積是幾平方公尺？","38 平方公尺","84 平方公尺","19 平方公尺","168 平方公尺","2","12×7＝84（平方公尺）"],
+  ["長方形面積","選擇題","長方形的面積是 72 平方公分，寬是 8 公分，長是幾公分？","9 公分","64 公分","80 公分","576 公分","1","72÷8＝9（公分）"],
+  ["長方形面積","選擇題","一塊長方形菜園，面積是 96 平方公尺，長是 12 公尺，寬是幾公尺？","8 公尺","84 公尺","108 公尺","6 公尺","1","96÷12＝8（公尺）"],
+  ["長方形面積","填填看","一個長方形的長是 15 公分、寬是 6 公分，面積是幾平方公分？","","","","","90 平方公分","15×6＝90（平方公分）"],
+  ["長方形面積","填填看","長方形面積是 54 平方公分，長是 9 公分，寬是幾公分？","","","","","6 公分","54÷9＝6（公分）"],
+  ["長方形面積","填填看","一塊長方形草皮，長 20 公尺、寬 13 公尺，面積是幾平方公尺？","","","","","260 平方公尺","20×13＝260（平方公尺）"],
+  ["正方形面積","選擇題","正方形面積的公式是什麼？","邊長×4","邊長×邊長","邊長×2","邊長+邊長","2","正方形面積＝邊長×邊長"],
+  ["正方形面積","選擇題","一個正方形的邊長是 9 公分，面積是幾平方公分？","36 平方公分","18 平方公分","81 平方公分","72 平方公分","3","9×9＝81（平方公分）"],
+  ["正方形面積","選擇題","一塊邊長 14 公尺的正方形廣場，面積是幾平方公尺？","56 平方公尺","196 平方公尺","28 平方公尺","392 平方公尺","2","14×14＝196（平方公尺）"],
+  ["正方形面積","選擇題","正方形的面積是 49 平方公分，邊長是幾公分？","7 公分","12 公分","24 公分","14 公分","1","7×7＝49，所以邊長是 7 公分。"],
+  ["正方形面積","填填看","一個正方形的邊長是 13 公分，面積是幾平方公分？","","","","","169 平方公分","13×13＝169（平方公分）"],
+  ["正方形面積","填填看","正方形的面積是 64 平方公分，邊長是幾公分？","","","","","8 公分","8×8＝64，所以邊長是 8 公分。"],
+  ["正方形面積","填填看","一塊邊長 25 公尺的正方形花圃，面積是幾平方公尺？","","","","","625 平方公尺","25×25＝625（平方公尺）"],
+  ["周長與面積辨析","選擇題","下列敘述何者正確？","周長相同，面積一定相同","面積相同，周長一定相同","周長和面積是完全不同的概念","面積大的圖形，周長一定比較大","3","周長是外框的總長度，面積是所占平面大小，兩者是不同概念，不會互相決定。"],
+  ["周長與面積辨析","選擇題","一個長方形，長 10 公分、寬 4 公分。它的周長和面積分別是多少？","28 公分、40 平方公分","40 公分、28 平方公分","14 公分、40 平方公分","28 公分、14 平方公分","1","周長：(10＋4)×2＝28（公分）\n面積：10×4＝40（平方公分）"],
+  ["周長與面積辨析","選擇題","甲長方形長 6 公分、寬 4 公分；乙長方形長 8 公分、寬 3 公分。哪一個說法正確？","甲的周長較大，面積也較大","甲乙周長相同，面積甲較大","甲乙周長相同，面積乙較大","甲的周長較小，面積也較小","2","甲周長：(6＋4)×2＝20\n乙周長：(8＋3)×2＝22\n甲面積：6×4＝24\n乙面積：8×3＝24\n兩者面積相同，甲周長較小。\n→ 選②（甲乙面積相同，甲周長較小）\n（注意：題目選項②最接近正確情況：面積都是 24，甲周長 20 較小）","2","甲周長：(6＋4)×2＝20（公分）\n乙周長：(8＋3)×2＝22（公分）\n甲面積：6×4＝24（平方公分）\n乙面積：8×3＝24（平方公分）\n兩圖形面積相同，但甲的周長比乙小。"],
+  ["周長與面積辨析","選擇題","下列哪一個說法是錯的？","長方形面積＝長×寬","正方形周長＝邊長×4","面積越大，周長就越大","正方形面積＝邊長×邊長","3","周長大小與面積大小不一定成正比，面積大的圖形周長不一定比較大。"],
+  ["周長與面積辨析","填填看","一個長方形長 9 公分、寬 5 公分，請分別算出它的周長和面積。","","","","","周長：28 公分；面積：45 平方公分","周長：(9＋5)×2＝28（公分）\n面積：9×5＝45（平方公分）"],
+  ["面積應用","選擇題","一張長方形彩色紙，長 18 公分、寬 11 公分，面積是幾平方公分？","198 平方公分","58 平方公分","29 平方公分","99 平方公分","1","18×11＝198（平方公分）"],
+  ["面積應用","選擇題","一塊邊長 16 公分的正方形木板，面積是幾平方公分？","64 平方公分","32 平方公分","256 平方公分","128 平方公分","3","16×16＝256（平方公分）"],
+  ["面積應用","選擇題","教室的地板是長 9 公尺、寬 7 公尺的長方形，需要幾平方公尺的地板磁磚？","63 平方公尺","32 平方公尺","16 平方公尺","126 平方公尺","1","9×7＝63（平方公尺）"],
+  ["面積應用","選擇題","爸爸買了一塊長 24 公分、寬 15 公分的長方形鐵板，面積是幾平方公分？","360 平方公分","78 平方公分","39 平方公分","720 平方公分","1","24×15＝360（平方公分）"],
+  ["面積應用","選擇題","媽媽要在邊長 20 公分的正方形桌巾四周縫花邊，需要縫幾公分的花邊？另外桌巾面積是幾平方公分？","80 公分、400 平方公分","40 公分、400 平方公分","80 公分、200 平方公分","40 公分、200 平方公分","1","花邊（周長）：20×4＝80（公分）\n面積：20×20＝400（平方公分）"],
+  ["面積應用","填填看","一塊長方形農田，長 30 公尺、寬 18 公尺，面積是幾平方公尺？","","","","","540 平方公尺","30×18＝540（平方公尺）"],
+  ["面積應用","填填看","一個正方形遊戲地板，邊長 11 公尺，面積是幾平方公尺？","","","","","121 平方公尺","11×11＝121（平方公尺）"],
+  ["面積應用","填填看","長方形操場長 50 公尺、寬 32 公尺，操場面積是幾平方公尺？","","","","","1600 平方公尺","50×32＝1600（平方公尺）"],
+  ["複合圖形","選擇題","一個 L 形圖案可以分割成兩個長方形求面積，這種方法叫做什麼？","等量代換","移多補少","分割法","對折法","3","計算複合圖形面積常用「分割法」，把圖形切成幾個簡單的長方形或正方形再相加。"],
+  ["複合圖形","選擇題","下圖是一個 L 形圖案：外框是長 10 公分、寬 8 公分的長方形，右上角挖掉一個長 4 公分、寬 3 公分的長方形，L 形的面積是幾平方公分？","68 平方公分","80 平方公分","12 平方公分","32 平方公分","1","整體面積：10×8＝80\n挖掉部分：4×3＝12\nL 形面積：80－12＝68（平方公分）"],
+  ["複合圖形","選擇題","一個 T 形圖案：上方長方形長 12 公分、寬 3 公分，下方長方形長 4 公分、寬 6 公分，T 形面積是幾平方公分？","60 平方公分","36 平方公分","24 平方公分","60 平方公分","1","上方：12×3＝36\n下方：4×6＝24\n總面積：36＋24＝60（平方公分）"],
+  ["複合圖形","選擇題","一個凹字形圖案：外框是長 14 公分、寬 9 公分的長方形，中間挖掉一個長 6 公分、寬 4 公分的長方形，凹字形面積是幾平方公分？","102 平方公分","126 平方公分","24 平方公分","78 平方公分","1","外框：14×9＝126\n挖掉：6×4＝24\n凹字形面積：126－24＝102（平方公分）"],
+  ["複合圖形","填填看","一個 L 形圖案可以分成兩個長方形：大長方形長 8 公分、寬 5 公分；小長方形長 3 公分、寬 2 公分，L 形面積是幾平方公分？","","","","","46 平方公分","8×5＝40\n3×2＝6\n40＋6＝46（平方公分）"],
+  ["複合圖形","填填看","一個外框長 15 公分、寬 10 公分的長方形，右下角挖掉一個邊長 4 公分的正方形，剩餘面積是幾平方公分？","","","","","134 平方公分","外框：15×10＝150\n挖掉：4×4＝16\n剩餘：150－16＝134（平方公分）"],
+  ["單位換算","選擇題","1 平方公尺等於幾平方公分？","100 平方公分","1000 平方公分","10000 平方公分","10 平方公分","3","1 公尺＝100 公分\n1 平方公尺＝100×100＝10000（平方公分）"],
+  ["單位換算","選擇題","3 平方公尺等於幾平方公分？","300 平方公分","3000 平方公分","30000 平方公分","300000 平方公分","3","3×10000＝30000（平方公分）"],
+  ["單位換算","選擇題","50000 平方公分等於幾平方公尺？","5 平方公尺","50 平方公尺","500 平方公尺","0.5 平方公尺","1","50000÷10000＝5（平方公尺）"],
+  ["單位換算","填填看","7 平方公尺等於幾平方公分？","","","","","70000 平方公分","7×10000＝70000（平方公分）"],
+  ["單位換算","填填看","20000 平方公分等於幾平方公尺？","","","","","2 平方公尺","20000÷10000＝2（平方公尺）"],
+  ["周長應用","選擇題","一個長方形花圃，長 13 公尺、寬 8 公尺，要沿著四周圍上圍欄，需要圍欄幾公尺？同時算出它的面積是幾平方公尺？","42 公尺、104 平方公尺","21 公尺、104 平方公尺","42 公尺、52 平方公尺","104 公尺、42 平方公尺","1","周長：(13＋8)×2＝42（公尺）\n面積：13×8＝104（平方公尺）"],
+  ["周長應用","選擇題","一個邊長 17 公分的正方形，周長是幾公分？面積是幾平方公分？","68 公分、289 平方公分","34 公分、289 平方公分","68 公分、136 平方公分","51 公分、289 平方公分","1","周長：17×4＝68（公分）\n面積：17×17＝289（平方公分）"],
+  ["周長應用","選擇題","小明想用一條 60 公分的繩子圍一個長方形，如果長是 18 公分，寬是幾公分？面積是幾平方公分？","12 公分、216 平方公分","12 公分、108 平方公分","15 公分、270 平方公分","6 公分、108 平方公分","1","周長 60÷2＝30，長＋寬＝30\n寬：30－18＝12（公分）\n面積：18×12＝216（平方公分）"],
+  ["周長應用","填填看","一個長方形操場，長 45 公尺、寬 28 公尺。沿著操場跑一圈是幾公尺？操場面積又是幾平方公尺？","","","","","周長：146 公尺；面積：1260 平方公尺","周長：(45＋28)×2＝146（公尺）\n面積：45×28＝1260（平方公尺）"],
+  ["周長應用","填填看","一個正方形廣場的邊長是 22 公尺，它的周長和面積各是多少？","","","","","周長：88 公尺；面積：484 平方公尺","周長：22×4＝88（公尺）\n面積：22×22＝484（平方公尺）"],
+  ["比較大小","選擇題","甲正方形邊長 7 公分，乙長方形長 10 公分、寬 4 公分，下列哪個敘述正確？","甲面積較大，甲周長也較大","甲面積較大，乙周長較大","甲面積較小，甲周長較大","兩者面積和周長都相同","2","甲面積：7×7＝49\n乙面積：10×4＝40，甲面積較大\n甲周長：7×4＝28\n乙周長：(10＋4)×2＝28，周長相同\n→ 甲面積較大，周長相同（選②最接近：甲面積較大，乙周長與甲相同）","2","甲面積：7×7＝49（平方公分）\n乙面積：10×4＝40（平方公分）→ 甲面積較大\n甲周長：7×4＝28（公分）\n乙周長：(10＋4)×2＝28（公分）→ 周長相同\n結論：甲面積較大，兩者周長相同。"],
+  ["比較大小","選擇題","下列哪一組長方形面積最大？","長6公分、寬7公分","長8公分、寬5公分","長9公分、寬4公分","長5公分、寬8公分","1","①6×7＝42\n②8×5＝40\n③9×4＝36\n④5×8＝40\n①最大"],
+  ["比較大小","填填看","甲長方形長 12 公分、寬 5 公分；乙正方形邊長 8 公分。哪個圖形面積較大？大幾平方公分？","","","","","甲面積較大，大 4 平方公分","甲面積：12×5＝60（平方公分）\n乙面積：8×8＝64（平方公分）\n乙面積較大，大 64－60＝4（平方公分）"]
+];
+
+var currentDeck=[], currentIndex=0, wrongDeck=[], selectedIdx=null, isAnswered=false;
+var card;
+
+function shuffle(arr){
+  var a=arr.slice();
+  for(var i=a.length-1;i>0;i--){
+    var j=Math.floor(Math.random()*(i+1));
+    var t=a[i];a[i]=a[j];a[j]=t;
+  }
+  return a;
+}
+
+function startQuiz(){
+  var n=parseInt(document.getElementById('countInput').value)||10;
+  n=Math.min(Math.max(n,1),DECK.length);
+  currentDeck=shuffle(DECK).slice(0,n);
+  currentIndex=0; wrongDeck=[];
+  document.getElementById('setupSection').classList.add('hidden');
+  document.getElementById('resultSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  document.getElementById('modeText').textContent='一般模式';
+  showCard();
+}
+
+function startReview(){
+  currentDeck=wrongDeck.slice(); currentIndex=0; wrongDeck=[];
+  document.getElementById('resultSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  document.getElementById('modeText').textContent='錯題重測';
+  showCard();
+}
+
+function renderContent(el,text){
+  el.innerHTML='';
+  var lines=text.split('\n');
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim();
+    if(!line) continue;
+    if(line.startsWith('data:image')){
+      var img=document.createElement('img');
+      img.src=line; img.className='q-img';
+      el.appendChild(img);
+    } else {
+      var p=document.createElement('p');
+      p.className='q-text';
+      p.textContent=line;
+      el.appendChild(p);
+    }
+  }
+}
+
+function showCard(){
+  selectedIdx=null; isAnswered=false;
+  card.classList.remove('flipped');
+  document.getElementById('flipBtn').disabled=true;
+  document.getElementById('checkBtn').disabled=false;
+  document.getElementById('answerBox').style.display='none';
+  document.getElementById('selfJudge').style.display='none';
+
+  var d=currentDeck[currentIndex];
+  document.getElementById('frontTag').textContent=d[1];
+
+  var fm=document.getElementById('frontMain');
+  renderContent(fm,d[2]);
+
+  var oa=document.getElementById('optsArea');
+  oa.innerHTML='';
+  if(d[1]==='選擇題'){
+    for(var j=3;j<=6;j++){
+      if(!d[j]) continue;
+      var btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.textContent=''+['','①','②','③','④'][j-2]+'  '+d[j];
+      (function(idx,b){ b.addEventListener('click',function(){ selectOpt(idx,b); }); })(j-2,btn);
+      oa.appendChild(btn);
+    }
+  }
+
+  var pct=((currentIndex+1)/currentDeck.length*100).toFixed(0);
+  document.getElementById('progressText').textContent=(currentIndex+1)+' / '+currentDeck.length;
+  document.getElementById('progressBar').style.width=pct+'%';
+
+  var expEl=document.getElementById('explanation');
+  var expText=(d[1]==='選擇題'?(d[8]||d[7]):d[7]);
+  renderContent(expEl,expText||'');
+}
+
+function selectOpt(idx,el){
+  if(isAnswered) return;
+  selectedIdx=idx;
+  var btns=document.querySelectorAll('.opt-btn');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('selected');
+  el.classList.add('selected');
+}
+
+function checkAnswer(){
+  if(isAnswered) return;
+  isAnswered=true;
+  document.getElementById('flipBtn').disabled=false;
+  document.getElementById('checkBtn').disabled=true;
+  var d=currentDeck[currentIndex];
+
+  if(d[1]==='選擇題'){
+    var ci=parseInt(d[7]);
+    var btns=document.querySelectorAll('.opt-btn');
+    for(var i=0;i<btns.length;i++){
+      var optIdx=i+1;
+      if(optIdx===ci) btns[i].classList.add('correct');
+      else if(optIdx===selectedIdx) btns[i].classList.add('wrong');
+    }
+    if(selectedIdx!==ci){
+      if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+    }
+  } else {
+    var ab=document.getElementById('answerBox');
+    ab.style.display='block';
+    ab.innerHTML='';
+    var alines=d[7].split('\n');
+    for(var ai=0;ai<alines.length;ai++){
+      var al=alines[ai].trim();
+      if(!al) continue;
+      if(al.startsWith('data:image')){
+        var aimg=document.createElement('img');
+        aimg.src=al; aimg.className='q-img';
+        ab.appendChild(aimg);
+      } else {
+        var aspan=document.createElement('div');
+        aspan.textContent=al;
+        ab.appendChild(aspan);
+      }
+    }
+    document.getElementById('selfJudge').style.display='flex';
+  }
+}
+
+function selfJudgeCorrect(){ document.getElementById('selfJudge').style.display='none'; }
+function selfJudgeWrong(){
+  document.getElementById('selfJudge').style.display='none';
+  var d=currentDeck[currentIndex];
+  if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+}
+
+function flipCard(){ if(isAnswered) card.classList.toggle('flipped'); }
+
+function nextCard(){
+  if(currentIndex<currentDeck.length-1){ currentIndex++; showCard(); }
+  else showResults();
+}
+
+function prevCard(){ if(currentIndex>0){ currentIndex--; showCard(); } }
+
+function showResults(){
+  document.getElementById('studySection').classList.add('hidden');
+  document.getElementById('resultSection').classList.remove('hidden');
+  var t=currentDeck.length, w=wrongDeck.length, c=t-w;
+  document.getElementById('scoreText').textContent='答對 '+c+' 題，答錯 '+w+' 題，共 '+t+' 題。';
+  var rb=document.getElementById('reviewBtn');
+  if(w>0){ rb.classList.remove('hidden'); rb.textContent='重測錯題（'+w+'題）'; }
+  else rb.classList.add('hidden');
+  var pct=Math.round(c/t*100);
+  document.getElementById('resultTitle').textContent=pct>=90?'太棒了！':pct>=70?'不錯喔！':'繼續加油！';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  card=document.getElementById('card');
+  document.getElementById('startBtn').addEventListener('click',startQuiz);
+  document.getElementById('checkBtn').addEventListener('click',checkAnswer);
+  document.getElementById('flipBtn').addEventListener('click',flipCard);
+  document.getElementById('prevBtn').addEventListener('click',prevCard);
+  document.getElementById('nextBtn').addEventListener('click',nextCard);
+  document.getElementById('correctBtn').addEventListener('click',selfJudgeCorrect);
+  document.getElementById('wrongBtn').addEventListener('click',selfJudgeWrong);
+  document.getElementById('reviewBtn').addEventListener('click',startReview);
+  document.getElementById('homeBtn').addEventListener('click',function(){ location.reload(); });
+});
+</script>
+</body>
+</html>
