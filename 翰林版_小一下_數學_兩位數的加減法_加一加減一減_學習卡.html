@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>兩位數的加減法 學習卡</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
+.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
+.hero{border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;background:linear-gradient(135deg,#f97316,#ea580c);}
+.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
+.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
+.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.setup-icon{width:64px;height:64px;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;background:#fff7ed;}
+.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
+.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
+.setup-sub b{font-weight:800;}
+.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
+.start-btn{width:100%;background:linear-gradient(135deg,#f97316,#ea580c);color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.start-btn:active{opacity:0.85;}
+.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
+.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
+.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
+.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
+.progress-wrap{margin-bottom:14px;}
+.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
+.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
+.card-wrap{perspective:1400px;height:540px;margin-bottom:18px;}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
+.card.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
+.card-back{transform:rotateY(180deg);background:#fafafa;}
+.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;font-weight:800;background:rgba(249,115,22,0.1);color:#ea580c;padding:5px 14px;border-radius:10px;z-index:2;}
+.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
+.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.face-inner::-webkit-scrollbar{display:none;}
+.q-text{font-size:1.05rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.8;text-align:center;white-space:pre-wrap;}
+.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
+.opt-btn{font-size:1rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
+.opt-btn.selected{background:#fff7ed;border-color:#f97316;color:#ea580c;}
+.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
+.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
+.answer-box{border:2px solid #f97316;border-radius:1rem;padding:14px 20px;width:100%;text-align:center;font-size:1.2rem;font-weight:900;color:#ea580c;background:#fff7ed;margin-top:14px;display:none;white-space:pre-wrap;line-height:1.8;}
+.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
+.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.btn-wrong-j{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #f97316;white-space:pre-wrap;overflow-y:auto;max-height:380px;-webkit-overflow-scrolling:touch;margin-top:8px;}
+.back-title{font-size:0.75rem;font-weight:700;color:#f97316;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
+.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
+.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.action-btn .icon{font-size:1.3rem;}
+.btn-check-style{background:#10b981;color:white;}
+.btn-flip-style{background:#6366f1;color:white;}
+.hidden{display:none!important;}
+</style>
+</head>
+<body>
+<div class="hero">
+  <h1>➕➖ 兩位數的加減法 學習卡</h1>
+  <p>翰林版・小一下數學・加一加減一減</p>
+</div>
+<div class="page">
+  <div id="setupSection" class="setup-card">
+    <div class="setup-icon">🔢</div>
+    <div class="setup-title">設定測驗範圍</div>
+    <div class="setup-sub">題庫共有 <b>38</b> 題</div>
+    <label class="input-label">欲測驗題目數量</label>
+    <input type="number" id="countInput" class="count-input" value="10" min="1" max="38">
+    <button class="start-btn" id="startBtn">開始測驗</button>
+  </div>
+  <div id="resultSection" class="result-card hidden">
+    <div class="trophy">🏆</div>
+    <h2 id="resultTitle">測驗結束！</h2>
+    <p id="scoreText"></p>
+    <button id="reviewBtn" class="btn-review hidden">重測錯題</button>
+    <button id="homeBtn" class="btn-home">返回首頁</button>
+  </div>
+  <div id="studySection" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-row">
+        <span id="modeText">一般模式</span>
+        <span id="progressText">0 / 0</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressBar" style="width:0%"></div>
+      </div>
+    </div>
+    <div class="card-wrap">
+      <div class="card" id="card">
+        <div class="card-face">
+          <div class="corner-tag" id="frontTag"></div>
+          <div class="face-inner">
+            <div id="frontMain"></div>
+            <div class="opts" id="optsArea"></div>
+            <div class="answer-box" id="answerBox"></div>
+            <div class="self-judge" id="selfJudge">
+              <button class="btn-correct" id="correctBtn">✓ 我答對了</button>
+              <button class="btn-wrong-j" id="wrongBtn">✗ 我答錯了</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-face card-back">
+          <div class="back-corner-tag">詳解</div>
+          <div class="face-inner">
+            <div class="back-title">解題過程</div>
+            <div class="explanation" id="explanation"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="action-row">
+      <button class="action-btn" id="prevBtn"><span class="icon">◀</span>PREV</button>
+      <button class="action-btn btn-check-style" id="checkBtn"><span class="icon">📢</span>公布答案</button>
+      <button class="action-btn btn-flip-style" id="flipBtn" disabled><span class="icon">📖</span>FLIP詳解</button>
+      <button class="action-btn" id="nextBtn"><span class="icon">▶</span>NEXT</button>
+    </div>
+  </div>
+</div>
+<script>
+const DECK=[
+  ["加法","填填看","老師有 16 枝鉛筆，分給 8 個學生，每個學生分 1 枝，老師剩下幾枝鉛筆？\n算式：＿＿＿\n剩下（　　）枝鉛筆","","","","","8","16－8＝8\n答：8 枝鉛筆"],
+  ["減法","填填看","開心農場的花園裡有 45 朵向日葵，有 59 朵玫瑰花，玫瑰花比向日葵多幾朵？\n算式：＿＿＿\n多（　　）朵","","","","","14","59－45＝14\n答：多 14 朵"],
+  ["加法","填填看","一張生日卡 24 元，姐姐買了 2 張，要付多少元？\n算式：＿＿＿\n要付（　　）元","","","","","48","24＋24＝48\n答：48 元"],
+  ["加法","填填看","美揚有 38 元，爸爸又給她 4 個十元硬幣，美揚現在有幾元？\n算式：＿＿＿\n有（　　）元","","","","","78","38＋40＝78\n答：78 元"],
+  ["減法","填填看","好吃早餐店昨天賣出 66 份豬排套餐，今天賣出 87 份豬排套餐，今天比昨天多賣出幾份豬排套餐？\n算式：＿＿＿\n多賣出（　　）份","","","","","21","87－66＝21\n答：多賣出 21 份"],
+  ["減法","填填看","苓苓體重 33 公斤，爸爸體重 68 公斤，爸爸比苓苓重幾公斤？\n算式：＿＿＿\n重（　　）公斤","","","","","35","68－33＝35\n答：重 35 公斤"],
+  ["加法","填填看","農場裡有 7 隻白羊和 9 隻黑羊，農場裡有幾隻羊？\n算式：＿＿＿\n有（　　）隻羊","","","","","16","7＋9＝16\n答：16 隻羊"],
+  ["加法","填填看","有 20 個人在操場上跑步，又來了 37 個人在操場上打球，現在操場上共有幾個人？\n算式：＿＿＿\n共有（　　）個人","","","","","57","20＋37＝57\n答：57 個人"],
+  ["加法","填填看","上學期美華看了 22 本故事書，依紋看了 16 本，兩個人共看了幾本？\n算式：＿＿＿\n共看了（　　）本","","","","","38","22＋16＝38\n答：38 本"],
+  ["減法","填填看","好美花店在二月賣出 89 朵玫瑰花，三月賣出 48 朵玫瑰花，二月比三月多賣幾朵玫瑰花？\n算式：＿＿＿\n多賣（　　）朵","","","","","41","89－48＝41\n答：多賣 41 朵"],
+  ["減法","填填看","颱風前一顆高麗菜 42 元，颱風後一顆高麗菜要 68 元，颱風後比颱風前多多少元？\n算式：＿＿＿\n多（　　）元","","","","","26","68－42＝26\n答：多 26 元"],
+  ["加法","填填看","一張天文館門票 33 元，哥哥買了 2 張，共要付多少元？\n算式：＿＿＿\n共要付（　　）元","","","","","66","33＋33＝66\n答：66 元"],
+  ["減法","填填看","熊本熊有 36 罐蜂蜜，臺灣黑熊有 14 罐蜂蜜，熊本熊的蜂蜜比臺灣黑熊的多了幾罐？\n算式：＿＿＿\n多（　　）罐","","","","","22","36－14＝22\n答：多 22 罐"],
+  ["加法","填填看","桌上有 25 顆彈珠，地上有 8 顆彈珠，一共有幾顆彈珠？\n算式：＿＿＿\n一共有（　　）顆","","","","","33","25＋8＝33\n答：33 顆"],
+  ["加法","填填看","媽媽昨天買了 16 顆棗子，今天又買了 23 顆，媽媽共買了幾顆棗子？\n算式：＿＿＿\n共買了（　　）顆","","","","","39","16＋23＝39\n答：39 顆"],
+  ["加法","填填看","小傑七月到圖書館借了 17 本書，八月借了 8 本書，兩個月共借了幾本書？\n算式：＿＿＿\n共借了（　　）本書","","","","","25","17＋8＝25\n答：25 本"],
+  ["減法","填填看","大何吃了 56 顆小籠包，小光吃了 59 顆，小光比大何多吃了幾顆？\n算式：＿＿＿\n多吃了（　　）顆","","","","","3","59－56＝3\n答：多吃 3 顆"],
+  ["減法","填填看","公車上原有 19 個人，到站後有 4 個人下車，公車上還剩下幾個人？\n算式：＿＿＿\n還剩下（　　）個人","","","","","15","19－4＝15\n答：15 個人"],
+  ["加法","填填看","晴晴的小豬撲滿裡，已經存了 5 個十元硬幣（共 50 元），媽媽又給了 33 元零用錢投入撲滿，現在撲滿裡總共有多少元？\n算式：＿＿＿\n總共有（　　）元","","","","","83","50＋33＝83\n答：83 元"],
+  ["加法","填填看","好喝飲料店昨天賣出 57 杯招牌飲料，今天賣出 32 杯招牌飲料，兩天共賣出幾杯招牌飲料？\n算式：＿＿＿\n共賣出（　　）杯","","","","","89","57＋32＝89\n答：89 杯"],
+  ["加法","填填看","書局昨天賣出 31 本雜誌，今天賣出 17 本雜誌，兩天共賣出幾本雜誌？\n算式：＿＿＿\n共賣出（　　）本","","","","","48","31＋17＝48\n答：48 本"],
+  ["減法","填填看","哥哥有 16 顆彈珠，弟弟有 7 顆，哥哥比弟弟多幾顆彈珠？\n算式：＿＿＿\n多（　　）顆彈珠","","","","","9","16－7＝9\n答：多 9 顆"],
+  ["減法","填填看","一包吐司 45 元，爸爸買一包付了 55 元，可以找回多少元？\n算式：＿＿＿\n找回（　　）元","","","","","10","55－45＝10\n答：找回 10 元"],
+  ["減法","填填看","冰箱裡有 13 瓶牛奶，今天早上喝了 5 瓶，冰箱裡剩下幾瓶牛奶？\n算式：＿＿＿\n剩下（　　）瓶牛奶","","","","","8","13－5＝8\n答：8 瓶"],
+  ["加法","填填看","文文投中 42 顆球，元元投中 35 顆球，兩人一共投中幾顆球？\n算式：＿＿＿\n一共投中（　　）顆球","","","","","77","42＋35＝77\n答：77 顆"],
+  ["加法","填填看","小雯的撲滿裡原有 42 元，再投進 2 個十元硬幣（20 元），撲滿裡現在共有幾元？\n算式：＿＿＿\n共有（　　）元","","","","","62","42＋20＝62\n答：62 元"],
+  ["減法","填填看","便利商店昨天賣出 48 個三明治，今天賣出 59 個三明治，今天比昨天多賣幾個三明治？\n算式：＿＿＿\n多賣（　　）個三明治","","","","","11","59－48＝11\n答：多賣 11 個"],
+  ["減法","填填看","一本普通筆記本 21 元，一本彩色筆記本 88 元，一本彩色筆記本比一本普通筆記本貴多少元？\n算式：＿＿＿\n貴（　　）元","","","","","67","88－21＝67\n答：貴 67 元"],
+  ["減法","填填看","榮榮身高 88 公分，哥哥身高 99 公分，哥哥身高比榮榮高幾公分？\n算式：＿＿＿\n高（　　）公分","","","","","11","99－88＝11\n答：高 11 公分"],
+  ["減法","填填看","有 59 個人在玩沙，後來有 24 個人先離開，還剩下幾個人？\n算式：＿＿＿\n還剩下（　　）個人","","","","","35","59－24＝35\n答：35 個人"],
+  ["加法","填填看","媽媽買了 7 個巧克力蛋糕和 8 個草莓蛋糕，媽媽共買了幾個蛋糕？\n算式：＿＿＿\n共買了（　　）個蛋糕","","","","","15","7＋8＝15\n答：15 個"],
+  ["加法","填填看","花花的榮譽卡上原本有 33 個笑臉，今天又貼了 6 個笑臉，花花的榮譽卡上現在共有幾個笑臉？\n算式：＿＿＿\n共有（　　）個","","","","","39","33＋6＝39\n答：39 個"],
+  ["減法","填填看","淑慧有 56 元，買了一個 25 元的蛋餅後，還剩下幾元？\n算式：＿＿＿\n還剩下（　　）元","","","","","31","56－25＝31\n答：31 元"],
+  ["加減法","填填看","好讚水果店：西瓜切盤 49 元，西瓜原汁 39 元，西瓜牛乳冰 50 元。\n爺爺點了一盤西瓜切盤和一碗西瓜牛乳冰，共要付多少元？\n算式：＿＿＿\n共要付（　　）元","","","","","99","49＋50＝99\n答：99 元"],
+  ["加減法","填填看","好讚水果店：西瓜切盤 49 元，西瓜原汁 39 元，西瓜牛乳冰 50 元。\n一盤西瓜切盤比一杯西瓜原汁貴多少元？\n算式：＿＿＿\n貴（　　）元","","","","","10","49－39＝10\n答：貴 10 元"],
+  ["加減法","填填看","日安早餐店：義大利麵 78 元，夾蛋吐司 26 元，鮮蝦堡 43 元。\n叔叔點了一份鮮蝦堡和一份夾蛋吐司，共要付多少元？\n算式：＿＿＿\n共要付（　　）元","","","","","69","43＋26＝69\n答：69 元"],
+  ["加減法","填填看","日安早餐店：義大利麵 78 元，夾蛋吐司 26 元，鮮蝦堡 43 元。\n一份義大利麵比一份夾蛋吐司貴多少元？\n算式：＿＿＿\n貴（　　）元","","","","","52","78－26＝52\n答：貴 52 元"],
+  ["加減法","填填看","日安早餐店：義大利麵 78 元，夾蛋吐司 26 元，鮮蝦堡 43 元。\n一份義大利麵和一份鮮蝦堡相差多少元？\n算式：＿＿＿\n相差（　　）元","","","","","35","78－43＝35\n答：相差 35 元"]
+];
+var currentDeck,currentIndex,isAnswered,wrongDeck,selectedIdx,isReview;
+var card;
+document.addEventListener("DOMContentLoaded",function(){
+  card=document.getElementById("card");
+  document.getElementById("startBtn").addEventListener("click",startQuiz);
+  document.getElementById("checkBtn").addEventListener("click",checkAnswer);
+  document.getElementById("flipBtn").addEventListener("click",flipCard);
+  document.getElementById("prevBtn").addEventListener("click",prevCard);
+  document.getElementById("nextBtn").addEventListener("click",nextCard);
+  document.getElementById("correctBtn").addEventListener("click",selfJudgeCorrect);
+  document.getElementById("wrongBtn").addEventListener("click",selfJudgeWrong);
+  document.getElementById("reviewBtn").addEventListener("click",startReview);
+  document.getElementById("homeBtn").addEventListener("click",function(){ location.reload(); });
+});
+function shuffle(a){for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+function startQuiz(){
+  var n=parseInt(document.getElementById("countInput").value)||10;
+  n=Math.max(1,Math.min(n,DECK.length));
+  currentDeck=shuffle(DECK.slice()).slice(0,n);
+  wrongDeck=[];currentIndex=0;isReview=false;
+  document.getElementById("setupSection").classList.add("hidden");
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("studySection").classList.remove("hidden");
+  document.getElementById("modeText").textContent="一般模式";
+  showCard();
+}
+function startReview(){
+  currentDeck=shuffle(wrongDeck.slice());wrongDeck=[];currentIndex=0;isReview=true;
+  document.getElementById("resultSection").classList.add("hidden");
+  document.getElementById("studySection").classList.remove("hidden");
+  document.getElementById("modeText").textContent="錯題複習";
+  showCard();
+}
+function showCard(){
+  isAnswered=false;selectedIdx=-1;
+  if(card) card.classList.remove("flipped");
+  var d=currentDeck[currentIndex];
+  document.getElementById("frontTag").textContent=d[0];
+  var fm=document.getElementById("frontMain");
+  fm.innerHTML="";
+  var p=document.createElement("p");p.className="q-text";p.textContent=d[2];fm.appendChild(p);
+  var oa=document.getElementById("optsArea");
+  oa.innerHTML="";
+  if(d[1]==="選擇題"){
+    var opts=[d[3],d[4],d[5],d[6]];
+    for(var i=0;i<4;i++){
+      if(!opts[i]) continue;
+      (function(idx,txt){
+        var btn=document.createElement("button");
+        btn.className="opt-btn";
+        btn.textContent=(idx+1)+". "+txt;
+        btn.addEventListener("click",function(){
+          if(isAnswered) return;
+          selectedIdx=idx+1;
+          var bs=document.querySelectorAll(".opt-btn");
+          for(var j=0;j<bs.length;j++) bs[j].classList.remove("selected");
+          btn.classList.add("selected");
+        });
+        oa.appendChild(btn);
+      })(i,opts[i]);
+    }
+  }
+  document.getElementById("answerBox").style.display="none";
+  document.getElementById("selfJudge").style.display="none";
+  document.getElementById("flipBtn").disabled=true;
+  var exp=document.getElementById("explanation");
+  exp.textContent=(d[8]||d[7]);
+  var prog=currentIndex+1;
+  document.getElementById("progressText").textContent=prog+" / "+currentDeck.length;
+  document.getElementById("progressBar").style.width=(prog/currentDeck.length*100)+"%";
+  document.getElementById("prevBtn").disabled=(currentIndex===0);
+  document.getElementById("nextBtn").disabled=false;
+}
+function checkAnswer(){
+  if(isAnswered) return;
+  isAnswered=true;
+  document.getElementById("flipBtn").disabled=false;
+  var d=currentDeck[currentIndex];
+  if(d[1]==="選擇題"){
+    var ci=parseInt(d[7]);
+    var btns=document.querySelectorAll(".opt-btn");
+    for(var i=0;i<btns.length;i++){
+      var optIdx=i+1;
+      if(optIdx===ci) btns[i].classList.add("correct");
+      else if(optIdx===selectedIdx) btns[i].classList.add("wrong");
+    }
+    if(selectedIdx!==ci){
+      if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+    }
+  } else {
+    var ab=document.getElementById("answerBox");
+    ab.style.display="block";
+    ab.textContent="答案："+d[7];
+    document.getElementById("selfJudge").style.display="flex";
+  }
+}
+function selfJudgeCorrect(){ document.getElementById("selfJudge").style.display="none"; }
+function selfJudgeWrong(){
+  document.getElementById("selfJudge").style.display="none";
+  var d=currentDeck[currentIndex];
+  if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+}
+function flipCard(){ if(isAnswered && card) card.classList.toggle("flipped"); }
+function nextCard(){
+  if(currentIndex<currentDeck.length-1){ currentIndex++;showCard(); }
+  else showResults();
+}
+function prevCard(){ if(currentIndex>0){ currentIndex--;showCard(); } }
+function showResults(){
+  document.getElementById("studySection").classList.add("hidden");
+  document.getElementById("resultSection").classList.remove("hidden");
+  var t=currentDeck.length,w=wrongDeck.length,c=t-w;
+  document.getElementById("scoreText").textContent="答對 "+c+" 題，答錯 "+w+" 題，共 "+t+" 題。";
+  var rb=document.getElementById("reviewBtn");
+  if(w>0){ rb.classList.remove("hidden");rb.textContent="重測錯題（"+w+"題）"; }
+  else rb.classList.add("hidden");
+  var title=document.getElementById("resultTitle");
+  var pct=Math.round(c/t*100);
+  title.textContent=pct>=90?"太棒了！":pct>=70?"不錯喔！":"繼續加油！";
+}
+</script>
+</body>
+</html>
