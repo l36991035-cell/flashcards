@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>114學年度國小生活測驗 學習卡</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
+.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
+.hero{border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;background:linear-gradient(135deg,#3b82f6,#1d4ed8);}
+.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
+.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
+.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.setup-icon{width:64px;height:64px;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;background:#eff6ff;}
+.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
+.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
+.setup-sub b{font-weight:800;}
+.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
+.start-btn{width:100%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.start-btn:active{opacity:0.85;}
+.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
+.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
+.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
+.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
+.progress-wrap{margin-bottom:14px;}
+.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
+.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
+.card-wrap{perspective:1400px;height:520px;margin-bottom:18px;}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
+.card.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
+.card-back{transform:rotateY(180deg);background:#fafafa;}
+.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;font-weight:800;background:rgba(59,130,246,0.1);color:#1d4ed8;padding:5px 14px;border-radius:10px;z-index:2;}
+.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
+.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.face-inner::-webkit-scrollbar{display:none;}
+.q-text{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.7;text-align:center;white-space:pre-wrap;}
+.q-img{max-height:200px;max-width:90%;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin:8px auto;display:block;}
+.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
+.opt-btn{font-size:1rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
+.opt-btn.selected{background:#eff6ff;border-color:#3b82f6;color:#1d4ed8;}
+.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
+.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
+.answer-box{border:2px solid #3b82f6;border-radius:1rem;padding:14px 20px;width:100%;text-align:center;font-size:1.1rem;font-weight:900;color:#1d4ed8;background:#eff6ff;margin-top:14px;display:none;white-space:pre-wrap;line-height:1.8;text-align:left;}
+.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
+.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.btn-wrong-j{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #3b82f6;white-space:pre-wrap;overflow-y:auto;max-height:380px;-webkit-overflow-scrolling:touch;margin-top:8px;}
+.back-title{font-size:0.75rem;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.explanation img{max-height:160px;max-width:90%;display:block;margin:8px auto;border-radius:8px;}
+.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
+.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
+.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.action-btn .icon{font-size:1.3rem;}
+.btn-check-style{background:#10b981;color:white;}
+.btn-flip-style{background:#6366f1;color:white;}
+.hidden{display:none!important;}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;}.filter-btn{padding:6px 14px;border-radius:2rem;border:2px solid #e2e8f0;background:#f8fafc;font-size:0.8rem;font-weight:700;cursor:pointer;color:#64748b;-webkit-tap-highlight-color:transparent;}.filter-btn.active{background:#0ea5e9;border-color:#0ea5e9;color:white;}.coin-row{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:8px 0;}.scene-img{max-width:96%;max-height:260px;object-fit:contain;display:block;margin:8px auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}.coin-img{width:52px;height:52px;object-fit:contain;}</style>
+</head>
+<body>
+<div class="hero" style="background:linear-gradient(135deg,#f59e0b,#d97706);">
+<h1>🌞 114學年度國小生活測驗 學習卡</h1><p>選擇題 57 題・是非題 50 題</p></div>
+<div class="page">
+<div id="setupSection" class="setup-card">
+<div class="setup-icon">🌞</div><div class="setup-title">設定測驗範圍</div>
+<div class="setup-sub">共 <b id="totalCount">0</b> 題可選</div>
+<div class="filter-row" id="filterRow"></div>
+<label class="input-label">欲測驗題目數量</label>
+<input type="number" id="countInput" class="count-input" value="10" min="1" max="87">
+<button class="start-btn" id="startBtn">開始測驗</button></div>
+<div id="resultSection" class="result-card hidden">
+<div class="trophy">🏆</div><h2 id="resultTitle">測驗結束！</h2><p id="scoreText"></p>
+<button id="reviewBtn" class="btn-review hidden">重測錯題</button>
+<button id="homeBtn" class="btn-home">返回首頁</button></div>
+<div id="studySection" class="hidden">
+<div class="progress-wrap"><div class="progress-row">
+<span id="modeText">一般模式</span><span id="progressText">0 / 0</span></div>
+<div class="progress-track"><div class="progress-fill" id="progressBar" style="width:0%"></div></div></div>
+<div class="card-wrap"><div class="card" id="card">
+<div class="card-face"><div class="corner-tag" id="frontTag"></div>
+<div class="face-inner"><div id="frontMain"></div><div class="opts" id="optsArea"></div>
+<div class="answer-box" id="answerBox"></div>
+<div class="self-judge" id="selfJudge">
+<button class="btn-correct" id="correctBtn">✓ 我答對了</button>
+<button class="btn-wrong-j" id="wrongBtn">✗ 我答錯了</button></div></div></div>
+<div class="card-face card-back"><div class="back-corner-tag">詳解</div>
+<div class="face-inner"><div class="back-title">解題說明</div>
+<div class="explanation" id="explanation"></div></div></div></div></div>
+<div class="action-row">
+<button class="action-btn" id="prevBtn"><span class="icon">◀</span>PREV</button>
+<button class="action-btn btn-check-style" id="checkBtn"><span class="icon">📢</span>公布答案</button>
+<button class="action-btn btn-flip-style" id="flipBtn" disabled><span class="icon">📖</span>FLIP詳解</button>
+<button class="action-btn" id="nextBtn"><span class="icon">▶</span>NEXT</button>
+</div></div></div>
+
+
+<script>
+const DECK=[
+  ["夏日生活","選擇題","天氣變熱了，大家的穿著和飲食會有什麼變化？","比較常吃冰","會穿毛衣","常常吃火鍋","","1",""],
+  ["端午節習俗","選擇題","香包裡面不會放什麼東西？","有香味的東西","棉花","迴紋針","","3",""],
+  ["夏日生活","選擇題","在夏天夜晚外出欣賞夜景時，下列哪一種做法適當？","把垃圾亂丟","如果發現青蛙，就把牠抓回家","和家人一起前往","","3",""],
+  ["夏日生活","選擇題","下列哪一項不是夏天天氣的特徵？","有比較多的颱風","時常會有午後雷陣雨","氣溫比較低","","3",""],
+  ["夏日藝術","選擇題","在〈大碗島的星期天下午〉中，畫面中的天氣狀況是怎樣？","下大雨","晴天","正在下雪","","2",""],
+  ["端午節習俗","選擇題","端午節的日期是在什麼時候？","農曆五月五日","國曆五月五日","農曆五月一日","","1",""],
+  ["端午節習俗","選擇題","在教室裡體驗划龍舟時，下列哪一種做法不適當？","分配好每個人的任務","不用跟著鼓聲划槳","設計加油口號","","2",""],
+  ["夏日藝術","選擇題","如果想讓三角鐵發出清脆的聲音，應該怎樣做才適當？","用手握住三角鐵","拿金屬棒敲擊三角鐵","將三角鐵戴在手腕上搖動","","2",""],
+  ["夏日生活","選擇題","有關夏日活動的敘述，哪一項是錯誤的？","不要長時間在太陽下活動","要多喝水","不須做防晒措施","","3",""],
+  ["夏日藝術","選擇題","哪一個是陳澄波的作品？","夏日街景","有香蕉樹的院子","大碗島的星期天下午","","1",""],
+  ["端午節習俗","選擇題","下列哪一項活動通常不會特別選在端午節時進行？","掛艾草","吃湯圓","立蛋","","2",""],
+  ["夏日生活","選擇題","夏天和冬天比起來有什麼不同？","比較寒冷","天氣較熱","天氣沒有不同","","2",""],
+  ["端午節習俗","選擇題","向外國朋友介紹端午節習俗時，不會介紹哪一項？","划龍舟","戴香包","提燈籠","","3",""],
+  ["夏日生活","選擇題","利用哪種方式讓自己感覺涼快比較適當？","一直開冰箱","自製扇子搧風","吃很多冰塊","","2",""],
+  ["夏日生活","選擇題","用夏季水果自製水果冰時，要注意哪些事情？","水果愈貴愈好","一定要使用西瓜","要注意衛生","","3",""],
+  ["夏日防晒","選擇題","下列哪一項不是防晒的好方法？","多吃冰棒","撐洋傘","盡量待在室內","","1",""],
+  ["夏日生活","選擇題","夏天到了，適合進行哪些活動？","賞楓","賞蓮","泡溫泉","","2",""],
+  ["端午節習俗","選擇題","立蛋時，將蛋的哪一端朝下比較容易成功？","任何一端都很容易成功","圓的一端","尖的一端","","2",""],
+  ["夏日生活","選擇題","夏天時，進行哪一種活動不能讓人感覺比較涼快？","到山上避暑踏青","海邊玩水","泡溫泉","","3",""],
+  ["端午節習俗","選擇題","如果在教室模仿划龍舟時，我們可以用什麼代替鼓？","掃把","垃圾桶","椅子","","2",""],
+  ["夏日藝術","選擇題","〈大碗島的星期天下午〉描繪的是什麼？","雨天的情景","午後陽光下的場景","熱鬧的宴會","","2",""],
+  ["夏日生活","選擇題","下列哪一項是夏天常見的景象？","賣熱食的攤販變多了","人人穿著厚重外套","有人一直拿手帕擦汗","","3",""],
+  ["端午節習俗","選擇題","端午節時，人們不常進行下列哪一項活動？","立蛋","戴香包","吃年糕","","3",""],
+  ["夏日生活","選擇題","夏天的夜晚適合進行什麼活動？","看夜景","到公園散步","以上活動都適合","","3",""],
+  ["夏日藝術","選擇題","用手指碰觸三角鐵時，會發生什麼事？","三角鐵的顏色改變","三角鐵發出清脆的聲音","三角鐵的聲音停止","","3",""],
+  ["端午節習俗","選擇題","端午節吃粽子是為了紀念誰？","屈原","張飛","嫦娥","","1",""],
+  ["夏日防晒","選擇題","我們無法用什麼方法做好防晒？","戴帽子","運動後馬上喝冰水","擦防晒乳液","","2",""],
+  ["夏日生活","選擇題","夏天時，較不會進行下列哪一項活動？","爬山","泡溫泉","游泳","","2",""],
+  ["夏日生活","選擇題","下列哪一個不是夏天常見的景象？","蚊蟲變多了","植物開始掉葉子","穿短袖、短褲","","2",""],
+  ["端午節習俗","選擇題","「屈原投江後，人民都划船去救他。」演變成現在的什麼活動？","放鞭炮","划龍舟","貼春聯","","2",""],
+  ["夏日防晒","選擇題","下列哪一種方法不能避免晒傷？","補充水分","穿薄長袖衣服","戴帽子","","1",""],
+  ["端午節習俗","選擇題","小花在端午節當天看到家家戶戶都在慶祝端午節，她不會看到哪個景象？","賞月","吃粽子","戴香包","","1",""],
+  ["夏日生活","選擇題","天氣炎熱時，怎樣做可以讓自己感覺比較涼快？","穿涼感衣","睡覺時蓋厚被子","喝熱牛奶","","1",""],
+  ["端午節習俗","選擇題","製作粽形香包時，哪一樣東西可以讓香包變香？","膠帶","彩色線","香豆","","3",""],
+  ["夏日生活","選擇題","夏天想要讓自己比較涼快，可以怎麼做？","喝熱水","樹下乘涼","穿厚重的衣物","","2",""],
+  ["夏日生活","選擇題","下列哪一個是夏日的重要代表節日？","端午節","中秋節","耶誕節","","1",""],
+  ["夏日生活","選擇題","下列哪一項不是在夏日陽光下活動時可能會發生的事情？","皮膚被晒傷","晒太多太陽使頭髮掉光","太熱中暑","","2",""],
+  ["端午節習俗","選擇題","下列和屈原有關的敘述，哪一個是錯誤的？","屈原和端午節吃粽子的習俗有關","人們為了救屈原，把石頭丟進江中","屈原一心為國做事","","2",""],
+  ["端午節習俗","選擇題","端午節的什麼習俗和屈原有關？","吃粽子和划龍舟","吃粽子和戴香包","立蛋和划龍舟","","1",""],
+  ["夏日生活","選擇題","從事夏日活動時，哪一種行為容易發生意外？","多補充水分","在正午時長時間進行戶外活動","活動前先擦防晒乳液","","2",""],
+  ["端午節習俗","選擇題","屈原投江後，為什麼大家要把粽子丟到江裡？","給屈原吃","給魚蝦吃，以免牠們吃屈原的身體","比賽誰的粽子沉得最快","","2",""],
+  ["夏日生活","選擇題","夏天來臨時，我們的生活可能會有什麼改變？","很多人到圖書館或賣場吹冷氣","很多商店開始販賣圍巾、手套或厚外套","人們較常吃燒仙草或關東煮","","1",""],
+  ["夏日生活","選擇題","下列哪一個方法不能讓自己涼快一點？","用扇子搧風","使用電暖器","穿涼感衣","","2",""],
+  ["端午節習俗","選擇題","在教室模仿划龍舟時，可以用什麼代替船槳？","掃把","垃圾桶","椅子","","1",""],
+  ["端午節習俗","選擇題","下列哪一項是端午節會進行的習俗活動？","吃湯圓","立蛋","賞月","","2",""],
+  ["夏日生活","選擇題","天氣愈來愈熱時，人們通常會如何因應？","穿著短袖衣物","多吃熱食","時常外出晒太陽","","1",""],
+  ["夏日生活","選擇題","炎熱的夏天來臨時，哪一項不是清涼消暑的好方法？","游泳","吃火鍋","樹下乘涼","","2",""],
+  ["端午節習俗","選擇題","有關屈原故事的敘述，何者錯誤？","屈原是楚國的大臣","楚國的大王不信任屈原","屈原最後告老還鄉","","3",""],
+  ["夏日生活","選擇題","天氣變熱了，我們應該穿什麼樣的衣服？","厚重的大衣","輕薄的上衣","毛衣","","2",""],
+  ["端午節習俗","選擇題","下列哪一個不是端午節的習俗活動？","吃粽子","划龍舟","吃月餅","","3",""],
+  ["端午節習俗","選擇題","小宥想要自製一個粽形香包，下列哪一種做法不適當？","在香包裡放入棉花和香豆","用膠帶把香包的開口封起來","把做好的香包隨便亂丟","","3",""],
+  ["夏日生活","選擇題","在夏天時，應該避免在下列哪一個時候到戶外活動？","上午","中午","下午","","2",""],
+  ["夏日生活","選擇題","哪一項不是在陽光下活動時應該做好的防護措施？","穿厚外套避免晒傷","多喝水補充水分","戴帽子遮陽","","1",""],
+  ["夏日生活","選擇題","夏天時，進行哪一種活動可以令人感覺比較涼快？","在屋頂做日光浴","到山上避暑踏青","全家一起去吃麻辣鍋","","2",""],
+  ["夏日生活","選擇題","在夏日陽光下活動時，可能會發生什麼事情？","因為太冷而感冒","衣服燒起來燙傷皮膚","太熱中暑","","3",""],
+  ["夏日生活","選擇題","夏天從事戶外運動時，下列哪種行為不適當？","補充水分","注意防晒","獨自外出","","3",""],
+  ["夏日生活","選擇題","夏天到了，我們的生活有哪些改變？","火鍋店生意變好了","開始吹暖氣","冰店大排長龍","","3",""],
+  ["夏日生活","是非題","夏天到了，會進行許多有趣的活動，例如：到遊樂區戲水。","","","","","○",""],
+  ["端午節習俗","是非題","每年五月的第二個星期五是端午節。","","","","","╳","每年農曆五月五日是端午節。"],
+  ["夏日生活","是非題","在陽光下活動時，如果沒有補充足夠的水分，可能會中暑。","","","","","○",""],
+  ["夏日藝術","是非題","〈大碗島的星期天下午〉描繪的是下雨的景象，因此很多人撐著傘。","","","","","╳","是午後陽光下的景象，許多人撐傘遮陽。"],
+  ["夏日生活","是非題","夏天吃冰時要注意衛生，以免吃壞肚子。","","","","","○",""],
+  ["端午節習俗","是非題","屈原會投江，是因為楚王不相信他。","","","","","○",""],
+  ["夏日生活","是非題","夏天到了，有些人會到山上郊遊避暑。","","","","","○",""],
+  ["夏日生活","是非題","夏天來臨時，可以發現購買冷飲或冰品的人漸漸變少。","","","","","╳","購買冷飲或冰品的人漸漸變多。"],
+  ["端午節習俗","是非題","想知道關於端午節的由來，可以向長輩請教。","","","","","○",""],
+  ["端午節習俗","是非題","立蛋、掛艾草和划龍舟都是端午節的習俗。","","","","","○",""],
+  ["夏日藝術","是非題","藝術家會用畫作表現夏日的景色。","","","","","○",""],
+  ["夏日生活","是非題","可以自己一個人到海邊戲水、游泳，不用大人陪同。","","","","","╳","到海邊戲水、游泳，需要有大人陪同，並且要有選擇有救生員的戲水場所。"],
+  ["端午節習俗","是非題","菖蒲和艾草完全只是裝飾用的，沒有別的功用。","","","","","╳","可以驅蟲、避邪。"],
+  ["夏日防晒","是非題","在陽光下活動前多吃冰棒，可以預防皮膚被晒傷。","","","","","╳","預防皮膚被晒傷要擦防晒乳液。"],
+  ["夏日藝術","是非題","三角鐵發出的聲音很清脆，可以表現夏夜清涼的感覺。","","","","","○",""],
+  ["夏日藝術","是非題","到有冷氣的室內參觀畫展時，可以加穿一件薄外套。","","","","","○",""],
+  ["端午節習俗","是非題","自製粽形香包時，要用膠帶把開口黏好，香包裡的棉花才不會掉出來。","","","","","○",""],
+  ["夏日生活","是非題","天氣變熱時，常可以看到人們躲在樹蔭下乘涼。","","","","","○",""],
+  ["端午節習俗","是非題","粽子的種類很多，味道也很美味，可以大吃特吃。","","","","","╳","糯米不容易消化，盡量不要吃太多。"],
+  ["夏日生活","是非題","夏日可以去爬山避暑。","","","","","○",""],
+  ["夏日生活","是非題","運動後，要馬上大口喝冰水，補充水分。","","","","","╳","運動後不適合馬上大口喝冰水。"],
+  ["端午節習俗","是非題","吃湯圓是端午節的習俗活動之一。","","","","","╳","吃湯圓是冬至的習俗活動。"],
+  ["夏日藝術","是非題","〈夏日街景〉畫中可以從影子的位置看出正是中午的時候。","","","","","○",""],
+  ["夏日防晒","是非題","夏天時，可以戴帽子和穿薄長袖衣服，避免晒傷。","","","","","○",""],
+  ["夏日生活","是非題","我們可以利用夏日當季的水果自製美味的水果冰。","","","","","○",""],
+  ["端午節習俗","是非題","划龍舟現在已經演變為一種水上運動了。","","","","","○",""],
+  ["夏日生活","是非題","我們穿的衣服不用配合天氣的變化。","","","","","╳","衣服要配合天氣而變化，才不容易生病。"],
+  ["夏日生活","是非題","夏日是賞蓮的好季節。","","","","","○",""],
+  ["夏日防晒","是非題","夏日外出活動時，穿上薄長袖衣物可以避免皮膚直接受陽光照射而晒傷。","","","","","○",""],
+  ["端午節習俗","是非題","香包沒有固定的形狀。","","","","","○",""],
+  ["夏日生活","是非題","泡溫泉是可以讓人在夏天時感覺涼快的活動。","","","","","╳","泡溫泉是可以讓人在冬天時感覺溫暖的活動。"],
+  ["端午節習俗","是非題","過了端午節後，就要把冬天的厚重衣服拿出來穿。","","","","","╳","過了端午節，通常要把冬衣收起來。"],
+  ["夏日生活","是非題","同樣的景色，在白天和夜晚可能會給人不一樣的感覺。","","","","","○",""],
+  ["夏日生活","是非題","夏天時，多晒太陽有益身體健康，而且要晒到頭暈才會有效果。","","","","","╳","晒太陽過量可能會晒傷、中暑。"],
+  ["端午節習俗","是非題","在教室模仿划龍舟的時候，可以利用掃把當作船槳。","","","","","○",""],
+  ["夏日藝術","是非題","可以從〈夏日街景〉畫中的影子位置看出是傍晚的時候。","","","","","╳","中午的時候。"],
+  ["夏日生活","是非題","自製扇子可以有好多種形式，不一定只有一種。","","","","","○",""],
+  ["端午節習俗","是非題","屈原投江後，人民為了不讓魚蝦吃掉他的身體，將食物投入江中，這就是粽子的由來。","","","","","○",""],
+  ["夏日生活","是非題","逛夜市和看夜景都是夜晚常安排的活動。","","","","","○",""],
+  ["夏日生活","是非題","夏天的夜晚通常比白天涼快，可以利用夜晚出去玩。","","","","","○",""],
+  ["夏日生活","是非題","夏日到遊樂區戲水時要注意安全。","","","","","○",""],
+  ["端午節習俗","是非題","端午節要立蛋和吃粽子與屈原的故事有關。","","","","","╳","是划龍舟和吃粽子。"],
+  ["夏日防晒","是非題","夏天出門時擦防晒乳液主要是為了避免晒傷。","","","","","○",""],
+  ["夏日生活","是非題","夏天的夜晚比白天熱，人們通常不會出門。","","","","","╳","夏天夜晚比白天涼快，人們常利用這段時間外出。"],
+  ["端午節習俗","是非題","如果同學做的香包很漂亮，可以趁他不在時偷偷拿走。","","","","","╳","不應該偷偷拿取別人的物品。"],
+  ["端午節習俗","是非題","只有在端午節的正中午可以將雞蛋立起來。","","","","","╳","任何時候都可能將雞蛋立起來。"],
+  ["夏日生活","是非題","夏日白天和晚上的景色給人的感受完全一樣。","","","","","╳","白天和晚上的景色給人的感受不大一樣。"],
+  ["夏日防晒","是非題","夏天到了，在陽光下活動時要注意防晒。","","","","","○",""],
+  ["端午節習俗","是非題","戴香包、立蛋、掛艾草等都是端午節的習俗。","","","","","○",""],
+  ["夏日藝術","是非題","〈大碗島的星期天下午〉畫中，可以看出許多人都戴著帽子並在陰影下乘涼。","","","","","○",""]
+];
+var activeFilters=[];var CATS=[];
+(function(){var seen={};for(var i=0;i<DECK.length;i++){var c=DECK[i][0];if(!seen[c]){seen[c]=1;CATS.push(c);}}})();
+function getFilteredDeck(){if(activeFilters.length===0)return DECK.slice();return DECK.filter(function(d){return activeFilters.indexOf(d[0])>=0;});}
+function updateSetup(){var fd=getFilteredDeck();document.getElementById('totalCount').textContent=fd.length;document.getElementById('countInput').max=fd.length;if(parseInt(document.getElementById('countInput').value)>fd.length)document.getElementById('countInput').value=fd.length;}
+
+function renderContent(el,text){
+  el.innerHTML='';
+  var lines=text.split(/\\n|\n/),i=0;
+  while(i<lines.length){
+    var ln=lines[i].trim();
+    if(!ln){i++;continue;}
+    if(ln.startsWith('data:image')){
+      var row=document.createElement('div');row.className='coin-row';
+      while(i<lines.length&&lines[i].trim().startsWith('data:image')){
+        (function(src){var img=document.createElement('img');img.src=src;img.className='coin-img';
+          img.onload=function(){if(this.naturalWidth>100){this.className='scene-img';this.parentNode.style.display='block';}};
+          row.appendChild(img);})(lines[i].trim());i++;
+      }
+      el.appendChild(row);
+    }else{var p=document.createElement('p');p.className='q-text';p.textContent=ln;el.appendChild(p);i++;}
+  }
+}
+
+
+let currentDeck=[], wrongDeck=[], currentIndex=0;
+let selectedIdx=null, isAnswered=false, isReview=false;
+var card;
+
+function startQuiz(){
+  var fd=getFilteredDeck();
+  var n=parseInt(document.getElementById('countInput').value)||10;
+  n=Math.min(n,fd.length);
+  var tmp=fd.slice(); tmp.sort(function(){return Math.random()-0.5;});
+  currentDeck=tmp.slice(0,n);
+  wrongDeck=[]; currentIndex=0; isReview=false;
+  document.getElementById('setupSection').classList.add('hidden');
+  document.getElementById('resultSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  showCard();
+}
+
+function startReview(){
+  currentDeck=wrongDeck.slice(); wrongDeck=[];
+  currentIndex=0; isReview=true;
+  document.getElementById('resultSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  document.getElementById('modeText').textContent='錯題重測';
+  showCard();
+}
+
+function renderContent(el, text){
+  el.innerHTML='';
+  var lines=text.split('\n');
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim();
+    if(!line) continue;
+    if(line.startsWith('data:image')){
+      var img=document.createElement('img');
+      img.src=line;
+      img.className='q-img';
+      el.appendChild(img);
+    } else {
+      var p=document.createElement('p');
+      p.className='q-text';
+      p.textContent=line;
+      el.appendChild(p);
+    }
+  }
+}
+
+function showCard(){
+  selectedIdx=null; isAnswered=false;
+  card.classList.remove('flipped');
+  document.getElementById('flipBtn').disabled=true;
+  document.getElementById('checkBtn').disabled=false;
+  document.getElementById('answerBox').style.display='none';
+  document.getElementById('selfJudge').style.display='none';
+
+  var d=currentDeck[currentIndex];
+  var type=d[1];
+  document.getElementById('frontTag').textContent=type;
+
+  var fm=document.getElementById('frontMain');
+  renderContent(fm, d[2]);
+
+  var oa=document.getElementById('optsArea');
+  oa.innerHTML='';
+  var hasOpts=(d[1]==='選擇題');
+  if(hasOpts){
+    for(var j=3;j<=6;j++){
+      if(!d[j]) continue;
+      var btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.textContent=''+['①','②','③','④'][j-3]+'  '+d[j];
+      (function(idx,b){ b.addEventListener('click',function(){ selectOpt(idx,b); }); })(j-2,btn);
+      oa.appendChild(btn);
+    }
+  }
+
+  var pct=((currentIndex+1)/currentDeck.length*100).toFixed(0);
+  document.getElementById('progressText').textContent=(currentIndex+1)+' / '+currentDeck.length;
+  document.getElementById('progressBar').style.width=pct+'%';
+
+  // 詳解背面
+  var expEl=document.getElementById('explanation');
+  var expText=(d[1]==='選擇題' ? (d[8]||d[7]) : d[7]);
+  renderContent(expEl, expText||'');
+}
+
+function selectOpt(idx,el){
+  if(isAnswered) return;
+  selectedIdx=idx;
+  var btns=document.querySelectorAll('.opt-btn');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('selected');
+  el.classList.add('selected');
+}
+
+function checkAnswer(){
+  if(isAnswered) return;
+  isAnswered=true;
+  document.getElementById('flipBtn').disabled=false;
+  document.getElementById('checkBtn').disabled=true;
+  var d=currentDeck[currentIndex];
+
+  if(d[1]==='選擇題'){
+    var ci=parseInt(d[7]);
+    var btns=document.querySelectorAll('.opt-btn');
+    for(var i=0;i<btns.length;i++){
+      var optIdx=i+1;
+      if(optIdx===ci) btns[i].classList.add('correct');
+      else if(optIdx===selectedIdx) btns[i].classList.add('wrong');
+    }
+    if(selectedIdx!==ci){
+      if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+    }
+  } else {
+    var ab=document.getElementById('answerBox');
+    ab.style.display='block';
+    ab.innerHTML='';
+    var alines=d[7].split('\n');
+    for(var ai=0;ai<alines.length;ai++){
+      var al=alines[ai].trim();
+      if(!al) continue;
+      if(al.startsWith('data:image')){
+        var aimg=document.createElement('img');
+        aimg.src=al; aimg.className='q-img';
+        ab.appendChild(aimg);
+      } else {
+        var aspan=document.createElement('div');
+        aspan.textContent=al;
+        ab.appendChild(aspan);
+      }
+    }
+    document.getElementById('selfJudge').style.display='flex';
+  }
+}
+
+function selfJudgeCorrect(){ document.getElementById('selfJudge').style.display='none'; }
+function selfJudgeWrong(){
+  document.getElementById('selfJudge').style.display='none';
+  var d=currentDeck[currentIndex];
+  if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+}
+
+function flipCard(){ if(isAnswered) card.classList.toggle('flipped'); }
+
+function nextCard(){
+  if(currentIndex<currentDeck.length-1){ currentIndex++; showCard(); }
+  else showResults();
+}
+
+function prevCard(){ if(currentIndex>0){ currentIndex--; showCard(); } }
+
+function showResults(){
+  document.getElementById('studySection').classList.add('hidden');
+  document.getElementById('resultSection').classList.remove('hidden');
+  var t=currentDeck.length, w=wrongDeck.length, c=t-w;
+  document.getElementById('scoreText').textContent='答對 '+c+' 題，答錯 '+w+' 題，共 '+t+' 題。';
+  var rb=document.getElementById('reviewBtn');
+  if(w>0){ rb.classList.remove('hidden'); rb.textContent='重測錯題（'+w+'題）'; }
+  else rb.classList.add('hidden');
+  var title=document.getElementById('resultTitle');
+  var pct=Math.round(c/t*100);
+  title.textContent=pct>=90?'太棒了！':pct>=70?'不錯喔！':'繼續加油！';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  card=document.getElementById('card');
+  var fr=document.getElementById('filterRow');
+  CATS.forEach(function(cat){
+    var btn=document.createElement('button');
+    btn.className='filter-btn';btn.textContent=cat;
+    btn.addEventListener('click',function(){
+      this.classList.toggle('active');
+      if(this.classList.contains('active')){
+        if(activeFilters.indexOf(cat)<0)activeFilters.push(cat);
+      }else{
+        activeFilters=activeFilters.filter(function(c){return c!==cat;});
+      }
+      updateSetup();
+    });
+    fr.appendChild(btn);
+  });
+  updateSetup();
+  document.getElementById('startBtn').addEventListener('click',startQuiz);
+  document.getElementById('checkBtn').addEventListener('click',checkAnswer);
+  document.getElementById('flipBtn').addEventListener('click',flipCard);
+  document.getElementById('prevBtn').addEventListener('click',prevCard);
+  document.getElementById('nextBtn').addEventListener('click',nextCard);
+  document.getElementById('correctBtn').addEventListener('click',selfJudgeCorrect);
+  document.getElementById('wrongBtn').addEventListener('click',selfJudgeWrong);
+  document.getElementById('reviewBtn').addEventListener('click',startReview);
+  document.getElementById('homeBtn').addEventListener('click',function(){ location.reload(); });
+});
+
+
+</script>
+</body>
+</html>
