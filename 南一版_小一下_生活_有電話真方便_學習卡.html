@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>有電話真方便 學習卡</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
+.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
+.hero{border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;background:linear-gradient(135deg,#3b82f6,#1d4ed8);}
+.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
+.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
+.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.setup-icon{width:64px;height:64px;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;background:#eff6ff;}
+.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
+.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
+.setup-sub b{font-weight:800;}
+.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
+.start-btn{width:100%;background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+.start-btn:active{opacity:0.85;}
+.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
+.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
+.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
+.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
+.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
+.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
+.progress-wrap{margin-bottom:14px;}
+.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
+.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
+.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
+.card-wrap{perspective:1400px;height:520px;margin-bottom:18px;}
+.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
+.card.flipped{transform:rotateY(180deg);}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
+.card-back{transform:rotateY(180deg);background:#fafafa;}
+.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;font-weight:800;background:rgba(59,130,246,0.1);color:#1d4ed8;padding:5px 14px;border-radius:10px;z-index:2;}
+.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
+.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 24px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.face-inner::-webkit-scrollbar{display:none;}
+.q-text{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.7;text-align:center;white-space:pre-wrap;}
+.q-img{max-height:200px;max-width:90%;width:auto;height:auto;object-fit:contain;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,0.1);margin:8px auto;display:block;}
+.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
+.opt-btn{font-size:1rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
+.opt-btn.selected{background:#eff6ff;border-color:#3b82f6;color:#1d4ed8;}
+.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
+.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
+.answer-box{border:2px solid #3b82f6;border-radius:1rem;padding:14px 20px;width:100%;text-align:center;font-size:1.1rem;font-weight:900;color:#1d4ed8;background:#eff6ff;margin-top:14px;display:none;white-space:pre-wrap;line-height:1.8;text-align:left;}
+.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
+.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.btn-wrong-j{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #3b82f6;white-space:pre-wrap;overflow-y:auto;max-height:380px;-webkit-overflow-scrolling:touch;margin-top:8px;}
+.back-title{font-size:0.75rem;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.explanation img{max-height:160px;max-width:90%;display:block;margin:8px auto;border-radius:8px;}
+.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
+.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
+.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
+.action-btn .icon{font-size:1.3rem;}
+.btn-check-style{background:#10b981;color:white;}
+.btn-flip-style{background:#6366f1;color:white;}
+.hidden{display:none!important;}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px;}.filter-btn{padding:6px 14px;border-radius:2rem;border:2px solid #e2e8f0;background:#f8fafc;font-size:0.8rem;font-weight:700;cursor:pointer;color:#64748b;-webkit-tap-highlight-color:transparent;}.filter-btn.active{background:#0ea5e9;border-color:#0ea5e9;color:white;}.coin-row{display:flex;flex-wrap:wrap;justify-content:center;gap:4px;margin:8px 0;}.scene-img{max-width:96%;max-height:260px;object-fit:contain;display:block;margin:8px auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);}.coin-img{width:52px;height:52px;object-fit:contain;}</style>
+</head>
+<body>
+<div class="hero" style="background:linear-gradient(135deg,#10b981,#047857);">
+<h1>📞 有電話真方便 學習卡</h1><p>南一版・小一下・生活</p></div>
+<div class="page">
+<div id="setupSection" class="setup-card">
+<div class="setup-icon">📱</div><div class="setup-title">設定測驗範圍</div>
+<div class="setup-sub">共 <b id="totalCount">0</b> 題可選</div>
+<div class="filter-row" id="filterRow"></div>
+<label class="input-label">欲測驗題目數量</label>
+<input type="number" id="countInput" class="count-input" value="10" min="1" max="87">
+<button class="start-btn" id="startBtn">開始測驗</button></div>
+<div id="resultSection" class="result-card hidden">
+<div class="trophy">🏆</div><h2 id="resultTitle">測驗結束！</h2><p id="scoreText"></p>
+<button id="reviewBtn" class="btn-review hidden">重測錯題</button>
+<button id="homeBtn" class="btn-home">返回首頁</button></div>
+<div id="studySection" class="hidden">
+<div class="progress-wrap"><div class="progress-row">
+<span id="modeText">一般模式</span><span id="progressText">0 / 0</span></div>
+<div class="progress-track"><div class="progress-fill" id="progressBar" style="width:0%"></div></div></div>
+<div class="card-wrap"><div class="card" id="card">
+<div class="card-face"><div class="corner-tag" id="frontTag"></div>
+<div class="face-inner"><div id="frontMain"></div><div class="opts" id="optsArea"></div>
+<div class="answer-box" id="answerBox"></div>
+<div class="self-judge" id="selfJudge">
+<button class="btn-correct" id="correctBtn">✓ 我答對了</button>
+<button class="btn-wrong-j" id="wrongBtn">✗ 我答錯了</button></div></div></div>
+<div class="card-face card-back"><div class="back-corner-tag">詳解</div>
+<div class="face-inner"><div class="back-title">解題說明</div>
+<div class="explanation" id="explanation"></div></div></div></div></div>
+<div class="action-row">
+<button class="action-btn" id="prevBtn"><span class="icon">◀</span>PREV</button>
+<button class="action-btn btn-check-style" id="checkBtn"><span class="icon">📢</span>公布答案</button>
+<button class="action-btn btn-flip-style" id="flipBtn" disabled><span class="icon">📖</span>FLIP詳解</button>
+<button class="action-btn" id="nextBtn"><span class="icon">▶</span>NEXT</button>
+</div></div></div>
+
+
+<script>
+const DECK=[
+  ["選擇題","選擇題","什麼時候可以撥打各種緊急聯絡電話號碼？","無聊的時候","發生緊急狀況的時候","想要練習撥打電話的時候","","2","緊急聯絡電話是在發生緊急狀況（如火災、搶劫等）時才撥打，不可無聊或練習時撥打。"],
+  ["選擇題","選擇題","新年時，如果想打電話向親人說祝福的話，可以說什麼？","生日快樂","新年快樂","兒童節快樂","","2","新年時要說「新年快樂」來表達祝福。"],
+  ["選擇題","選擇題","如果要撥電話給圖書館的老師，下列哪一種做法比較不適當？","先撥圖書館的號碼","把要說的話先想好","如果想找的人不在，就直接掛電話","","3","想找的人不在時，應該有禮貌地請對方留言或稍後再撥，直接掛電話是不禮貌的。"],
+  ["選擇題","選擇題","小明打電話給圖書館老師時，發現老師不在，他應該怎樣對接電話的人比較適當？","生氣的罵他","麻煩他幫忙留言","不說謝謝就掛電話","","2","對方不在時，可以請接電話的人幫忙留言，並說謝謝，保持禮貌。"],
+  ["選擇題","選擇題","看到路上有人被搶劫，可以撥打哪個電話號碼？","110","119","165","","1","110 是報警專線，遇到搶劫等治安事件要撥 110。"],
+  ["選擇題","選擇題","打電話給親人時，不適合說什麼事？","別人的壞話","自己在學校的情況","最近的心情","","1","打電話給親人可以分享自己的生活和心情，但不適合說別人的壞話。"],
+  ["選擇題","選擇題","當寫作業遇到問題時，可以怎麼做？","打電話請教同學","去學校再抄同學的作業","直接空白不要寫","","1","遇到作業問題可以打電話請教同學，這是正確的解決方式。"],
+  ["選擇題","選擇題","迪歐打電話給好朋友燦燦，接通時他要怎麼說最適當？","我要找燦燦","你好我是迪歐，請問燦燦在嗎？","你是燦燦嗎？","","2","打電話要先自我介紹並有禮貌地詢問，說「你好我是迪歐，請問燦燦在嗎？」最為適當。"],
+  ["選擇題","選擇題","電話可以幫助我們做什麼事？","向親人表達祝福","和親人聯絡感情","以上都可以","","3","電話可以幫助我們向親人表達祝福，也可以聯絡感情，以上都可以。"],
+  ["選擇題","選擇題","發生什麼狀況可以撥打保護專線？","火災時","接到電話叫我去匯款","鄰居家的小孩被家人毆打","","3","113 是保護專線，遇到兒童、婦女、老人受虐等保護問題時撥打。"],
+  ["選擇題","選擇題","打電話時，如果發現要找的人不在，應該怎麼做比較適當？","罵接電話的人","不掛斷電話，直到要找的人回來","請接電話的人幫忙留言","","3","要找的人不在時，應該有禮貌地請接電話的人幫忙留言。"],
+  ["選擇題","選擇題","小秋想和住在國外的哥哥聯絡，下列哪一種方法比較快速？","等哥哥回國","寫卡片","打電話","","3","打電話是最快速的聯絡方式，等回國或寫卡片都太慢。"],
+  ["選擇題","選擇題","撥電話時，如果要找的人不在，可以怎麼做？","罵對方","等一下再撥","直接掛電話","","2","要找的人不在時，可以等一下再撥，或請對方留言。"],
+  ["選擇題","選擇題","打電話給遠方的親人時，怎樣做比較適當？","向他問好","大吼大叫","保持安靜","","1","打電話給遠方親人，要有禮貌地向他問好，音量適中。"],
+  ["選擇題","選擇題","下列哪一種狀況可以使用電話來解決問題？","生病無法上學時，請媽媽幫忙打電話向學校請假","不想上學時，打電話向學校請假","不想考試，打電話向學校請假","","1","生病無法上學才是可以請假的正當理由，不想上學或不想考試都不行。"],
+  ["選擇題","選擇題","下列哪一個是反詐騙專線？","113","119","165","","3","165 是反詐騙專線，接到可疑詐騙電話時可撥打。"],
+  ["選擇題","選擇題","電話響了，接起來應該要先說什麼？","再見","你是誰","你好","","3","接電話時要先禮貌地說「你好」，讓對方知道有人接聽。"],
+  ["選擇題","選擇題","中秋節時，如果想打電話向親人說祝福的話，可以說什麼？","學業進步","中秋節快樂","生日快樂","","2","中秋節時要說「中秋節快樂」來表達節日祝福。"],
+  ["選擇題","選擇題","打電話時，哪一種做法比較適當？","禮貌的說：「你好」","半夜打電話吵醒同學","講完電話直接掛斷","","1","打電話要有禮貌，先說「你好」是正確的做法；半夜打電話和直接掛斷都不禮貌。"],
+  ["選擇題","選擇題","可以打電話向親人說什麼事？","在學校時發生的事","自己最近的生活","以上都可以","","3","可以打電話向親人分享學校發生的事、最近的生活等，以上都可以。"],
+  ["選擇題","選擇題","懷疑接到詐騙電話時，可以怎麼做？","撥打165","撥打112","撥打119","","1","165 是反詐騙專線，懷疑接到詐騙電話時撥打 165 查詢或舉報。"],
+  ["選擇題","選擇題","如果接聽電話時，發現對方要找的人不在，下列哪種做法不適當？","電話放著不管","請對方等一下再打過來","幫對方留言","","1","電話放著不管是不禮貌的，應該請對方等一下再打或幫忙留言。"],
+  ["選擇題","選擇題","今天是小敏的生日，小俊打電話給他時，可以說什麼？","祝你生日快樂","恭喜發財，紅包拿來","你怎麼沒有請我去生日宴會","","1","打電話祝生日時說「祝你生日快樂」是最適當的祝福語。"],
+  ["選擇題","選擇題","下列哪一個是保護專線？","113","119","165","","1","113 是保護專線，遇到兒童、婦女、老人受虐等保護問題時撥打。"],
+  ["選擇題","選擇題","小芳想撥打電話給華華，哪一件事情是她要先考慮的？","今天的晚餐","要說的內容","明天要穿的衣服","","2","撥打電話前要先想好要說的內容，才不會打了電話卻不知道說什麼。"],
+  ["選擇題","選擇題","下列哪一個是報警專線？","110","119","165","","1","110 是報警專線，遇到治安問題時撥打。"],
+  ["選擇題","選擇題","小花接到電話，只知道小花請對方等一下再撥，小花可能遇到什麼狀況？","對方打錯電話","對方要找的人不在","對方是詐騙集團","","2","請對方等一下再撥，通常是因為對方要找的人暫時不在。"],
+  ["選擇題","選擇題","遇到什麼狀況可以利用電話解決問題？","想請同學來參加生日會","外出時想和家人聯絡","以上都可以利用電話解決","","3","邀請同學、和家人聯絡都可以利用電話，以上都可以。"],
+  ["選擇題","選擇題","小列接到一通電話，他問對方要不要留言，可能是什麼狀況？","對方要找的是小列的家人","對方打錯電話了","對方要找小列","","1","詢問對方要不要留言，表示對方要找的人不在，最可能是要找小列的家人。"],
+  ["選擇題","選擇題","下列哪一個是火災、急難救助專線？","113","112","119","","3","119 是火災、急難救助專線，發生火災或緊急意外時撥打。"],
+  ["選擇題","選擇題","小惠想打電話向娟娟請教問題，當電話接通時，小惠應該怎麼說比較適當？","快叫娟娟來聽電話","你好，我是小惠，請問娟娟在嗎","我是小惠，你猜我要找誰啊","","2","電話接通時，要先禮貌地自我介紹，再詢問要找的人是否在。"],
+  ["選擇題","選擇題","如果怕自己忘記重要的電話號碼，把它記在什麼地方比較適當？","運動服上","教室的牆壁","小筆記本","","3","重要電話號碼應該記在小筆記本上，方便隨時查閱。"],
+  ["選擇題","選擇題","看到十字路口的商店失火了，要趕快撥打哪個電話號碼？","165","119","112","","2","119 是火災救援專線，看到火災要立刻撥打 119。"],
+  ["選擇題","選擇題","小志接聽電話時，發現自己聽不清楚對方要問的事情，他應該怎麼做？","請對方再說一次","假裝自己聽懂了","直接掛斷電話","","1","聽不清楚時，應該有禮貌地請對方再說一次，不可假裝聽懂或直接掛電話。"],
+  ["選擇題","選擇題","撥電話給瓜瓜，可是瓜瓜不在，可以怎麼做？","留言請對方家人轉告","罵接電話的人","直接掛掉電話","","1","要找的人不在時，可以留言請對方家人轉告，這是最有禮貌的做法。"],
+  ["選擇題","選擇題","為了更熟悉撥接電話的禮儀，怎麼做最適當？","每天打電話到同學家練習","隨意撥打陌生號碼練習","和同學模擬撥接電話的情況","","3","和同學模擬練習是最好的方法，不應每天打擾同學或撥打陌生號碼。"],
+  ["選擇題","選擇題","小傑接聽電話時，發現對方要找的人剛好不在，請問他應該怎麼說比較適當？","你打錯電話了","他剛好不在，有需要留言給他嗎","我不知道你在說什麼","","2","要找的人不在時，應該告知對方並詢問是否需要留言。"],
+  ["選擇題","選擇題","接聽電話時，哪一種做法不適當？","先聽對方想找誰","回答對方時要有禮貌","如果聽不清楚，可以直接掛電話","","3","聽不清楚時應請對方再說一次，直接掛電話是不禮貌的。"],
+  ["是非題","填填看","透過電話的幫忙，可以讓遠方的親人知道自己的狀況。","","","","","○","答案是○"],
+  ["是非題","填填看","如果想練習接聽電話的方式，可以先用玩具電話試試看。","","","","","○","答案是○"],
+  ["是非題","填填看","外出旅遊時，可以撥打電話向家人報平安。","","","","","○","答案是○"],
+  ["是非題","填填看","當對方要找的人不在時，可以請他留下電話再回撥。","","","","","○","答案是○"],
+  ["是非題","填填看","打電話給親人時，想說多久就說多久沒關係。","","","","","╳","要注意通話的時間，以免打擾對方。"],
+  ["是非題","填填看","外出時，沒有辦法利用電話和家人聯絡。","","","","","╳","可以利用公共電話或是行動電話。"],
+  ["是非題","填填看","打電話時，如果對方剛好不在，可以請接電話的人幫忙留言。","","","","","○","答案是○"],
+  ["是非題","填填看","因為電話方便我們和他人聯絡，所以我可以一天到晚打電話和同學聊天聊很久。","","","","","╳","雖然電話聯絡很方便，但也不能長時間占用電話。"],
+  ["是非題","填填看","電話有許多功用，可以幫助我們做很多事。","","","","","○","答案是○"],
+  ["是非題","填填看","打電話給遠方的親人前，可以先用創意電話筒來練習。","","","","","○","答案是○"],
+  ["是非題","填填看","撥打電話時，因為接電話的人是我的朋友，所以不用對他有禮貌。","","","","","╳","一樣要有禮貌。"],
+  ["是非題","填填看","如果發現鄰居家的小孩每天都餓肚子，家人都不讓他吃飯，可以撥打113。","","","","","○","答案是○"],
+  ["是非題","填填看","我們可以利用電話叫計程車。","","","","","○","答案是○"],
+  ["是非題","填填看","可以和同學一起練習接聽電話的做法。","","","","","○","答案是○"],
+  ["是非題","填填看","撥電話給遠方的親人時，要先想好說話的內容。","","","","","○","答案是○"],
+  ["是非題","填填看","過年的時候，可以打電話向遠方的親人拜年。","","","","","○","答案是○"],
+  ["是非題","填填看","接電話時，如果對方要找的人不在，可以請他留言。","","","","","○","答案是○"],
+  ["是非題","填填看","如果怕自己忘記家人的電話號碼，可以記在小筆記本上。","","","","","○","答案是○"],
+  ["是非題","填填看","只要想和家人說話，不管幾點都可以打電話給他。","","","","","╳","應該要注意時間，以免打擾對方。"],
+  ["是非題","填填看","我們可以利用「打電話」的節奏念謠來練習撥打電話的禮儀。","","","","","○","答案是○"],
+  ["是非題","填填看","如果發生火災了，可以撥打119尋求幫助。","","","","","○","答案是○"],
+  ["是非題","填填看","寫作業遇到問題時，我可以撥打電話請教同學。","","","","","○","答案是○"],
+  ["是非題","填填看","如果想和遠方的親人說悄悄話，打電話時的聲音要愈小愈好。","","","","","╳","聲音如果太小，對方可能會聽不見。"],
+  ["是非題","填填看","撥電話時，接通的第一句話要說：「你是誰？」。","","","","","╳","接通後應先自我介紹，不是問對方是誰。"],
+  ["是非題","填填看","當遠方的親人生日時，可以打電話給他，祝他生日快樂。","","","","","○","答案是○"],
+  ["是非題","填填看","接到陌生電話叫我去銀行匯款，可以撥打165。","","","","","○","答案是○"],
+  ["是非題","填填看","為了訓練自己敢撥接電話，每天晚上都要打好幾通電話去同學家。","","","","","╳","可以找人模擬電話撥接練習，不應每天打擾同學。"],
+  ["是非題","填填看","打電話時，如果發現自己要找的人不在，應該要大發脾氣。","","","","","╳","不應該發脾氣，可以請對方幫忙留言或提供相關的聯絡方式。"],
+  ["是非題","填填看","除了家用電話，公共電話也可以用來和遠方的人聯絡。","","","","","○","答案是○"],
+  ["是非題","填填看","想用電話和遠方的親人聯絡時，只能使用公共電話。","","","","","╳","也可以使用家用電話或手機。"],
+  ["是非題","填填看","撥電話給親人時，只能說開心的事情。","","","","","╳","除了開心的事以外，也可以告訴親人其他的事。"],
+  ["是非題","填填看","「165」是反詐騙專線。","","","","","○","答案是○"],
+  ["是非題","填填看","如果有人打電話來找媽媽，可是媽媽不在家，可以假裝自己就是媽媽。","","","","","╳","不可以，可以請他留電話，等媽媽回家後再聯絡對方。"],
+  ["是非題","填填看","打電話給遠方的親人時，音量要適中，說話也要有禮貌。","","","","","○","答案是○"],
+  ["是非題","填填看","如果生病了無法上學，我可以請媽媽幫我打電話向學校請假。","","","","","○","答案是○"],
+  ["是非題","填填看","撥電話時，接通之後可以先說「你好」。","","","","","○","答案是○"],
+  ["是非題","填填看","我想吃零食，但是媽媽不准我吃，我可以撥打113。","","","","","╳","113 是保護專線，不可用於個人私事。"],
+  ["是非題","填填看","發現接電話的不是自己要找的人時，要罵對方。","","","","","╳","不可以罵人，可以請他轉接。"],
+  ["是非題","填填看","如果想和住在國外的親友聯絡，打電話是既方便又快速的方法。","","","","","○","答案是○"],
+  ["是非題","填填看","可以透過電話將自己的生活分享給遠方的親人。","","","","","○","答案是○"],
+  ["是非題","填填看","奶奶在家裡跌倒受傷了，可以撥打電話請求救援。","","","","","○","答案是○"],
+  ["是非題","填填看","撥打電話前先想好要和對方說什麼比較不會出錯。","","","","","○","答案是○"],
+  ["是非題","填填看","如果想要找的人不在時，可以等一下再撥。","","","","","○","答案是○"],
+  ["是非題","填填看","如果來電的是陌生人，可以對他沒禮貌。","","","","","╳","對待任何來電都要有禮貌。"],
+  ["是非題","填填看","如果很久沒見到親人的話，可以打電話問候他們。","","","","","○","答案是○"],
+  ["是非題","填填看","因為弟弟還小，就算有人打電話來找他，也不可以讓他接電話。","","","","","╳","要請弟弟接電話。"],
+  ["是非題","填填看","將重要的電話號碼寫在小紙條上並放在電話旁邊，可以幫助自己方便找到要撥打的電話。","","","","","○","答案是○"],
+  ["是非題","填填看","因為親人和自己的感情很好，所以打電話給他時，不說話也能讓他了解自己的想法。","","","","","╳","還是要將想傳達的心情說出來，才能讓對方了解。"],
+  ["是非題","填填看","利用〈打電話〉這首念謠練習講電話的方式時，可以跟著歌詞做動作。","","","","","○","答案是○"],
+  ["是非題","填填看","為了方便找到要撥打的電話，最好將重要的電話直接寫在牆壁上面。","","","","","╳","可以寫在小筆記本上，直接寫在牆壁上並不適當。"],
+  ["是非題","填填看","如果想要和遠方的親人聯絡，可以透過電話來幫忙。","","","","","○","答案是○"],
+  ["是非題","填填看","因為我還小，所以不能撥接電話。","","","","","╳","就算年紀小，還是可以練習撥接電話。"],
+  ["是非題","填填看","生活中許多狀況都可以利用電話來解決問題。","","","","","○","答案是○"],
+  ["是非題","填填看","如果想要在節日向親人說祝福的話，只能當面告訴他。","","","","","╳","還可以透過電話來幫忙。"],
+  ["是非題","填填看","「110」是報警專線。","","","","","○","答案是○"],
+  ["是非題","填填看","我好想念住在國外的外婆，可以利用電話和她聯絡。","","","","","○","答案是○"],
+  ["是非題","填填看","接聽電話時要注意電話禮儀。","","","","","○","答案是○"],
+  ["是非題","填填看","發現十字路口旁的商店失火了，要趕快撥打119。","","","","","○","答案是○"],
+  ["是非題","填填看","如果要找的人不在時，可以留言請對方家人轉告。","","","","","○","答案是○"],
+  ["是非題","填填看","想要和遠方的人聯絡，可以使用電話。","","","","","○","答案是○"],
+  ["是非題","填填看","接到電話時，如果聽不清楚，可以禮貌的請對方再說一次。","","","","","○","答案是○"],
+  ["是非題","填填看","遇到緊急狀況時，可以撥打某些特定的電話號碼尋求幫助。","","","","","○","答案是○"],
+  ["是非題","填填看","「113」是保護專線。","","","","","○","答案是○"],
+  ["是非題","填填看","接到電話時不要緊張，要慢慢的、清楚的說。","","","","","○","答案是○"],
+  ["是非題","填填看","在路上看到老奶奶被搶劫了，要趕快撥打110。","","","","","○","答案是○"],
+  ["是非題","填填看","當有人來電要找哥哥時，我可以假裝自己就是他要找的人。","","","","","╳","不可以，要請哥哥來接電話。"],
+  ["是非題","填填看","平時將緊急聯絡電話號碼熟記在心中，當發生各種緊急狀況時就可以撥打。","","","","","○","答案是○"],
+  ["是非題","填填看","接到電話時，不用管對方要找誰，直接把電話拿給大人就好。","","","","","╳","應該要了解對方要找的人是誰，再轉交電話或協助留言。"],
+  ["是非題","填填看","如果不把電話號碼寫下來，可能會不小心忘記了。","","","","","○","答案是○"],
+  ["是非題","填填看","如果接電話的不是自己要找的人時，可以直接掛電話。","","","","","╳","不可以直接掛電話，可以請他轉接。"]
+];var activeFilters=[];var CATS=[];
+(function(){var seen={};for(var i=0;i<DECK.length;i++){var c=DECK[i][0];if(!seen[c]){seen[c]=1;CATS.push(c);}}})();
+function getFilteredDeck(){if(activeFilters.length===0)return DECK.slice();return DECK.filter(function(d){return activeFilters.indexOf(d[0])>=0;});}
+function updateSetup(){var fd=getFilteredDeck();document.getElementById('totalCount').textContent=fd.length;document.getElementById('countInput').max=fd.length;if(parseInt(document.getElementById('countInput').value)>fd.length)document.getElementById('countInput').value=fd.length;}
+
+function renderContent(el,text){
+  el.innerHTML='';
+  var lines=text.split(/\\n|\n/),i=0;
+  while(i<lines.length){
+    var ln=lines[i].trim();
+    if(!ln){i++;continue;}
+    if(ln.startsWith('data:image')){
+      var row=document.createElement('div');row.className='coin-row';
+      while(i<lines.length&&lines[i].trim().startsWith('data:image')){
+        (function(src){var img=document.createElement('img');img.src=src;img.className='coin-img';
+          img.onload=function(){if(this.naturalWidth>100){this.className='scene-img';this.parentNode.style.display='block';}};
+          row.appendChild(img);})(lines[i].trim());i++;
+      }
+      el.appendChild(row);
+    }else{var p=document.createElement('p');p.className='q-text';p.textContent=ln;el.appendChild(p);i++;}
+  }
+}
+
+
+let currentDeck=[], wrongDeck=[], currentIndex=0;
+let selectedIdx=null, isAnswered=false, isReview=false;
+var card;
+
+function startQuiz(){
+  var fd=getFilteredDeck();
+  var n=parseInt(document.getElementById('countInput').value)||10;
+  n=Math.min(n,fd.length);
+  var tmp=fd.slice(); tmp.sort(function(){return Math.random()-0.5;});
+  currentDeck=tmp.slice(0,n);
+  wrongDeck=[]; currentIndex=0; isReview=false;
+  document.getElementById('setupSection').classList.add('hidden');
+  document.getElementById('resultSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  showCard();
+}
+
+function startReview(){
+  currentDeck=wrongDeck.slice(); wrongDeck=[];
+  currentIndex=0; isReview=true;
+  document.getElementById('resultSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  document.getElementById('modeText').textContent='錯題重測';
+  showCard();
+}
+
+function renderContent(el, text){
+  el.innerHTML='';
+  var lines=text.split('\n');
+  for(var i=0;i<lines.length;i++){
+    var line=lines[i].trim();
+    if(!line) continue;
+    if(line.startsWith('data:image')){
+      var img=document.createElement('img');
+      img.src=line;
+      img.className='q-img';
+      el.appendChild(img);
+    } else {
+      var p=document.createElement('p');
+      p.className='q-text';
+      p.textContent=line;
+      el.appendChild(p);
+    }
+  }
+}
+
+function showCard(){
+  selectedIdx=null; isAnswered=false;
+  card.classList.remove('flipped');
+  document.getElementById('flipBtn').disabled=true;
+  document.getElementById('checkBtn').disabled=false;
+  document.getElementById('answerBox').style.display='none';
+  document.getElementById('selfJudge').style.display='none';
+
+  var d=currentDeck[currentIndex];
+  var type=d[1];
+  document.getElementById('frontTag').textContent=type;
+
+  var fm=document.getElementById('frontMain');
+  renderContent(fm, d[2]);
+
+  var oa=document.getElementById('optsArea');
+  oa.innerHTML='';
+  var hasOpts=(d[1]==='選擇題');
+  if(hasOpts){
+    for(var j=3;j<=6;j++){
+      if(!d[j]) continue;
+      var btn=document.createElement('button');
+      btn.className='opt-btn';
+      btn.textContent=''+['①','②','③','④'][j-3]+'  '+d[j];
+      (function(idx,b){ b.addEventListener('click',function(){ selectOpt(idx,b); }); })(j-2,btn);
+      oa.appendChild(btn);
+    }
+  }
+
+  var pct=((currentIndex+1)/currentDeck.length*100).toFixed(0);
+  document.getElementById('progressText').textContent=(currentIndex+1)+' / '+currentDeck.length;
+  document.getElementById('progressBar').style.width=pct+'%';
+
+  // 詳解背面
+  var expEl=document.getElementById('explanation');
+  var expText=(d[1]==='選擇題' ? (d[8]||d[7]) : d[7]);
+  renderContent(expEl, expText||'');
+}
+
+function selectOpt(idx,el){
+  if(isAnswered) return;
+  selectedIdx=idx;
+  var btns=document.querySelectorAll('.opt-btn');
+  for(var i=0;i<btns.length;i++) btns[i].classList.remove('selected');
+  el.classList.add('selected');
+}
+
+function checkAnswer(){
+  if(isAnswered) return;
+  isAnswered=true;
+  document.getElementById('flipBtn').disabled=false;
+  document.getElementById('checkBtn').disabled=true;
+  var d=currentDeck[currentIndex];
+
+  if(d[1]==='選擇題'){
+    var ci=parseInt(d[7]);
+    var btns=document.querySelectorAll('.opt-btn');
+    for(var i=0;i<btns.length;i++){
+      var optIdx=i+1;
+      if(optIdx===ci) btns[i].classList.add('correct');
+      else if(optIdx===selectedIdx) btns[i].classList.add('wrong');
+    }
+    if(selectedIdx!==ci){
+      if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+    }
+  } else {
+    var ab=document.getElementById('answerBox');
+    ab.style.display='block';
+    ab.innerHTML='';
+    var alines=d[7].split('\n');
+    for(var ai=0;ai<alines.length;ai++){
+      var al=alines[ai].trim();
+      if(!al) continue;
+      if(al.startsWith('data:image')){
+        var aimg=document.createElement('img');
+        aimg.src=al; aimg.className='q-img';
+        ab.appendChild(aimg);
+      } else {
+        var aspan=document.createElement('div');
+        aspan.textContent=al;
+        ab.appendChild(aspan);
+      }
+    }
+    document.getElementById('selfJudge').style.display='flex';
+  }
+}
+
+function selfJudgeCorrect(){ document.getElementById('selfJudge').style.display='none'; }
+function selfJudgeWrong(){
+  document.getElementById('selfJudge').style.display='none';
+  var d=currentDeck[currentIndex];
+  if(wrongDeck.indexOf(d)===-1) wrongDeck.push(d);
+}
+
+function flipCard(){ if(isAnswered) card.classList.toggle('flipped'); }
+
+function nextCard(){
+  if(currentIndex<currentDeck.length-1){ currentIndex++; showCard(); }
+  else showResults();
+}
+
+function prevCard(){ if(currentIndex>0){ currentIndex--; showCard(); } }
+
+function showResults(){
+  document.getElementById('studySection').classList.add('hidden');
+  document.getElementById('resultSection').classList.remove('hidden');
+  var t=currentDeck.length, w=wrongDeck.length, c=t-w;
+  document.getElementById('scoreText').textContent='答對 '+c+' 題，答錯 '+w+' 題，共 '+t+' 題。';
+  var rb=document.getElementById('reviewBtn');
+  if(w>0){ rb.classList.remove('hidden'); rb.textContent='重測錯題（'+w+'題）'; }
+  else rb.classList.add('hidden');
+  var title=document.getElementById('resultTitle');
+  var pct=Math.round(c/t*100);
+  title.textContent=pct>=90?'太棒了！':pct>=70?'不錯喔！':'繼續加油！';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  card=document.getElementById('card');
+  var fr=document.getElementById('filterRow');
+  CATS.forEach(function(cat){
+    var btn=document.createElement('button');
+    btn.className='filter-btn';btn.textContent=cat;
+    btn.addEventListener('click',function(){
+      this.classList.toggle('active');
+      if(this.classList.contains('active')){
+        if(activeFilters.indexOf(cat)<0)activeFilters.push(cat);
+      }else{
+        activeFilters=activeFilters.filter(function(c){return c!==cat;});
+      }
+      updateSetup();
+    });
+    fr.appendChild(btn);
+  });
+  updateSetup();
+  document.getElementById('startBtn').addEventListener('click',startQuiz);
+  document.getElementById('checkBtn').addEventListener('click',checkAnswer);
+  document.getElementById('flipBtn').addEventListener('click',flipCard);
+  document.getElementById('prevBtn').addEventListener('click',prevCard);
+  document.getElementById('nextBtn').addEventListener('click',nextCard);
+  document.getElementById('correctBtn').addEventListener('click',selfJudgeCorrect);
+  document.getElementById('wrongBtn').addEventListener('click',selfJudgeWrong);
+  document.getElementById('reviewBtn').addEventListener('click',startReview);
+  document.getElementById('homeBtn').addEventListener('click',function(){ location.reload(); });
+});
+
+
+</script>
+</body>
+</html>
