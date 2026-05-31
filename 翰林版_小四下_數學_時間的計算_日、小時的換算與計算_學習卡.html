@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>翰林版_小四下_數學_時間的計算</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f0f9ff;font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+/* ── Header ── */
+.header{width:100%;background:linear-gradient(135deg,#0ea5e9,#0284c7);padding:18px 24px 60px;text-align:center;position:relative}
+.header h1{color:#fff;font-size:1.6rem;font-weight:900;letter-spacing:.5px}
+.header p{color:rgba(255,255,255,.75);font-size:.85rem;margin-top:4px}
+
+/* ── Main card lifts over header ── */
+.main-wrap{width:100%;max-width:680px;padding:0 16px 60px;margin-top:-44px}
+
+/* ── Setup screen ── */
+.setup-card{background:#fff;border-radius:2rem;padding:32px 28px 28px;box-shadow:0 20px 60px rgba(14,165,233,.15)}
+.setup-icon{font-size:2.6rem;text-align:center;margin-bottom:8px}
+.setup-card h2{text-align:center;font-size:1.2rem;font-weight:800;color:#0c4a6e;margin-bottom:4px}
+.deck-count{text-align:center;color:#64748b;font-size:.88rem;margin-bottom:24px}
+
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
+.filter-btn{padding:7px 18px;border-radius:99px;border:2px solid #e0f2fe;background:#f0f9ff;color:#0ea5e9;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s}
+.filter-btn.active{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
+
+.count-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px}
+.count-label{font-size:.88rem;color:#64748b;font-weight:600}
+.count-box{display:flex;align-items:center;gap:8px;background:#f0f9ff;border-radius:1rem;padding:8px 16px}
+.count-box input{width:52px;text-align:center;font-size:1.1rem;font-weight:800;color:#0c4a6e;border:none;background:transparent;outline:none}
+.count-adj{width:32px;height:32px;border-radius:50%;border:2px solid #bae6fd;background:#fff;color:#0ea5e9;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.count-adj:hover{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
+
+.start-btn{width:100%;padding:15px;border-radius:1.2rem;border:none;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer;letter-spacing:.5px;box-shadow:0 8px 24px rgba(14,165,233,.35);transition:transform .15s,box-shadow .15s}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(14,165,233,.45)}
+.start-btn:active{transform:translateY(0)}
+
+/* ── Progress bar ── */
+.progress-wrap{margin-bottom:18px}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-meta span{font-size:.82rem;font-weight:700;color:#64748b}
+.progress-meta .p-num{color:#0284c7;font-size:.95rem}
+.progress-track{height:8px;background:#e0f2fe;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#0284c7);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+/* ── Flip card ── */
+.card-scene{perspective:1400px;height:420px;margin-bottom:18px}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.23,1,.32,1);cursor:pointer}
+.card.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:2rem;display:flex;flex-direction:column;padding:28px 24px 20px}
+.card-front{background:#fff;box-shadow:0 16px 48px rgba(14,165,233,.12)}
+.card-back{background:linear-gradient(160deg,#f0f9ff,#e0f2fe);box-shadow:0 16px 48px rgba(14,165,233,.12);transform:rotateY(180deg)}
+
+.card-tag{display:inline-block;background:#e0f2fe;color:#0284c7;font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:99px;margin-bottom:14px;align-self:flex-start}
+.card-tag.back-tag{background:#bae6fd;color:#0369a1}
+
+.q-num{font-size:.78rem;font-weight:700;color:#94a3b8;margin-bottom:6px}
+.q-text{font-size:1.1rem;font-weight:700;color:#0c4a6e;line-height:1.7;white-space:pre-wrap;flex:1;overflow-y:auto}
+
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.opt-btn{padding:11px 18px;border-radius:1rem;border:2px solid #e0f2fe;background:#f8fbff;color:#0c4a6e;font-size:.92rem;font-weight:600;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.opt-btn:hover:not(:disabled){border-color:#7dd3fc;background:#f0f9ff}
+.opt-btn .opt-sym{width:26px;height:26px;border-radius:50%;background:#e0f2fe;color:#0284c7;font-size:.8rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt-btn.correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.opt-btn.correct .opt-sym{background:#22c55e;color:#fff}
+.opt-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+.opt-btn.wrong .opt-sym{background:#ef4444;color:#fff}
+.opt-btn:disabled{cursor:default}
+
+/* fill-in answer box */
+.answer-reveal{background:#fff;border:3px solid #0ea5e9;border-radius:1.2rem;padding:16px 20px;text-align:center;margin-top:16px}
+.answer-reveal .label{font-size:.78rem;color:#64748b;font-weight:700;margin-bottom:4px}
+.answer-reveal .ans{font-size:1.5rem;font-weight:900;color:#0284c7}
+
+/* self-judge */
+.self-judge{display:flex;gap:10px;margin-top:auto;padding-top:14px}
+.sj-btn{flex:1;padding:11px;border-radius:1rem;border:2px solid;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s}
+.sj-correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.sj-correct:hover{background:#22c55e;color:#fff}
+.sj-wrong{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+.sj-wrong:hover{background:#ef4444;color:#fff}
+
+/* back content */
+.expl-label{font-size:.75rem;font-weight:800;color:#0369a1;letter-spacing:.5px;margin-bottom:8px}
+.explanation{font-size:1rem;line-height:1.8;color:#0c4a6e;flex:1;overflow-y:auto;padding-right:4px}
+.explanation::-webkit-scrollbar{width:4px}
+.explanation::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:2px}
+
+/* ── Action row ── */
+.action-row{display:flex;gap:10px;justify-content:center;margin-bottom:10px}
+.action-btn{flex:1;max-width:140px;background:#fff;border:2px solid #e0f2fe;border-radius:1.2rem;padding:13px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(14,165,233,.08)}
+.action-btn:hover{border-color:#7dd3fc;box-shadow:0 6px 16px rgba(14,165,233,.18);transform:translateY(-2px)}
+.action-btn .icon{font-size:1.2rem}
+.action-btn .label{font-size:.65rem;font-weight:800;color:#64748b;letter-spacing:.3px}
+.action-btn.reveal-btn{border-color:#22c55e;background:#f0fdf4}
+.action-btn.reveal-btn .label{color:#16a34a}
+.action-btn.flip-btn{border-color:#a5b4fc;background:#f5f3ff}
+.action-btn.flip-btn .label{color:#6366f1}
+
+/* ── Result screen ── */
+.result-card{background:#fff;border-radius:2rem;padding:40px 28px 32px;box-shadow:0 20px 60px rgba(14,165,233,.15);text-align:center}
+.trophy{font-size:3.5rem;margin-bottom:12px}
+.result-card h2{font-size:1.3rem;font-weight:800;color:#0c4a6e;margin-bottom:6px}
+.score-big{font-size:3.2rem;font-weight:900;color:#0284c7;line-height:1;margin:12px 0 6px}
+.score-sub{font-size:.9rem;color:#64748b;margin-bottom:28px}
+.result-btns{display:flex;flex-direction:column;gap:10px}
+.result-btn{padding:14px;border-radius:1.2rem;border:none;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .15s}
+.result-btn.retry{background:linear-gradient(135deg,#f43f5e,#e11d48);color:#fff;box-shadow:0 6px 18px rgba(244,63,94,.3)}
+.result-btn.home{background:#f1f5f9;color:#475569}
+.result-btn:hover{transform:translateY(-2px)}
+
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>📅 翰林版_小四下_數學_時間的計算</h1>
+  <p>日、小時的換算與計算</p>
+</div>
+
+<div class="main-wrap">
+
+  <!-- Setup -->
+  <div id="setupSection">
+    <div class="setup-card">
+      <div class="setup-icon">🎯</div>
+      <h2>準備開始測驗</h2>
+      <p class="deck-count">題庫共 <strong id="totalCount">5</strong> 題</p>
+
+      <div class="filter-row" id="filterRow"></div>
+
+      <div class="count-row">
+        <span class="count-label">出題數量</span>
+        <div class="count-box">
+          <button class="count-adj" id="countMinus">−</button>
+          <input type="number" id="countInput" value="5" min="1" max="5">
+          <button class="count-adj" id="countPlus">＋</button>
+        </div>
+      </div>
+
+      <button class="start-btn" id="startBtn">開始測驗 →</button>
+    </div>
+  </div>
+
+  <!-- Quiz -->
+  <div id="studySection" class="hidden">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="modeLabel">選擇題</span>
+        <span class="p-num"><span id="curNum">1</span> / <span id="totNum">5</span></span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="card-scene">
+      <div class="card" id="card">
+        <!-- Front -->
+        <div class="card-face card-front">
+          <span class="card-tag" id="frontTag">選擇題</span>
+          <div class="q-num" id="qNum">第 1 題</div>
+          <div class="q-text" id="frontMain"></div>
+          <div class="opts" id="optsWrap"></div>
+          <div id="answerBox" class="hidden">
+            <div class="answer-reveal">
+              <div class="label">正確答案</div>
+              <div class="ans" id="ansText"></div>
+            </div>
+            <div class="self-judge" id="selfJudge">
+              <button class="sj-btn sj-correct" id="selfCorrect">✓ 我答對了</button>
+              <button class="sj-btn sj-wrong" id="selfWrong">✗ 我答錯了</button>
+            </div>
+          </div>
+        </div>
+        <!-- Back -->
+        <div class="card-face card-back">
+          <span class="card-tag back-tag">詳解</span>
+          <div class="expl-label">EXPLANATION</div>
+          <div class="explanation" id="explanation"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="action-row">
+      <button class="action-btn" id="prevBtn">
+        <span class="icon">◀</span>
+        <span class="label">PREV</span>
+      </button>
+      <button class="action-btn reveal-btn" id="revealBtn">
+        <span class="icon">📢</span>
+        <span class="label">公布答案</span>
+      </button>
+      <button class="action-btn flip-btn" id="flipBtn">
+        <span class="icon">📖</span>
+        <span class="label">FLIP 詳解</span>
+      </button>
+      <button class="action-btn" id="nextBtn">
+        <span class="icon">▶</span>
+        <span class="label">NEXT</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Result -->
+  <div id="resultSection" class="hidden">
+    <div class="result-card">
+      <div class="trophy">🏆</div>
+      <h2>測驗完成！</h2>
+      <div class="score-big" id="scoreBig">4/5</div>
+      <div class="score-sub" id="scoreSub">答對 4 題，答錯 1 題</div>
+      <div class="result-btns">
+        <button class="result-btn retry" id="retryBtn">重測錯題</button>
+        <button class="result-btn home" id="homeBtn">返回首頁</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<script>
+const DECK=[
+  ["選擇題","選擇題","小華的戶外教育總共活動了 2 日 6 小時，他總共活動了多少小時？","46 小時","48 小時","54 小時","60 小時","3","1 日＝24 時，24×2＋6＝54\n2 日 6 小時＝54 小時"],
+  ["選擇題","選擇題","如玉 4 月 8 日 15 時回到家，她剛好出門了一日，如玉是在幾月幾日幾時出門的？","4月7日5時","4月7日15時","4月9日5時","4月9日15時","2","4 月 8 日 15 時的 1 日前是 4 月 7 日 15 時。"],
+  ["選擇題","選擇題","310 小時是幾日幾小時？","12 日 23 小時","12 日 22 小時","12 日 21 小時","12 日 20 小時","2","24 小時＝1 日\n310÷24＝12 ⋯ 22\n310 小時＝12 日 22 小時"],
+  ["選擇題","選擇題","爸爸製作了一套木製桌椅，做木工花了 3 日 16 時，上油漆花了 1 日 9 時。做這一套木製桌椅共花了幾小時？","120 小時","121 小時","124 小時","136 小時","2","3 日 16 時＋1 日 9 時＝5 日 1 時\n5 日 1 時＝24×5＋1＝121 小時"],
+  ["選擇題","選擇題","400 小時可以說是幾日幾小時？","16 日 16 小時","16 日 17 小時","17 日 16 小時","17 日 17 小時","1","400÷24＝16 ⋯ 16\n400 小時＝16 日 16 小時"],
+  ["選擇題","選擇題","工廠的機器啟動後，被使用 3 日後才停止，機器共被使用了幾小時？","180 小時","179 小時","73 小時","72 小時","4","24×3＝72\n3 日＝72 小時"],
+  ["選擇題","選擇題","姐姐陸續花了 6 日 10 小時完成了一幅巨型航海王拼圖，也可以說是花了幾小時完成拼圖？","144 小時","154 小時","164 小時","174 小時","2","24×6＝144，144＋10＝154\n6 日 10 小時＝154 小時"],
+  ["選擇題","選擇題","奶奶花了 3 日 8 小時做了一個手提袋，奶奶一共花了幾小時？","80 小時","72 小時","38 小時","8 小時","1","24×3＝72，72＋8＝80\n3 日 8 小時＝80 小時"],
+  ["選擇題","選擇題","小福在韓國停留了 3 日 8 時，在日本停留了 4 日 5 時，小福在日本停留的時間比在韓國多幾日幾時？","1 日 2 時","1 日 0 時","0 日 21 時","0 日 19 時","3","4 日 5 時－3 日 8 時：5 時不夠減 8 時，借 1 日＝24 時\n(5+24)時－8 時＝21 時，4 日－1 日－3 日＝0 日\n差了 0 日 21 時"],
+  ["填填看","填填看","8 日 15 小時＝（　　）小時","","","","","207","24×8＝192，192＋15＝207"],
+  ["填填看","填填看","今天上午 6 時到明天上午 6 時，經過（　　）小時。","","","","","24","同樣的時刻，前一天到後一天，剛好經過 1 日＝24 小時。"],
+  ["填填看","填填看","3 日 7 小時＝（　　）小時","","","","","79","24×3＝72，72＋7＝79"],
+  ["填填看","填填看","今天下午 2 時到明天下午 2 時，經過（　　）小時。","","","","","24","同樣的時刻，前一天到後一天，剛好經過 1 日＝24 小時。"],
+  ["填填看","填填看","7 日 16 小時＝（　　）小時","","","","","184","24×7＝168，168＋16＝184"],
+  ["填填看","填填看","9 日 8 小時＝（　　）小時","","","","","224","24×9＝216，216＋8＝224"],
+  ["填填看","填填看","160 小時＝（　　）日（　　）小時","","","","","6 日 16 小時","160÷24＝6 ⋯ 16\n160 小時＝6 日 16 小時"],
+  ["填填看","填填看","130 小時＝（　　）日（　　）小時","","","","","5 日 10 小時","130÷24＝5 ⋯ 10\n130 小時＝5 日 10 小時"],
+  ["填填看","填填看","現在是上午 11 時，經過 24 小時後是明天（　　）午（　　）時。","","","","","上午 11 時","經過 24 小時＝1 日，時刻不變，仍是上午 11 時。"],
+  ["填填看","填填看","102 小時＝（　　）日（　　）小時","","","","","4 日 6 小時","102÷24＝4 ⋯ 6\n102 小時＝4 日 6 小時"],
+  ["填填看","填填看","118 小時＝（　　）日（　　）小時","","","","","4 日 22 小時","118÷24＝4 ⋯ 22\n118 小時＝4 日 22 小時"],
+  ["填填看","填填看","1 日有（　　）小時，經過 24 小時就是經過（　　）日。","","","","","24 小時；1 日","1 日＝24 小時，所以經過 24 小時就是經過 1 日。"],
+  ["填填看","填填看","7 月 5 日下午 8 時經過 24 小時後，是（　）月（　）日下午（　）時。","","","","","7 月 6 日下午 8 時","經過 24 小時＝1 日，日期加 1，時刻不變。"],
+  ["填填看","填填看","3 月 24 日 13 時經過 1 日後，是（　）月（　）日（　）時。","","","","","3 月 25 日 13 時","經過 1 日，日期加 1，時刻不變。"],
+  ["填充題","填填看","12 日 20 小時＝（　　）小時","","","","","308","24×12＝288，288＋20＝308"],
+  ["填充題","填填看","8 日 22 小時＝（　　）小時","","","","","214","24×8＝192，192＋22＝214"],
+  ["填充題","填填看","拚完同樣一張拼圖，小如花了 2 日 3 小時，小瑜花了 3 日 2 小時，（　　）花的時間比較長。","","","","","小瑜","先比日：3 日比 2 日長，所以 3 日 2 小時比 2 日 3 小時長。"],
+  ["填充題","填填看","完成同一份工作，小雅需花 5 日 7 小時，小布需花 3 日 22 小時，（　　）花的時間比較長。","","","","","小雅","先比日：5 日比 3 日長，所以 5 日 7 小時比 3 日 22 小時長。"],
+  ["填充題","填填看","4 日 7 小時＝（　　）小時","","","","","103","24×4＝96，96＋7＝103"],
+  ["填充題","填填看","爸爸到美國出差一星期，爸爸到美國出差（　　）小時。","","","","","168","一星期有 7 天，24×7＝168 小時"],
+  ["填充題","填填看","莉莉不眠不休花了 72 小時製作一件衣服，72 小時也可以說是（　　）日。","","","","","3","72÷24＝3，所以 72 小時等於 3 日"],
+  ["填充題","填填看","工人已經輪班連續抽水清運了 3 日 5 小時，3 日 5 小時可以說是（　　）小時。","","","","","77","1 日＝24 時，24×3＋5＝77 小時"],
+  ["填充題","填填看","348 小時＝（　　）日（　　）小時","","","","","14 日 12 小時","348÷24＝14 ⋯ 12\n348 小時＝14 日 12 小時"],
+  ["填充題","填填看","下列哪兩個時間量相同？\nA：9 日 13 小時\nB：7 日 21 小時\nC：229 小時\nD：221 小時\n答：（　　）和（　　）相同","","","","","A 和 C","A：9 日 13 小時＝24×9＋13＝229 小時\nB：7 日 21 小時＝24×7＋21＝189 小時\nC：229 小時（與 A 相同）\nD：221 小時"],
+  ["填充題","填填看","小花的電子產品可以待機 110 小時，110 小時也可以說是（　　）日（　　）小時。","","","","","4 日 14 小時","110÷24＝4 ⋯ 14\n110 小時＝4 日 14 小時"],
+  ["填充題","填填看","(１) 6 日 12 小時＝（　　）小時","","","","","156","24×6＋12＝144＋12＝156 小時"],
+  ["填充題","填填看","(２) 2 日 8 小時＝（　　）小時","","","","","56","24×2＋8＝48＋8＝56 小時"],
+  ["填充題","填填看","(３) 100 小時＝（　　）日（　　）小時","","","","","4 日 4 小時","100÷24＝4 ⋯ 4\n100 小時＝4 日 4 小時"],
+  ["填充題","填填看","(４) 135 小時＝（　　）日（　　）小時","","","","","5 日 15 小時","135÷24＝5 ⋯ 15\n135 小時＝5 日 15 小時"],
+  ["應用題","填填看","7 月時，小舞和朋友到臺南玩，待了 3 日 9 小時；和家人到花蓮玩，待了 5 日 17 小時，小舞共待了幾日幾小時？","","","","","9 日 2 小時","3 日 9 小時＋5 日 17 小時＝8 日 26 小時\n26 小時＝1 日 2 小時\n合計 9 日 2 小時"],
+  ["應用題","填填看","小宏做小型機器人需 1 日 19 小時，做大型機器人比小型多花 2 日 15 小時，做大型機器人要花幾日幾小時？","","","","","4 日 10 小時","1 日 19 小時＋2 日 15 小時＝3 日 34 小時\n34 小時＝1 日 10 小時\n合計 4 日 10 小時"],
+  ["應用題","填填看","小莉環島旅行要花 4 日 23 時，已經過了 2 日 5 時，還剩下幾日幾小時？","","","","","2 日 18 小時","4 日 23 時－2 日 5 時＝2 日 18 時"],
+  ["應用題","填填看","完成同一份工作，甲需花 4 日 18 小時，乙需花 2 日 20 小時，甲比乙多花幾日幾小時？","","","","","1 日 22 小時","4 日 18 小時－2 日 20 小時：18 時不夠減 20 時，借 1 日＝24 時\n(18+24)時－20 時＝22 時，4 日－1 日－2 日＝1 日\n甲比乙多花 1 日 22 小時"],
+  ["應用題","填填看","小智在臺東待了 3 日 18 小時，在花蓮待的時間比臺東多 2 日 15 小時，在花蓮待了幾日幾小時？","","","","","6 日 9 小時","3 日 18 小時＋2 日 15 小時＝5 日 33 小時\n33 小時＝1 日 9 小時\n合計 6 日 9 小時"],
+  ["應用題","填填看","林叔叔參加 8 日 9 小時的沙漠大縱走，一共要幾小時？","","","","","201 小時","24×8＝192，192＋9＝201\n8 日 9 小時＝201 小時"],
+  ["應用題","填填看","竹蘭寫國語暑假作業花了 8 日 23 小時，比數學暑假作業多了 2 日 8 小時，寫數學暑假作業花了幾日幾小時？","","","","","6 日 15 小時","8 日 23 小時－2 日 8 小時＝6 日 15 小時"],
+  ["應用題","填填看","自來水公司宣布要停水 136 小時，代表要停水幾日幾小時？","","","","","5 日 16 小時","136÷24＝5 ⋯ 16\n136 小時＝5 日 16 小時"],
+  ["應用題","填填看","綠豆發芽花了 4 日 8 小時，小白菜發芽花了 3 日 12 小時，小白菜發芽的時間比綠豆快了多久？","","","","","20 小時","4 日 8 小時－3 日 12 小時：8 時不夠減 12 時，借 1 日\n(8+24)時－12 時＝20 時，4 日－1 日－3 日＝0 日\n快了 20 小時"],
+  ["應用題","填填看","颱風形成到消失共 7 日 2 小時，其中在海上 5 日 20 小時，颱風從接觸陸地到消失共幾日幾小時？","","","","","1 日 6 小時","7 日 2 小時－5 日 20 小時：2 時不夠減 20 時，借 1 日\n(2+24)時－20 時＝6 時，7 日－1 日－5 日＝1 日\n在陸地 1 日 6 小時"],
+  ["算式題","填填看","手機充飽電後可以待機 132 小時，132 小時也可以說是幾日幾小時？","","","","","5 日 12 小時","132÷24＝5 ⋯ 12\n132 小時＝5 日 12 小時"],
+  ["算式題","填填看","貨輪去程 7 日 18 小時，回程比去程多花 16 小時，回程花了幾日幾小時？","","","","","8 日 10 小時","7 日 18 小時＋16 小時＝7 日 34 小時\n34 小時＝1 日 10 小時\n回程 8 日 10 小時"],
+  ["算式題","填填看","爸爸整理花圃花了 2 日 17 小時，栽種花木又花了 3 日 12 小時，共花了幾日幾小時？","","","","","6 日 5 小時","2 日 17 小時＋3 日 12 小時＝5 日 29 小時\n29 小時＝1 日 5 小時\n合計 6 日 5 小時"],
+  ["算式題","填填看","爺爺去程 1 日 14 小時，回程比去程多花 6 小時，回程花了幾日幾小時？","","","","","1 日 20 小時","1 日 14 小時＋6 小時＝1 日 20 小時"],
+  ["算式題","填填看","工廠織襪機連續運作 5 日才停機，5 日也可以說是幾小時？","","","","","120 小時","24×5＝120\n5 日＝120 小時"],
+  ["算式題","填填看","工人輪班連續花了 6 日 9 小時清除落石，6 日 9 小時也可以說是幾小時？","","","","","153 小時","24×6＝144，144＋9＝153\n6 日 9 小時＝153 小時"],
+  ["算式題","填填看","芸芸在東京停留 5 日 4 小時，在大阪停留 3 日 14 小時，東京停留時間比大阪多幾日幾小時？","","","","","1 日 14 小時","5 日 4 小時－3 日 14 小時：4 時不夠減 14 時，借 1 日\n(4+24)時－14 時＝14 時，5 日－1 日－3 日＝1 日\n多了 1 日 14 小時"],
+  ["算式題","填填看","修甲道路花了 7 日 16 小時，修乙道路比甲多 1 日 10 小時，修乙道路花了幾日幾小時？","","","","","9 日 2 小時","7 日 16 小時＋1 日 10 小時＝8 日 26 小時\n26 小時＝1 日 2 小時\n修乙道路 9 日 2 小時"],
+  ["算式題","填填看","姐姐在新加坡停留 2 日 15 小時，在馬來西亞停留 3 日 7 小時，共旅遊幾日幾小時？","","","","","5 日 22 小時","2 日 15 小時＋3 日 7 小時＝5 日 22 小時"],
+  ["算式題","填填看","運動手環充滿電可以待機 180 小時，180 小時也可以說是幾日幾小時？","","","","","7 日 12 小時","180÷24＝7 ⋯ 12\n180 小時＝7 日 12 小時"],
+  ["算式題","填填看","廁所裝修花了 1 日 4 小時，廚房裝修花了 2 日 11 小時，廚房比廁所多花了幾日幾小時？","","","","","1 日 7 小時","2 日 11 小時－1 日 4 小時＝1 日 7 小時"],
+  ["算式題","填填看","爸爸的電腦連續 3 日 8 小時沒關機，3 日 8 小時也可以說是幾小時？","","","","","80 小時","24×3＝72，72＋8＝80\n3 日 8 小時＝80 小時"]
+];
+
+
+var activeFilters=[];var CATS=[];
+(function(){var seen={};for(var i=0;i<DECK.length;i++){var c=DECK[i][0];if(!seen[c]){seen[c]=1;CATS.push(c);}}})();
+function getFilteredDeck(){if(activeFilters.length===0)return DECK.slice();return DECK.filter(function(d){return activeFilters.indexOf(d[0])>=0;});}
+function updateSetup(){
+  var fd=getFilteredDeck();
+  document.getElementById('totalCount').textContent=fd.length;
+  var inp=document.getElementById('countInput');
+  inp.max=fd.length;
+  if(parseInt(inp.value)>fd.length)inp.value=fd.length;
+}
+
+var quiz=[],idx=0,correct=0,wrong=0,revealed=false;
+var card;
+
+function startQuiz(){
+  var fd=getFilteredDeck();
+  var n=Math.min(parseInt(document.getElementById('countInput').value)||5,fd.length);
+  var tmp=fd.slice();
+  for(var i=tmp.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=tmp[i];tmp[i]=tmp[j];tmp[j]=t;}
+  quiz=tmp.slice(0,n);idx=0;correct=0;wrong=0;
+  document.getElementById('totNum').textContent=n;
+  document.getElementById('setupSection').classList.add('hidden');
+  document.getElementById('studySection').classList.remove('hidden');
+  showCard();
+}
+
+function showCard(){
+  var d=quiz[idx];
+  revealed=false;
+  if(card.classList.contains('flipped'))card.classList.remove('flipped');
+
+  document.getElementById('frontTag').textContent=d[0];
+  document.getElementById('qNum').textContent='第 '+(idx+1)+' 題';
+  document.getElementById('curNum').textContent=idx+1;
+  document.getElementById('modeLabel').textContent=d[1];
+  document.getElementById('progressFill').style.width=((idx)/quiz.length*100)+'%';
+
+  renderContent(document.getElementById('frontMain'),d[2]);
+  renderContent(document.getElementById('explanation'),d[8]||d[7]);
+
+  var opts=document.getElementById('optsWrap');
+  var ab=document.getElementById('answerBox');
+  opts.innerHTML='';ab.classList.add('hidden');
+  document.getElementById('selfJudge').classList.remove('hidden');
+
+  if(d[1]==='選擇題'){
+    opts.classList.remove('hidden');
+    ['①','②','③','④'].forEach(function(sym,i){
+      if(!d[3+i])return;
+      var btn=document.createElement('button');
+      btn.className='opt-btn';
+      var sp=document.createElement('span');sp.className='opt-sym';sp.textContent=sym;
+      btn.appendChild(sp);
+      var tx=document.createElement('span');tx.textContent=d[3+i];
+      btn.appendChild(tx);
+      btn.addEventListener('click',(function(ans,b){
+        return function(){checkAnswer(ans,b);};
+      })(String(i+1),btn));
+      opts.appendChild(btn);
+    });
+  } else {
+    opts.classList.add('hidden');
+  }
+}
+
+function checkAnswer(chosen,btn){
+  if(revealed)return;
+  revealed=true;
+  var d=quiz[idx];
+  var correct_ans=d[7];
+  var all=document.querySelectorAll('.opt-btn');
+  all.forEach(function(b,i){
+    b.disabled=true;
+    if(String(i+1)===correct_ans)b.classList.add('correct');
+    else if(b===btn&&String(i+1)!==correct_ans)b.classList.add('wrong');
+  });
+  if(chosen===correct_ans)correct++;else wrong++;
+}
+
+function revealAnswer(){
+  if(revealed)return;
+  revealed=true;
+  var d=quiz[idx];
+  if(d[1]==='選擇題'){
+    var all=document.querySelectorAll('.opt-btn');
+    all.forEach(function(b,i){
+      b.disabled=true;
+      if(String(i+1)===d[7])b.classList.add('correct');
+    });
+  } else {
+    document.getElementById('ansText').textContent=d[7];
+    document.getElementById('answerBox').classList.remove('hidden');
+  }
+}
+
+function selfJudge(isCorrect){
+  if(isCorrect)correct++;else wrong++;
+  document.getElementById('selfJudge').classList.add('hidden');
+  nextCard();
+}
+
+function nextCard(){
+  if(idx<quiz.length-1){idx++;showCard();}
+  else showResult();
+}
+function prevCard(){if(idx>0){idx--;showCard();}}
+
+function showResult(){
+  document.getElementById('studySection').classList.add('hidden');
+  document.getElementById('resultSection').classList.remove('hidden');
+  document.getElementById('scoreBig').textContent=correct+'/'+quiz.length;
+  document.getElementById('scoreSub').textContent='答對 '+correct+' 題，答錯 '+wrong+' 題';
+}
+
+function renderContent(el,text){
+  el.innerHTML='';
+  if(!text){return;}
+  var lines=text.split(/\\n|\n/),i=0;
+  while(i<lines.length){
+    var ln=lines[i].trim();
+    if(!ln){i++;continue;}
+    if(ln.startsWith('data:image')){
+      var row=document.createElement('div');row.style.textAlign='center';
+      while(i<lines.length&&lines[i].trim().startsWith('data:image')){
+        (function(src){
+          var img=document.createElement('img');img.src=src;
+          img.style.maxWidth='100%';img.style.borderRadius='8px';
+          img.onload=function(){if(this.naturalWidth>100){this.style.display='block';this.style.margin='8px auto';}};
+          row.appendChild(img);
+        })(lines[i].trim());i++;
+      }
+      el.appendChild(row);
+    } else {
+      var p=document.createElement('p');p.className='q-text';p.textContent=ln;el.appendChild(p);i++;
+    }
+  }
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  card=document.getElementById('card');
+
+  var fr=document.getElementById('filterRow');
+  CATS.forEach(function(cat){
+    var btn=document.createElement('button');
+    btn.className='filter-btn';btn.textContent=cat;
+    btn.addEventListener('click',function(){
+      this.classList.toggle('active');
+      if(this.classList.contains('active')){if(activeFilters.indexOf(cat)<0)activeFilters.push(cat);}
+      else{activeFilters=activeFilters.filter(function(c){return c!==cat;});}
+      updateSetup();
+    });
+    fr.appendChild(btn);
+  });
+  updateSetup();
+
+  document.getElementById('startBtn').addEventListener('click',startQuiz);
+  document.getElementById('prevBtn').addEventListener('click',prevCard);
+  document.getElementById('nextBtn').addEventListener('click',nextCard);
+  document.getElementById('flipBtn').addEventListener('click',function(){card.classList.toggle('flipped');});
+  document.getElementById('revealBtn').addEventListener('click',revealAnswer);
+  document.getElementById('selfCorrect').addEventListener('click',function(){selfJudge(true);});
+  document.getElementById('selfWrong').addEventListener('click',function(){selfJudge(false);});
+  document.getElementById('retryBtn').addEventListener('click',function(){
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('setupSection').classList.remove('hidden');
+  });
+  document.getElementById('homeBtn').addEventListener('click',function(){
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('setupSection').classList.remove('hidden');
+  });
+  document.getElementById('countMinus').addEventListener('click',function(){
+    var inp=document.getElementById('countInput');
+    if(parseInt(inp.value)>1)inp.value=parseInt(inp.value)-1;
+  });
+  document.getElementById('countPlus').addEventListener('click',function(){
+    var inp=document.getElementById('countInput');
+    if(parseInt(inp.value)<parseInt(inp.max))inp.value=parseInt(inp.value)+1;
+  });
+});
+
+</script>
+</body>
+</html>
