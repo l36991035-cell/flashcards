@@ -2,349 +2,638 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>國語 學習卡</title>
 <style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
-.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f0f9ff;font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
 
-/* 頂部 */
-.hero{background:linear-gradient(135deg,#e11d48,#9f1239);border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;}
-.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
-.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
+/* ── Header ── */
+.header{width:100%;background:linear-gradient(135deg,#0ea5e9,#0284c7);padding:18px 24px 60px;text-align:center;position:relative}
+.header h1{color:#fff;font-size:1.6rem;font-weight:900;letter-spacing:.5px}
+.header p{color:rgba(255,255,255,.75);font-size:.85rem;margin-top:4px}
 
-/* 設定卡 */
-.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
-.setup-icon{width:64px;height:64px;background:#fff1f2;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;}
-.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
-.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
-.setup-sub b{color:#e11d48;}
-.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
-.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
-.start-btn{width:100%;background:#e11d48;color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent;}
-.start-btn:active{background:#be123c;}
+/* ── Main card lifts over header ── */
+.main-wrap{width:100%;max-width:680px;padding:0 16px 60px;margin-top:-44px}
 
-/* 結果卡 */
-.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
-.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
-.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
-.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
-.result-card p b.green{color:#22c55e;}
-.result-card p b.red{color:#ef4444;}
-.result-card p b.blue{color:#4f46e5;}
-.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
-.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
+/* ── Setup screen ── */
+.setup-card{background:#fff;border-radius:2rem;padding:32px 28px 28px;box-shadow:0 20px 60px rgba(14,165,233,.15)}
+.setup-icon{font-size:2.6rem;text-align:center;margin-bottom:8px}
+.setup-card h2{text-align:center;font-size:1.2rem;font-weight:800;color:#0c4a6e;margin-bottom:4px}
+.deck-count{text-align:center;color:#64748b;font-size:.88rem;margin-bottom:24px}
 
-/* 進度 */
-.progress-wrap{margin-bottom:14px;}
-.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
-.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
-.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
+.filter-btn{padding:7px 18px;border-radius:99px;border:2px solid #e0f2fe;background:#f0f9ff;color:#0ea5e9;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s}
+.filter-btn.active{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
 
-/* 卡片 */
-.card-wrap{perspective:1400px;height:500px;margin-bottom:18px;}
-.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
-.card.flipped{transform:rotateY(180deg);}
-.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
-.card-back{transform:rotateY(180deg);background:#fafafa;}
-.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#e11d48;font-weight:800;background:rgba(225,29,72,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
-.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
-.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 28px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.face-inner::-webkit-scrollbar{display:none;}
+.count-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px}
+.count-label{font-size:.88rem;color:#64748b;font-weight:600}
+.count-box{display:flex;align-items:center;gap:8px;background:#f0f9ff;border-radius:1rem;padding:8px 16px}
+.count-box input{width:52px;text-align:center;font-size:1.1rem;font-weight:800;color:#0c4a6e;border:none;background:transparent;outline:none}
+.count-adj{width:32px;height:32px;border-radius:50%;border:2px solid #bae6fd;background:#fff;color:#0ea5e9;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.count-adj:hover{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
 
-/* 題目文字 */
-.q-text{font-size:1.15rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.7;text-align:center;}
+.start-btn{width:100%;padding:15px;border-radius:1.2rem;border:none;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer;letter-spacing:.5px;box-shadow:0 8px 24px rgba(14,165,233,.35);transition:transform .15s,box-shadow .15s}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(14,165,233,.45)}
+.start-btn:active{transform:translateY(0)}
 
-/* 選項 */
-.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
-.opt-btn{font-size:1.05rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;position:relative;-webkit-tap-highlight-color:transparent;transition:all 0.15s;}
-.opt-btn.selected{background:#fff1f2;border-color:#e11d48;color:#9f1239;}
-.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
-.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
+/* ── Progress bar ── */
+.progress-wrap{margin-bottom:18px}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-meta span{font-size:.82rem;font-weight:700;color:#64748b}
+.progress-meta .p-num{color:#0284c7;font-size:.95rem}
+.progress-track{height:8px;background:#e0f2fe;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#0284c7);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
 
-/* 手寫格 */
-.write-grids{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-top:16px;}
-.write-cell{display:flex;flex-direction:column;align-items:center;gap:6px;}
-.write-canvas{width:150px;height:150px;border:3px solid #fda4af;border-radius:14px;background:#fff5f5;touch-action:none;}
-.write-canvas.active{border-color:#e11d48;}
-.write-label{font-size:0.9rem;color:#9f1239;font-weight:700;}
-.clear-btn{font-size:0.7rem;color:#e11d48;background:none;border:1px solid #fda4af;border-radius:8px;padding:3px 10px;cursor:pointer;}
+/* ── Flip card ── */
+.card-scene{perspective:1400px;height:420px;margin-bottom:18px}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.23,1,.32,1);cursor:pointer}
+.card.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:2rem;display:flex;flex-direction:column;padding:28px 24px 20px}
+.card-front{background:#fff;box-shadow:0 16px 48px rgba(14,165,233,.12)}
+.card-back{background:linear-gradient(160deg,#f0f9ff,#e0f2fe);box-shadow:0 16px 48px rgba(14,165,233,.12);transform:rotateY(180deg)}
 
-/* 答案框 */
-.answer-box{background:#fff1f2;border:2px solid #e11d48;border-radius:1rem;padding:14px 20px;width:100%;text-align:center;font-size:1.5rem;font-weight:900;color:#9f1239;margin-top:14px;letter-spacing:0.3em;display:none;}
-.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
-.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
-.btn-wrong{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
+.card-tag{display:inline-block;background:#e0f2fe;color:#0284c7;font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:99px;margin-bottom:14px;align-self:flex-start}
+.card-tag.back-tag{background:#bae6fd;color:#0369a1}
 
-/* 解析 */
-.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #e11d48;white-space:pre-wrap;overflow-y:auto;max-height:360px;-webkit-overflow-scrolling:touch;margin-top:8px;}
-.back-title{font-size:0.75rem;font-weight:700;color:#e11d48;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
+.q-num{font-size:.78rem;font-weight:700;color:#94a3b8;margin-bottom:6px}
+.q-text{font-size:1.1rem;font-weight:700;color:#0c4a6e;line-height:1.7;white-space:pre-wrap;flex:1;overflow-y:auto}
 
-/* 底部按鈕 */
-.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
-.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
-.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
-.action-btn .icon{font-size:1.3rem;}
-.btn-check-style{background:#10b981;color:white;}
-.btn-flip-style{background:#6366f1;color:white;}
-.hidden{display:none!important;}
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.opt-btn{padding:11px 18px;border-radius:1rem;border:2px solid #e0f2fe;background:#f8fbff;color:#0c4a6e;font-size:.92rem;font-weight:600;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.opt-btn:hover:not(:disabled){border-color:#7dd3fc;background:#f0f9ff}
+.opt-btn .opt-sym{width:26px;height:26px;border-radius:50%;background:#e0f2fe;color:#0284c7;font-size:.8rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt-btn.correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.opt-btn.correct .opt-sym{background:#22c55e;color:#fff}
+.opt-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+.opt-btn.wrong .opt-sym{background:#ef4444;color:#fff}
+.opt-btn:disabled{cursor:default}
+
+/* fill-in answer box */
+.answer-reveal{background:#fff;border:3px solid #0ea5e9;border-radius:1.2rem;padding:16px 20px;text-align:center;margin-top:16px}
+.answer-reveal .label{font-size:.78rem;color:#64748b;font-weight:700;margin-bottom:4px}
+.answer-reveal .ans{font-size:1.5rem;font-weight:900;color:#0284c7}
+
+/* self-judge */
+.self-judge{display:flex;gap:10px;margin-top:auto;padding-top:14px}
+.sj-btn{flex:1;padding:11px;border-radius:1rem;border:2px solid;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s}
+.sj-correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.sj-correct:hover{background:#22c55e;color:#fff}
+.sj-wrong{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+.sj-wrong:hover{background:#ef4444;color:#fff}
+
+/* back content */
+.expl-label{font-size:.75rem;font-weight:800;color:#0369a1;letter-spacing:.5px;margin-bottom:8px}
+.explanation{font-size:1rem;line-height:1.8;color:#0c4a6e;flex:1;overflow-y:auto;padding-right:4px}
+.explanation::-webkit-scrollbar{width:4px}
+.explanation::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:2px}
+
+/* ── Action row ── */
+.action-row{display:flex;gap:10px;justify-content:center;margin-bottom:10px}
+.action-btn{flex:1;max-width:140px;background:#fff;border:2px solid #e0f2fe;border-radius:1.2rem;padding:13px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(14,165,233,.08)}
+.action-btn:hover{border-color:#7dd3fc;box-shadow:0 6px 16px rgba(14,165,233,.18);transform:translateY(-2px)}
+.action-btn .icon{font-size:1.2rem}
+.action-btn .label{font-size:.65rem;font-weight:800;color:#64748b;letter-spacing:.3px}
+.action-btn.reveal-btn{border-color:#22c55e;background:#f0fdf4}
+.action-btn.reveal-btn .label{color:#16a34a}
+.action-btn.flip-btn{border-color:#a5b4fc;background:#f5f3ff}
+.action-btn.flip-btn .label{color:#6366f1}
+
+/* ── Result screen ── */
+.result-card{background:#fff;border-radius:2rem;padding:40px 28px 32px;box-shadow:0 20px 60px rgba(14,165,233,.15);text-align:center}
+.trophy{font-size:3.5rem;margin-bottom:12px}
+.result-card h2{font-size:1.3rem;font-weight:800;color:#0c4a6e;margin-bottom:6px}
+.score-big{font-size:3.2rem;font-weight:900;color:#0284c7;line-height:1;margin:12px 0 6px}
+.score-sub{font-size:.9rem;color:#64748b;margin-bottom:28px}
+.result-btns{display:flex;flex-direction:column;gap:10px}
+.result-btn{padding:14px;border-radius:1.2rem;border:none;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .15s}
+.result-btn.retry{background:linear-gradient(135deg,#f43f5e,#e11d48);color:#fff;box-shadow:0 6px 18px rgba(244,63,94,.3)}
+.result-btn.home{background:#f1f5f9;color:#475569}
+.result-btn:hover{transform:translateY(-2px)}
+
+/* ── Error Book ── */
+.errorbook-btn{width:100%;padding:13px;border-radius:1.2rem;border:2px solid #fca5a5;background:#fff5f5;color:#ef4444;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:10px;transition:all .15s;min-height:44px}
+.errorbook-btn:hover{background:#ef4444;color:#fff}
+.eb-count{font-size:.78rem;opacity:.75;margin-left:6px}
+
+/* ── Parent Review ── */
+.parent-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.parent-hdr h2{font-size:1.2rem;font-weight:800;color:#0c4a6e}
+.parent-close{padding:10px 20px;border-radius:99px;border:2px solid #e0f2fe;background:#fff;color:#64748b;font-size:.85rem;font-weight:700;cursor:pointer;min-height:44px}
+.review-item{background:#fff;border-radius:1.5rem;padding:22px 20px 16px;margin-bottom:16px;box-shadow:0 8px 24px rgba(14,165,233,.1)}
+.review-q-num{font-size:.75rem;color:#94a3b8;font-weight:700;margin-bottom:6px}
+.review-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.review-opt{padding:9px 14px;border-radius:.8rem;font-size:.88rem;display:flex;gap:8px;align-items:center;border:2px solid #e0f2fe}
+.review-opt-sym{width:26px;height:26px;border-radius:50%;background:#e0f2fe;color:#0284c7;font-size:.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.review-opt.r-correct{border-color:#22c55e;background:#f0fdf4}
+.review-opt.r-correct .review-opt-sym{background:#22c55e;color:#fff}
+.review-opt.r-wrong{border-color:#ef4444;background:#fef2f2}
+.review-opt.r-wrong .review-opt-sym{background:#ef4444;color:#fff}
+.review-wb{max-width:100%;border-radius:.8rem;border:1px solid #e0f2fe;margin:10px 0;display:block}
+.review-status{font-size:.88rem;font-weight:700;margin-bottom:10px}
+.review-status.s-correct{color:#16a34a}
+.review-status.s-wrong{color:#dc2626}
+.review-status.s-fillin{color:#0284c7}
+.review-btns{display:flex;gap:8px;flex-wrap:wrap}
+.review-flip-btn{flex:1;min-height:44px;padding:9px;border-radius:1rem;border:2px solid #a5b4fc;background:#f5f3ff;color:#6366f1;font-size:.82rem;font-weight:700;cursor:pointer}
+.review-flip-btn:hover{background:#6366f1;color:#fff}
+.review-err-btn{flex:1;min-height:44px;padding:9px;border-radius:1rem;border:2px solid #fca5a5;background:#fff5f5;color:#ef4444;font-size:.82rem;font-weight:700;cursor:pointer}
+.review-err-btn:hover{background:#ef4444;color:#fff}
+.review-err-btn.eb-added{border-color:#22c55e;background:#f0fdf4;color:#16a34a;pointer-events:none}
+.review-ans-box{background:#f0f9ff;border-radius:1rem;padding:14px 16px;margin-top:10px}
+.review-ans-label{font-size:.75rem;font-weight:800;color:#0369a1;margin-bottom:4px}
+.review-ans-text{font-size:1.1rem;font-weight:800;color:#0284c7}
+.no-session{text-align:center;padding:40px 20px;color:#94a3b8;font-size:.95rem;line-height:1.8}
+
+/* ── Whiteboard ── */
+.wb-wrap{background:#fff;border:2px solid #e0f2fe;border-radius:1.2rem;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 12px rgba(14,165,233,.08)}
+#wbCanvas{display:block;width:100%;touch-action:none;cursor:crosshair;background:#fafafa}
+.wb-bar{display:flex;justify-content:flex-end;padding:6px 12px;border-top:1px solid #e0f2fe}
+.wb-clear{padding:8px 18px;border-radius:99px;border:2px solid #fca5a5;background:#fff5f5;color:#ef4444;font-size:.82rem;font-weight:700;cursor:pointer;min-height:44px}
+.wb-clear:hover{background:#ef4444;color:#fff}
+
+.hidden{display:none!important}
 </style>
 </head>
 <body>
-<div class="hero">
+
+<div class="header">
   <h1>國語 學習卡</h1>
+  <p></p>
 </div>
-<div class="page">
 
-  <!-- 設定畫面 -->
-  <div id="setupSection" class="setup-card">
-    <div class="setup-icon">✍️</div>
-    <div class="setup-title">設定測驗範圍</div>
-    <div class="setup-sub">題庫共有 <b>109</b> 題</div>
-    <label class="input-label">欲測驗題目數量</label>
-    <input type="number" id="countInput" class="count-input" value="10" min="1" max="109">
-    <button class="start-btn" id="startBtn">開始測驗</button>
+<div class="main-wrap">
+
+  <!-- Setup -->
+  <div id="setupSection">
+    <div class="setup-card">
+      <div class="setup-icon">🎯</div>
+      <h2>準備開始測驗</h2>
+      <p class="deck-count">題庫共 <strong id="totalCount">5</strong> 題</p>
+
+      <div class="filter-row" id="filterRow"></div>
+
+      <div class="count-row">
+        <span class="count-label">出題數量</span>
+        <div class="count-box">
+          <button class="count-adj" id="countMinus">−</button>
+          <input type="number" id="countInput" value="5" min="1" max="5">
+          <button class="count-adj" id="countPlus">＋</button>
+        </div>
+      </div>
+
+      <button class="start-btn" id="startBtn">開始測驗 →</button>
+      <button class="errorbook-btn" id="errorBookBtn">錯題本 <span class="eb-count" id="ebCount"></span></button>
+    </div>
   </div>
 
-  <!-- 結果畫面 -->
-  <div id="resultSection" class="result-card hidden">
-    <div class="trophy">🏆</div>
-    <h2>測驗完成！</h2>
-    <p id="scoreText"></p>
-    <button id="reviewBtn" class="btn-review hidden">重測錯題</button>
-    <button class="btn-home" id="homeBtn">返回首頁</button>
-  </div>
-
-  <!-- 測驗畫面 -->
+  <!-- Quiz -->
   <div id="studySection" class="hidden">
     <div class="progress-wrap">
-      <div class="progress-row">
-        <span id="modeText">Normal Mode</span>
-        <span id="progressText">0 / 0</span>
+      <div class="progress-meta">
+        <span id="modeLabel">選擇題</span>
+        <span class="p-num"><span id="curNum">1</span> / <span id="totNum">5</span></span>
       </div>
       <div class="progress-track">
-        <div class="progress-fill" id="progressBar" style="width:0%"></div>
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
       </div>
     </div>
 
-    <div class="card-wrap">
+    <div class="card-scene">
       <div class="card" id="card">
-        <div class="card-face">
-          <div class="corner-tag" id="frontTag"></div>
-          <div class="face-inner">
-            <div id="frontMain"></div>
-            <div class="opts" id="optsArea"></div>
-            <div class="write-grids" id="writeGrids"></div>
-            <div class="answer-box" id="answerBox"></div>
-            <div class="self-judge" id="selfJudge">
-              <button class="btn-correct" id="correctBtn">✓ 我答對了</button>
-              <button class="btn-wrong" id="wrongBtn">✗ 我答錯了</button>
-            </div>
-          </div>
+        <!-- Front -->
+        <div class="card-face card-front">
+          <span class="card-tag" id="frontTag">選擇題</span>
+          <div class="q-num" id="qNum">第 1 題</div>
+          <div class="q-text" id="frontMain"></div>
+          <div class="opts" id="optsWrap"></div>
         </div>
+        <!-- Back -->
         <div class="card-face card-back">
-          <div class="back-corner-tag">答案</div>
-          <div class="face-inner">
-            <div class="back-title">詳細解析</div>
-            <div class="explanation" id="explanation"></div>
-          </div>
+          <span class="card-tag back-tag">詳解</span>
+          <div class="expl-label">EXPLANATION</div>
+          <div class="explanation" id="explanation"></div>
         </div>
+      </div>
+    </div>
+
+    <div class="wb-wrap" id="wbWrap">
+      <canvas id="wbCanvas" height="220"></canvas>
+      <div class="wb-bar">
+        <button class="wb-clear" id="wbClear">清除白板</button>
       </div>
     </div>
 
     <div class="action-row">
       <button class="action-btn" id="prevBtn">
-        <span class="icon">◀</span>PREV
+        <span class="icon">◀</span>
+        <span class="label">上一題</span>
       </button>
-      <button class="action-btn btn-check-style" id="checkBtn">
-        <span class="icon">📢</span>公布答案
-      </button>
-      <button class="action-btn btn-flip-style" id="flipBtn" disabled>
-        <span class="icon">📖</span>FLIP詳解
-      </button>
-      <button class="action-btn" id="nextBtn">
-        <span class="icon">▶</span>NEXT
+      <button class="action-btn" id="nextBtn" style="flex:3;max-width:none">
+        <span class="icon">💾</span>
+        <span class="label">儲存並下一題</span>
       </button>
     </div>
   </div>
+
+  <!-- Result -->
+  <div id="resultSection" class="hidden">
+    <div class="result-card">
+      <div class="trophy" style="font-size:3.5rem;margin-bottom:12px">✏️</div>
+      <h2>練習完成！</h2>
+      <p class="score-sub" style="margin-bottom:28px">請把平板交給爸爸媽媽對答案</p>
+      <div class="result-btns">
+        <button class="result-btn home" id="homeBtn">返回首頁</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parent Review -->
+  <div id="parentSection" class="hidden">
+    <div class="parent-hdr">
+      <h2>📋 家長對答模式</h2>
+      <button class="parent-close" id="parentClose">關閉</button>
+    </div>
+    <div id="reviewList"></div>
+  </div>
+
 </div>
 
 <script>
 const DECK = [{"unit": "國語", "type": "寫國字", "question": "請寫出「扛喪」中畫線字的正確寫法", "display": "扛喪", "answer": "扛", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「扛夫」中畫線字的正確寫法", "display": "扛夫", "answer": "扛", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「筆力扛鼎」中畫線字的正確寫法", "display": "筆力扛鼎", "answer": "扛", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「坦白」中畫線字的正確寫法", "display": "坦白", "answer": "坦", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「平坦」中畫線字的正確寫法", "display": "平坦", "answer": "坦", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「腿骨」中畫線字的正確寫法", "display": "腿骨", "answer": "腿", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「模糊」中畫線字的正確寫法", "display": "模糊", "answer": "糊", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「裂開」中畫線字的正確寫法", "display": "裂開", "answer": "裂", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「通知」中畫線字的正確寫法", "display": "通知", "answer": "通", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「懼怕」中畫線字的正確寫法", "display": "懼怕", "answer": "懼", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「應付」中畫線字的正確寫法", "display": "應付", "answer": "付", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「裂口」中畫線字的正確寫法", "display": "裂口", "answer": "裂", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「清晰」中畫線字的正確寫法", "display": "清晰", "answer": "晰", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「糊塗」中畫線字的正確寫法", "display": "糊塗", "answer": "糊", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「關閉」中畫線字的正確寫法", "display": "關閉", "answer": "關", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「壯膽」中畫線字的正確寫法", "display": "壯膽", "answer": "壯，膽", "char_count": 2, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「清晰」中畫線字的正確寫法", "display": "清晰", "answer": "晰", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「軟糖」中畫線字的正確寫法", "display": "軟糖", "answer": "軟", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「兩腿發軟」中畫線字的正確寫法", "display": "兩腿發軟", "answer": "腿，軟", "char_count": 2, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「危險」中畫線字的正確寫法", "display": "危險", "answer": "危", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「通報」中畫線字的正確寫法", "display": "通報", "answer": "通", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「付託」中畫線字的正確寫法", "display": "付託", "answer": "付", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「應付」中畫線字的正確寫法", "display": "應付", "answer": "付", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「關門」中畫線字的正確寫法", "display": "關門", "answer": "關", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「吊牌」中畫線字的正確寫法", "display": "吊牌", "answer": "吊", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「恐懼」中畫線字的正確寫法", "display": "恐懼", "answer": "懼", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「壯膽」中畫線字的正確寫法", "display": "壯膽", "answer": "壯，膽", "char_count": 2, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「危樓」中畫線字的正確寫法", "display": "危樓", "answer": "危", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「膽囊」中畫線字的正確寫法", "display": "膽囊", "answer": "膽", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「關閉」中畫線字的正確寫法", "display": "關閉", "answer": "關", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「兩腿發軟」中畫線字的正確寫法", "display": "兩腿發軟", "answer": "腿，軟", "char_count": 2, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「平坦」中畫線字的正確寫法", "display": "平坦", "answer": "坦", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「壯大」中畫線字的正確寫法", "display": "壯大", "answer": "壯", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「通知」中畫線字的正確寫法", "display": "通知", "answer": "通", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「模糊」中畫線字的正確寫法", "display": "模糊", "answer": "糊", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「吊橋」中畫線字的正確寫法", "display": "吊橋", "answer": "吊", "char_count": 1, "options": []}, {"unit": "國語", "type": "寫國字", "question": "請寫出「明晰」中畫線字的正確寫法", "display": "明晰", "answer": "晰", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "他垣誠的向朋友說出對此趟旅遊安排的不滿。", "answer": "坦", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "如果老師的口齒不夠清淅，學生就不容易理解他講述的內容。", "answer": "晰", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "他涌過了歌唱大賽的初選。", "answer": "通", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "身強體狀的他，因為這幾日操勞過度而病倒了。", "answer": "壯", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "這座掉橋是連接兩地的唯一一條通道。", "answer": "吊", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "志工們負出自己的時間來幫助別人。", "answer": "付", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "哥哥正躺在調床上睡午覺。", "answer": "吊", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "他一肩江起了家庭的經濟重擔。", "answer": "扛", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "他的雙螁因為久坐而發麻了。", "answer": "腿", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "這份文件的年代久遠，上面的字跡也早已模瑚不清了。", "answer": "糊", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "有些軟體要吋費才能使用。", "answer": "付", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "即將進行高空彈跳的恐據，讓他腦袋一片空白，無法思考。", "answer": "懼", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "他因為擔心家人的安圍而整夜翻來覆去睡不著。", "answer": "危", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "弟弟非常喜歡吃斬糖。", "answer": "軟", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "小狗因為恐句而躲在角落裡發抖。", "answer": "懼", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "朋友的官心讓我感到十分溫暖。", "answer": "關", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "老師希望他能袒白說出事件的經過，不要有所隱瞞。", "answer": "坦", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "淚水使我的視線變得模湖。", "answer": "糊", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "劈腿對於柔軒度極佳的他來說，是輕而易舉的一件事。", "answer": "軟", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "將士們悲奘的站在城門前，用自己的身體當作最後一道防線，誓死不讓敵軍進城。", "answer": "壯", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "這幅畫的配色雖然大擔，但手法卻十分細膩，因而獲得了評審們的一致讚賞。", "answer": "膽", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "他在鬼屋裡被嚇到雙褪發軟，眼淚直流。", "answer": "腿", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "媽媽將衣服烈開的地方縫好了。", "answer": "裂", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "舞蹈老師要大家放贍去跳，不必在意別人的眼光。", "answer": "膽", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "現在早就過了營業時間，想必那間店也已經觀門了。", "answer": "關", "char_count": 1, "options": []}, {"unit": "國語", "type": "改錯字", "question": "找出錯別字，寫出正確的字", "display": "放開雙手騎腳踏車，是非常桅險的行為。", "answer": "危", "char_count": 1, "options": []}, {"unit": "國語", "type": "多音字", "question": "請填入正確注音", "display": "(１)「著」急\n(２)「著」名", "answer": "(１)朝\n(２)住", "char_count": 2, "options": []}, {"unit": "國語", "type": "多音字", "question": "請填入正確注音", "display": "(１)「重」擊\n(２)「重」新", "answer": "(１)眾\n(２)蟲", "char_count": 2, "options": []}, {"unit": "國語", "type": "多音字", "question": "請填入正確注音", "display": "(１)做事情要認真，不可以抱持著隨便「應」付的心態。\n(２)如果他到現在都還沒有出現的話，「應」該是不會來了。", "answer": "(１)映\n(２)應", "char_count": 2, "options": []}, {"unit": "國語", "type": "選擇題", "question": "下列選項「　」內的字，哪一個是錯別字？", "display": "下列選項「　」內的字，哪一個是錯別字？", "answer": "4", "char_count": 0, "options": ["①他的個性很迷「糊」", "②父母都希望孩子的未來是一條平「坦」的康莊大道", "③雖然他是臨「危」受命，但還是將事情辦得十分妥當", "④她一肩「江」起了家庭的重擔"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列選項「　」中的字，哪一個的注音是正確的？", "display": "下列選項「　」中的字，哪一個的注音是正確的？", "answer": "4", "char_count": 0, "options": ["①裂痕的「裂」：略", "②不「通」人情的「通」：東", "③「付」出時間的「付」：戶", "④「關」心傷者的「關」：關"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列哪一個字讀一聲？", "display": "下列哪一個字讀一聲？", "answer": "2", "char_count": 0, "options": ["①牙「齒」", "②「冰」冷", "③「墳」場", "④抖「動」"], "explanation": "①尺；②冰；③焚；④動"}, {"unit": "國語", "type": "選擇題", "question": "「爺爺十分□□農作物的生長情況，所以經常到農田去巡視。」□中應填入哪一個語詞？", "display": "「爺爺十分□□農作物的生長情況，所以經常到農田去巡視。」□中應填入哪一個語詞？", "answer": "1", "char_count": 0, "options": ["①關心", "②關係", "③關門", "④關閉"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列哪一個選項和「接受挑戰」結構相同？", "display": "下列哪一個選項和「接受挑戰」結構相同？", "answer": "4", "char_count": 0, "options": ["①美麗人生", "②黑夜降臨", "③溪流湍急", "④搖晃桌子"], "explanation": "動詞＋名詞；①形容詞＋名詞；②名詞＋動詞；③名詞＋形容詞"}, {"unit": "國語", "type": "選擇題", "question": "「他把行李□在肩上行走。」□中應填入哪個字？", "display": "「他把行李□在肩上行走。」□中應填入哪個字？", "answer": "3", "char_count": 0, "options": ["①杠", "②江", "③扛", "④缸"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列何者最適合用來形容「鼓聲」？", "display": "下列何者最適合用來形容「鼓聲」？", "answer": "3", "char_count": 0, "options": ["①唧唧", "②淅淅", "③咚咚", "④吱吱"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列「　」中的注音，何者錯誤？", "display": "下列「　」中的注音，何者錯誤？", "answer": "2", "char_count": 0, "options": ["①交「通」：通", "②「危」機：委", "③後「腿」：腿", "④「軟」弱：軟"], "explanation": "②危"}, {"unit": "國語", "type": "選擇題", "question": "下列哪一個字與「軟」的部首不同？", "display": "下列哪一個字與「軟」的部首不同？", "answer": "3", "char_count": 0, "options": ["①輪", "②較", "③陣", "④轉"], "explanation": "車部；①車部；②車部；③阜部；④車部"}, {"unit": "國語", "type": "選擇題", "question": "「主播的口齒非常清晰，讓妹妹佩服不已。」句中的「清晰」換成下列哪一個語詞後，意思不變？", "display": "「主播的口齒非常清晰，讓妹妹佩服不已。」句中的「清晰」換成下列哪一個語詞後，意思不變？", "answer": "3", "char_count": 0, "options": ["①模糊", "②籠統", "③清楚", "④含混"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "「他的個性□弱，又沒什麼主見，容易被有心人士利用。」□中應填入哪個字？", "display": "「他的個性□弱，又沒什麼主見，容易被有心人士利用。」□中應填入哪個字？", "answer": "2", "char_count": 0, "options": ["①危", "②軟", "③糊", "④懼"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "「一座」最不適合用來形容下列何者？", "display": "「一座」最不適合用來形容下列何者？", "answer": "2", "char_count": 0, "options": ["①青山", "②小路", "③時鐘", "④吊橋"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "哪一個字去掉部首以後，讀音不變？", "display": "哪一個字去掉部首以後，讀音不變？", "answer": "2", "char_count": 0, "options": ["①腿", "②晰", "③膽", "④坦"], "explanation": "①腿→退；②晰→析；③膽→詹；④坦→旦"}, {"unit": "國語", "type": "選擇題", "question": "「平日要打掃這裡都很累了，更不用說假日。」下列哪一個選項的解讀是正確的？", "display": "「平日要打掃這裡都很累了，更不用說假日。」下列哪一個選項的解讀是正確的？", "answer": "2", "char_count": 0, "options": ["①只有假日的打掃會很累", "②不管什麼時候打掃都很累", "③平日的打掃比假日還累", "④平日和假日的打掃都不累"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "「她的話只說一半，讓我們聽了都十分『著』急，很想趕快知道後續是什麼。」『著』的讀音是什麼？", "display": "「她的話只說一半，讓我們聽了都十分『著』急，很想趕快知道後續是什麼。」『著』的讀音是什麼？", "answer": "4", "char_count": 0, "options": ["①者", "②卓", "③著", "④朝"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列「　」中的語詞，哪個使用不恰當？", "display": "下列「　」中的語詞，哪個使用不恰當？", "answer": "1", "char_count": 0, "options": ["①我和媽媽「獨自」在廚房準備晚餐", "②他是這支樂隊的「指揮」", "③雖然已是「深夜」，但他還是翻來覆去睡不著", "④弟弟覺得鬼很「可怕」"], "explanation": "①應改為「一起」"}, {"unit": "國語", "type": "選擇題", "question": "「他將沒『處』理完的工作帶回住『處』繼續做。」『　』中字的讀音分別是什麼？", "display": "「他將沒『處』理完的工作帶回住『處』繼續做。」『　』中字的讀音分別是什麼？", "answer": "4", "char_count": 0, "options": ["①畜／處", "②畜／畜", "③處／處", "④處／畜"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列語詞「　」中的字，哪一個讀音與其他三個不同？", "display": "下列語詞「　」中的字，哪一個讀音與其他三個不同？", "answer": "1", "char_count": 0, "options": ["①「付」款", "②「福」氣", "③「扶」持", "④「符」號"], "explanation": "①副；②符；③符；④符"}, {"unit": "國語", "type": "選擇題", "question": "下列哪個選項的總筆畫數和「懼」不同？", "display": "下列哪個選項的總筆畫數和「懼」不同？", "answer": "2", "char_count": 0, "options": ["①顧", "②驗", "③爛", "④護"], "explanation": "二十一畫；①二十一畫；②二十三畫；③二十一畫；④二十一畫"}, {"unit": "國語", "type": "選擇題", "question": "「沉迷於小說中的他，抬頭看時鐘才發『覺』到，早已過了該睡『覺』的時間。」『　』中字的讀音分別是什麼？", "display": "「沉迷於小說中的他，抬頭看時鐘才發『覺』到，早已過了該睡『覺』的時間。」『　』中字的讀音分別是什麼？", "answer": "1", "char_count": 0, "options": ["①絕／較", "②絕／絕", "③較／較", "④較／絕"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列「　」中的語詞，哪一個和「警察在路口指揮交通」的「指揮」一樣，表示一種動作？", "display": "下列「　」中的語詞，哪一個和「警察在路口指揮交通」的「指揮」一樣，表示一種動作？", "answer": "2", "char_count": 0, "options": ["①要能勇於面對「挑戰」", "②寒冷的天氣，讓他的雙腳不停的「抖動」", "③你這樣隨意穿越馬路的行為是很「危險」的", "④午後的蟲鳴聲聽起來十分「悅耳」"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列「　」中的語詞，哪個使用不恰當？", "display": "下列「　」中的語詞，哪個使用不恰當？", "answer": "3", "char_count": 0, "options": ["①我實在是沒有「膽量」去問她", "②呼吸「急促」的她，決定先到一旁坐著休息", "③得知他因為車禍而「拚命」，讓大家都不禁流下了淚", "④他的雙手因舉著過重的水桶而不停的「抖動」"], "explanation": "③應改為「喪命」"}, {"unit": "國語", "type": "選擇題", "question": "下列部首何者錯誤？", "display": "下列部首何者錯誤？", "answer": "1", "char_count": 0, "options": ["①晰：木部", "②扛：手部", "③糊：米部", "④吊：口部"], "explanation": "①日部"}, {"unit": "國語", "type": "選擇題", "question": "哪一個字去掉部首以後，讀音不變？", "display": "哪一個字去掉部首以後，讀音不變？", "answer": "4", "char_count": 0, "options": ["①吊", "②付", "③通", "④裂"], "explanation": "①吊→巾；②付→寸；③通→甬；④裂→列"}, {"unit": "國語", "type": "選擇題", "question": "「這塊豆『府』吃起來非常軟嫩。」『府』寫成國字後，是下列哪一個字？", "display": "「這塊豆『府』吃起來非常軟嫩。」『府』寫成國字後，是下列哪一個字？", "answer": "2", "char_count": 0, "options": ["①府", "②腐", "③附", "④付"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "「請你不要抱著隨便『應』付的心態來處理這件事情。」『應』的讀音是什麼？", "display": "「請你不要抱著隨便『應』付的心態來處理這件事情。」『應』的讀音是什麼？", "answer": "1", "char_count": 0, "options": ["①映", "②應", "③營", "④影"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列「　」中的注音，何者錯誤？", "display": "下列「　」中的注音，何者錯誤？", "answer": "3", "char_count": 0, "options": ["①清「晰」：晰", "②「懼」怕：懼", "③「膽」識：擔", "④「關」切：關"], "explanation": "③膽"}, {"unit": "國語", "type": "選擇題", "question": "關於「　」中的量詞，下列哪一個使用錯誤？", "display": "關於「　」中的量詞，下列哪一個使用錯誤？", "answer": "3", "char_count": 0, "options": ["①「一次」挑戰", "②「一處」墳場", "③「一棵」豆腐", "④「一陣」鼓聲"], "explanation": "③用「一塊」較適當"}, {"unit": "國語", "type": "選擇題", "question": "下列「　」中的字，哪一個和「扛起鋤頭」的「扛」一樣，都是代表動作的字？", "display": "下列「　」中的字，哪一個和「扛起鋤頭」的「扛」一樣，都是代表動作的字？", "answer": "2", "char_count": 0, "options": ["①發「軟」", "②「壯」膽", "③平「坦」", "④模「糊」"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "「這件事其實沒有你想像中的那麼『困』難。」『困』寫成國字後，是下列哪一個字？", "display": "「這件事其實沒有你想像中的那麼『困』難。」『困』寫成國字後，是下列哪一個字？", "answer": "4", "char_count": 0, "options": ["①囚", "②囷", "③因", "④困"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列「　」中的字，哪一組讀音兩兩相同？", "display": "下列「　」中的字，哪一組讀音兩兩相同？", "answer": "4", "char_count": 0, "options": ["①「通」知／「冬」瓜", "②清「晰」／油「漆」", "③「關」卡／「寬」待", "④「吊」掛／「掉」落"], "explanation": "①通／冬；②晰／漆；③關／寬；④掉"}, {"unit": "國語", "type": "選擇題", "question": "下列哪個選項的總筆畫數和「危」相同？", "display": "下列哪個選項的總筆畫數和「危」相同？", "answer": "1", "char_count": 0, "options": ["①吊", "②坦", "③壯", "④付"], "explanation": "六畫；①六畫；②八畫；③七畫；④五畫"}, {"unit": "國語", "type": "選擇題", "question": "下列哪一個字讀三聲？", "display": "下列哪一個字讀三聲？", "answer": "3", "char_count": 0, "options": ["①「急」促", "②「意」外", "③壯「膽」", "④重「擊」"], "explanation": "①及；②意；③膽；④及"}, {"unit": "國語", "type": "選擇題", "question": "「可是我不回去行嗎□」□中應該填入哪個標點符號？", "display": "「可是我不回去行嗎□」□中應該填入哪個標點符號？", "answer": "1", "char_count": 0, "options": ["①？", "②。", "③，", "④、"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "「今天的月亮□□皎潔，讓人忍不住停下來欣賞一番。」□中應填入哪一個語詞？", "display": "「今天的月亮□□皎潔，讓人忍不住停下來欣賞一番。」□中應填入哪一個語詞？", "answer": "2", "char_count": 0, "options": ["①戰勝", "②格外", "③發覺", "④交代"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列哪件事，不會令人感到「著急」？", "display": "下列哪件事，不會令人感到「著急」？", "answer": "1", "char_count": 0, "options": ["①在榕樹下乘涼", "②在懸崖上等待救援", "③房子著火", "④上學遲到"], "explanation": ""}, {"unit": "國語", "type": "選擇題", "question": "下列「　」中的字，哪一組讀音兩兩不同？", "display": "下列「　」中的字，哪一組讀音兩兩不同？", "answer": "4", "char_count": 0, "options": ["①模「糊」／江「湖」", "②「壯」膽／形「狀」", "③「裂」開／「烈」火", "④平「坦」／「但」是"], "explanation": "①糊；②狀；③裂；④坦／但"}, {"unit": "國語", "type": "照樣寫短語", "question": "一「座」「危險」的「吊橋」\n請仿照例句，寫出兩個短語：\n(１)一(　　)(　　　)的(　　　)\n(２)一(　　)(　　　)的(　　　)", "display": "一「座」「危險」的「吊橋」\n請仿照例句，寫出兩個短語：\n(１)一(　　)(　　　)的(　　　)\n(２)一(　　)(　　　)的(　　　)", "answer": "(１)盤，美味，早餐\n(２)首，悅耳，歌曲\n【結構】一＋量詞＋形容詞＋的＋名詞", "char_count": 3, "options": []}, {"unit": "國語", "type": "照樣寫短語", "question": "「眼前」一「片」「模糊」\n請仿照例句，寫出一個短語：\n(　　　)一(　　)(　　　)", "display": "「眼前」一「片」「模糊」\n請仿照例句，寫出一個短語：\n(　　　)一(　　)(　　　)", "answer": "心裡，陣，慌亂\n【結構】名詞(身體部位)＋一＋量詞＋名詞", "char_count": 3, "options": []}, {"unit": "國語", "type": "照樣寫短語", "question": "「奇怪」的「聲音」\n請仿照例句，寫出兩個短語：\n(１)(　　　)的(　　　)\n(２)(　　　)的(　　　)", "display": "「奇怪」的「聲音」\n請仿照例句，寫出兩個短語：\n(１)(　　　)的(　　　)\n(２)(　　　)的(　　　)", "answer": "(１)美味，食物\n(２)秀麗，風景\n【結構】形容詞＋的＋名詞", "char_count": 2, "options": []}, {"unit": "國語", "type": "照樣寫短語", "question": "「戰勝」了「黑暗」和「恐懼」\n請仿照例句，寫出兩個短語：\n(１)(　　　)了(　　　)和(　　　)\n(２)(　　　)了(　　　)和(　　　)", "display": "「戰勝」了「黑暗」和「恐懼」\n請仿照例句，寫出兩個短語：\n(１)(　　　)了(　　　)和(　　　)\n(２)(　　　)了(　　　)和(　　　)", "answer": "(１)克服，困難，失敗\n(２)贏得，冠軍，喜悅\n【結構】動詞＋了＋名詞＋和＋名詞", "char_count": 3, "options": []}, {"unit": "國語", "type": "照樣寫短語", "question": "「勇敢」的「接受」「挑戰」\n請仿照例句，寫出兩個短語：\n(１)(　　　)的(　　　)(　　　)\n(２)(　　　)的(　　　)(　　　)", "display": "「勇敢」的「接受」「挑戰」\n請仿照例句，寫出兩個短語：\n(１)(　　　)的(　　　)(　　　)\n(２)(　　　)的(　　　)(　　　)", "answer": "(１)努力，跨越，阻礙\n(２)仔細，埋藏，回憶\n【結構】副詞＋的＋動詞＋名詞", "char_count": 3, "options": []}, {"unit": "國語", "type": "照樣寫短語", "question": "「牙齒」「咯咯咯」的「敲」\n請仿照例句，寫出一個短語：\n(　　　)(　　　　)的(　　)", "display": "「牙齒」「咯咯咯」的「敲」\n請仿照例句，寫出一個短語：\n(　　　)(　　　　)的(　　)", "answer": "心臟，咚咚咚，跳\n【結構】名詞＋狀聲詞＋的＋動詞", "char_count": 3, "options": []}];
-let currentDeck=[], wrongDeck=[], currentIndex=0;
-let selectedIdx=null, isAnswered=false, isReview=false;
-const card=document.getElementById('card');
+
+var activeFilters=[];var CATS=[];
+(function(){var seen={};for(var i=0;i<DECK.length;i++){var c=DECK[i][0];if(!seen[c]){seen[c]=1;CATS.push(c);}}})();
+function getFilteredDeck(){
+  if(errorBookMode)return errorBookData.slice();
+  if(activeFilters.length===0)return DECK.slice();
+  return DECK.filter(function(d){return activeFilters.indexOf(d[0])>=0;});
+}
+function updateSetup(){
+  var fd=getFilteredDeck();
+  document.getElementById('totalCount').textContent=fd.length;
+  var inp=document.getElementById('countInput');
+  inp.max=fd.length;
+  if(parseInt(inp.value)>fd.length)inp.value=fd.length;
+}
+
+var quiz=[],idx=0,revealed=false;
+var card;
+var sessionAnswers=[];
+var currentChoice='';
+var errorBookMode=false;
+var errorBookData=[];
 
 function startQuiz(){
-  let n=parseInt(document.getElementById('countInput').value)||10;
-  n=Math.min(n,DECK.length);
-  currentDeck=DECK.slice().sort(()=>Math.random()-0.5).slice(0,n);
-  isReview=false; currentIndex=0; wrongDeck=[];
+  var fd=getFilteredDeck();
+  var n=Math.min(parseInt(document.getElementById('countInput').value)||5,fd.length);
+  var tmp=fd.slice();
+  for(var i=tmp.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=tmp[i];tmp[i]=tmp[j];tmp[j]=t;}
+  quiz=tmp.slice(0,n);idx=0;sessionAnswers=new Array(n);
+  document.getElementById('totNum').textContent=n;
   document.getElementById('setupSection').classList.add('hidden');
   document.getElementById('studySection').classList.remove('hidden');
   showCard();
 }
 
-function startReview(){
-  isReview=true; currentDeck=wrongDeck.slice(); currentIndex=0; wrongDeck=[];
-  document.getElementById('resultSection').classList.add('hidden');
-  document.getElementById('studySection').classList.remove('hidden');
-  showCard();
-}
-
 function showCard(){
-  isAnswered=false; selectedIdx=null;
-  card.classList.remove('flipped');
-  document.getElementById('flipBtn').disabled=true;
-  document.getElementById('checkBtn').disabled=false;
-  document.getElementById('answerBox').style.display='none';
-  document.getElementById('selfJudge').style.display='none';
-  document.getElementById('writeGrids').innerHTML='';
-  document.getElementById('optsArea').innerHTML='';
+  wbClearCanvas();
+  currentChoice='';
+  var d=quiz[idx];
+  revealed=false;
+  if(card.classList.contains('flipped'))card.classList.remove('flipped');
 
-  const d=currentDeck[currentIndex];
-  document.getElementById('frontTag').textContent=d.unit+'｜'+d.type;
+  document.getElementById('frontTag').textContent=d[0];
+  document.getElementById('qNum').textContent='第 '+(idx+1)+' 題';
+  document.getElementById('curNum').textContent=idx+1;
+  document.getElementById('modeLabel').textContent=d[1];
+  document.getElementById('progressFill').style.width=((idx)/quiz.length*100)+'%';
 
-  const fm=document.getElementById('frontMain');
-  fm.innerHTML=d.display.split('\n').map(l=>'<p class="q-text">'+l+'</p>').join('');
+  renderContent(document.getElementById('frontMain'),d[2]);
+  renderContent(document.getElementById('explanation'),d[8]||d[7]);
 
-  if(d.type==='選擇題'){
-    const oa=document.getElementById('optsArea');
-    d.options.forEach((o,i)=>{
-      const b=document.createElement('button');
-      b.className='opt-btn';
-      b.textContent=o;
-      b.onclick=(()=>{ const idx=i+1; return ()=>selectOpt(idx,b); })();
-      oa.appendChild(b);
+  var opts=document.getElementById('optsWrap');
+  opts.innerHTML='';
+
+  if(d[1]==='選擇題'){
+    opts.classList.remove('hidden');
+    ['①','②','③','④'].forEach(function(sym,i){
+      if(!d[3+i])return;
+      var btn=document.createElement('button');
+      btn.className='opt-btn';
+      var sp=document.createElement('span');sp.className='opt-sym';sp.textContent=sym;
+      btn.appendChild(sp);
+      var tx=document.createElement('span');tx.textContent=d[3+i];
+      btn.appendChild(tx);
+      btn.addEventListener('click',(function(ans,b){
+        return function(){checkAnswer(ans,b);};
+      })(String(i+1),btn));
+      opts.appendChild(btn);
     });
-    card.dataset.qtype='choice';
   } else {
-    buildGrids(d.char_count||1);
-    card.dataset.qtype='write';
-  }
-
-  let exp='正確答案：'+d.answer;
-  if(d.explanation) exp+='\n\n解析：'+d.explanation;
-  document.getElementById('explanation').textContent=exp;
-
-  const pct=((currentIndex+1)/currentDeck.length*100).toFixed(0);
-  document.getElementById('progressBar').style.width=pct+'%';
-  document.getElementById('progressText').textContent=(currentIndex+1)+' / '+currentDeck.length;
-  document.getElementById('modeText').textContent=isReview?'Review Mode':'Normal Mode';
-}
-
-function buildGrids(n){
-  const area=document.getElementById('writeGrids');
-  for(let i=0;i<n;i++){
-    const cell=document.createElement('div'); cell.className='write-cell';
-    const canvas=document.createElement('canvas'); canvas.className='write-canvas';
-    canvas.width=300; canvas.height=300;
-    setupDraw(canvas);
-    const lbl=document.createElement('div'); lbl.className='write-label'; lbl.textContent='第'+(i+1)+'格';
-    const clr=document.createElement('button'); clr.className='clear-btn'; clr.textContent='清除';
-    clr.onclick=()=>clearCanvas(canvas);
-    cell.appendChild(canvas); cell.appendChild(lbl); cell.appendChild(clr);
-    area.appendChild(cell);
+    opts.classList.add('hidden');
   }
 }
 
-function setupDraw(c){
-  const ctx=c.getContext('2d');
-  function grid(){
-    ctx.clearRect(0,0,c.width,c.height);
-    ctx.save(); ctx.strokeStyle='#fecdd3'; ctx.lineWidth=1.5;
-    ctx.setLineDash([5,4]);
-    ctx.beginPath();
-    ctx.moveTo(c.width/2,0); ctx.lineTo(c.width/2,c.height);
-    ctx.moveTo(0,c.height/2); ctx.lineTo(c.width,c.height/2);
-    ctx.stroke(); ctx.restore();
-  }
-  grid(); c._grid=grid;
-  let drawing=false, lx=0, ly=0;
-  function pos(e){
-    const r=c.getBoundingClientRect(), sx=c.width/r.width, sy=c.height/r.height;
-    if(e.touches) return{x:(e.touches[0].clientX-r.left)*sx,y:(e.touches[0].clientY-r.top)*sy};
-    return{x:(e.clientX-r.left)*sx,y:(e.clientY-r.top)*sy};
-  }
-  function start(e){ e.preventDefault(); drawing=true; c.classList.add('active');
-    ctx.strokeStyle='#1e293b'; ctx.lineWidth=10; ctx.lineCap='round'; ctx.lineJoin='round';
-    const p=pos(e); lx=p.x; ly=p.y;
-    ctx.beginPath(); ctx.arc(p.x,p.y,5,0,Math.PI*2); ctx.fillStyle='#1e293b'; ctx.fill(); }
-  function move(e){ if(!drawing)return; e.preventDefault();
-    const p=pos(e); ctx.beginPath(); ctx.moveTo(lx,ly); ctx.lineTo(p.x,p.y); ctx.stroke(); lx=p.x; ly=p.y; }
-  function stop(){ drawing=false; c.classList.remove('active'); }
-  c.addEventListener('mousedown',start); c.addEventListener('mousemove',move);
-  c.addEventListener('mouseup',stop); c.addEventListener('mouseleave',stop);
-  c.addEventListener('touchstart',start,{passive:false});
-  c.addEventListener('touchmove',move,{passive:false});
-  c.addEventListener('touchend',stop);
+function checkAnswer(chosen,btn){
+  if(revealed)return;
+  revealed=true;
+  currentChoice=chosen;
+  var all=document.querySelectorAll('.opt-btn');
+  all.forEach(function(b){b.disabled=true;});
+  btn.style.borderColor='#0ea5e9';
+  btn.style.background='#e0f2ff';
+  btn.querySelector('.opt-sym').style.background='#0ea5e9';
+  btn.querySelector('.opt-sym').style.color='#fff';
 }
 
-function clearCanvas(c){ const ctx=c.getContext('2d'); ctx.clearRect(0,0,c.width,c.height); if(c._grid)c._grid(); }
-
-function selectOpt(idx,el){
-  if(isAnswered)return;
-  selectedIdx=idx;
-  document.querySelectorAll('.opt-btn').forEach(b=>b.classList.remove('selected'));
-  el.classList.add('selected');
+function saveCurrentCard(){
+  var d=quiz[idx];
+  var isFillin=d[1]!=='選擇題';
+  sessionAnswers[idx]={
+    chosen:currentChoice,
+    correct:d[7],
+    isCorrect:isFillin?null:(currentChoice!==''&&currentChoice===d[7]),
+    wb:wbDataUrl()
+  };
 }
-
-function checkAnswer(){
-  if(isAnswered)return;
-  isAnswered=true;
-  const d=currentDeck[currentIndex];
-  if(card.dataset.qtype==='choice'){
-    if(selectedIdx===null){isAnswered=false;alert('請先選擇一個選項！');return;}
-    const ci=parseInt(d.answer);
-    const btns=document.querySelectorAll('.opt-btn');
-    btns[ci-1].classList.add('correct');
-    if(selectedIdx!==ci){ btns[selectedIdx-1].classList.add('wrong'); if(!wrongDeck.includes(d))wrongDeck.push(d); }
-  } else {
-    const ab=document.getElementById('answerBox');
-    ab.textContent='正確答案：'+d.answer;
-    ab.style.display='block';
-    document.getElementById('selfJudge').style.display='flex';
-  }
-  document.getElementById('checkBtn').disabled=true;
-  document.getElementById('flipBtn').disabled=false;
-}
-
-function selfJudge(ok){
-  document.getElementById('selfJudge').style.display='none';
-  if(!ok){ const d=currentDeck[currentIndex]; if(!wrongDeck.includes(d))wrongDeck.push(d); }
-}
-
-function flipCard(){ if(isAnswered)card.classList.toggle('flipped'); }
 
 function nextCard(){
-  if(currentIndex<currentDeck.length-1){ currentIndex++; showCard(); }
-  else showResults();
+  saveCurrentCard();
+  if(idx<quiz.length-1){idx++;showCard();}
+  else showResult();
 }
+function prevCard(){if(idx>0){idx--;showCard();}}
 
-function prevCard(){ if(currentIndex>0){ currentIndex--; showCard(); } }
-
-function showResults(){
+function showResult(){
+  errorBookMode=false;
+  saveCurrentCard();
+  localStorage.setItem('fc_session',JSON.stringify({
+    timestamp:Date.now(),
+    cards:quiz,
+    answers:sessionAnswers
+  }));
   document.getElementById('studySection').classList.add('hidden');
   document.getElementById('resultSection').classList.remove('hidden');
-  const t=currentDeck.length, w=wrongDeck.length;
-  document.getElementById('scoreText').innerHTML=
-    '本次測驗：<b class="blue">'+t+' 題</b><br>答對：<b class="green">'+(t-w)+'</b>　答錯：<b class="red">'+w+'</b>';
-  const rb=document.getElementById('reviewBtn');
-  if(w>0)rb.classList.remove('hidden'); else rb.classList.add('hidden');
 }
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('startBtn').addEventListener('click', startQuiz);
-  document.getElementById('checkBtn').addEventListener('click', checkAnswer);
-  document.getElementById('flipBtn').addEventListener('click', flipCard);
-  document.getElementById('prevBtn').addEventListener('click', prevCard);
-  document.getElementById('nextBtn').addEventListener('click', nextCard);
-  document.getElementById('correctBtn').addEventListener('click', function(){ selfJudge(true); });
-  document.getElementById('wrongBtn').addEventListener('click', function(){ selfJudge(false); });
-  document.getElementById('reviewBtn').addEventListener('click', startReview);
-  document.getElementById('homeBtn').addEventListener('click', function(){ location.reload(); });
-});
 
+function hideAllSections(){
+  ['setupSection','studySection','resultSection','parentSection'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.classList.add('hidden');
+  });
+}
+
+function renderContent(el,text){
+  el.innerHTML='';
+  if(!text){return;}
+  var lines=text.split(/\\n|\n/),i=0;
+  while(i<lines.length){
+    var ln=lines[i].trim();
+    if(!ln){i++;continue;}
+    if(ln.startsWith('data:image')){
+      var row=document.createElement('div');row.style.textAlign='center';
+      while(i<lines.length&&lines[i].trim().startsWith('data:image')){
+        (function(src){
+          var img=document.createElement('img');img.src=src;
+          img.style.maxWidth='100%';img.style.borderRadius='8px';
+          img.onload=function(){if(this.naturalWidth>100){this.style.display='block';this.style.margin='8px auto';}};
+          row.appendChild(img);
+        })(lines[i].trim());i++;
+      }
+      el.appendChild(row);
+    } else {
+      var p=document.createElement('p');p.className='q-text';p.textContent=ln;el.appendChild(p);i++;
+    }
+  }
+}
+
+var titleClickCount=0,titleClickTimer=null;
+
+function initTitleClick(){
+  var h1=document.querySelector('.header h1');
+  h1.addEventListener('click',function(){
+    titleClickCount++;
+    if(titleClickTimer)clearTimeout(titleClickTimer);
+    if(titleClickCount>=5){titleClickCount=0;openParentReview();}
+    else titleClickTimer=setTimeout(function(){titleClickCount=0;},2000);
+  });
+}
+
+function openParentReview(){
+  var raw=localStorage.getItem('fc_session');
+  if(!raw){
+    document.getElementById('reviewList').innerHTML='<div class="no-session">尚無練習記錄<br>請讓孩子先完成一次練習</div>';
+  } else {
+    buildReviewList(JSON.parse(raw));
+  }
+  hideAllSections();
+  document.getElementById('parentSection').classList.remove('hidden');
+}
+
+function buildReviewList(session){
+  var list=document.getElementById('reviewList');
+  list.innerHTML='';
+  var cards=session.cards||[];
+  var answers=session.answers||[];
+  cards.forEach(function(d,i){
+    var ans=answers[i]||{};
+    var isFillin=d[1]!=='選擇題';
+    var item=document.createElement('div');
+    item.className='review-item';
+    var qnum=document.createElement('div');
+    qnum.className='review-q-num';
+    qnum.textContent='第 '+(i+1)+' 題';
+    item.appendChild(qnum);
+    var qBox=document.createElement('div');
+    qBox.className='q-text';
+    qBox.style.marginBottom='12px';
+    renderContent(qBox,d[2]);
+    item.appendChild(qBox);
+    if(!isFillin){
+      var optsDiv=document.createElement('div');
+      optsDiv.className='review-opts';
+      ['①','②','③','④'].forEach(function(sym,j){
+        if(!d[3+j])return;
+        var optDiv=document.createElement('div');
+        optDiv.className='review-opt';
+        var symSpan=document.createElement('span');
+        symSpan.className='review-opt-sym';
+        symSpan.textContent=sym;
+        var txtSpan=document.createElement('span');
+        txtSpan.textContent=d[3+j];
+        optDiv.appendChild(symSpan);optDiv.appendChild(txtSpan);
+        if(String(j+1)===d[7])optDiv.classList.add('r-correct');
+        else if(String(j+1)===ans.chosen)optDiv.classList.add('r-wrong');
+        optsDiv.appendChild(optDiv);
+      });
+      item.appendChild(optsDiv);
+    }
+    if(ans.wb&&ans.wb.length>100){
+      var img=document.createElement('img');
+      img.src=ans.wb;img.className='review-wb';
+      item.appendChild(img);
+    }
+    var status=document.createElement('div');
+    status.className='review-status';
+    if(isFillin){
+      status.classList.add('s-fillin');
+      status.textContent='填充題 — 請對照白板與答案';
+    } else if(ans.isCorrect===true){
+      status.classList.add('s-correct');
+      status.textContent='✓ 答對了';
+    } else if(ans.isCorrect===false){
+      status.classList.add('s-wrong');
+      status.textContent='✗ 答錯了';
+    } else {
+      status.textContent='未作答';
+    }
+    item.appendChild(status);
+    var ansBox=document.createElement('div');
+    ansBox.className='review-ans-box hidden';
+    var ansLabel=document.createElement('div');
+    ansLabel.className='review-ans-label';
+    ansLabel.textContent='正確答案';
+    var ansText=document.createElement('div');
+    ansText.className='review-ans-text';
+    if(isFillin){
+      ansText.textContent=d[7];
+    } else {
+      var ci=parseInt(d[7])-1;
+      ansText.textContent=['①','②','③','④'][ci]+' '+d[3+ci];
+    }
+    ansBox.appendChild(ansLabel);ansBox.appendChild(ansText);
+    var btns=document.createElement('div');btns.className='review-btns';
+    var flipBtn=document.createElement('button');
+    flipBtn.className='review-flip-btn';
+    flipBtn.textContent='翻牌看答案';
+    (function(ab,fb){
+      fb.addEventListener('click',function(){
+        ab.classList.toggle('hidden');
+        fb.textContent=ab.classList.contains('hidden')?'翻牌看答案':'收起答案';
+      });
+    })(ansBox,flipBtn);
+    var errBtn=document.createElement('button');
+    errBtn.className='review-err-btn';
+    errBtn.textContent='加入錯題本';
+    (function(deckRow,eb){
+      eb.addEventListener('click',function(){
+        addToErrorBook(deckRow);
+        eb.textContent='已加入 ✓';
+        eb.classList.add('eb-added');
+      });
+    })(d,errBtn);
+    btns.appendChild(flipBtn);btns.appendChild(errBtn);
+    item.appendChild(btns);
+    item.appendChild(ansBox);
+    list.appendChild(item);
+  });
+}
+
+function addToErrorBook(deckRow){
+  var raw=localStorage.getItem('fc_errorbook');
+  var eb=raw?JSON.parse(raw):[];
+  var exists=eb.some(function(r){return r[2]===deckRow[2];});
+  if(!exists)eb.push(deckRow);
+  localStorage.setItem('fc_errorbook',JSON.stringify(eb));
+  updateEbCount();
+}
+
+function updateEbCount(){
+  var raw=localStorage.getItem('fc_errorbook');
+  var eb=raw?JSON.parse(raw):[];
+  var span=document.getElementById('ebCount');
+  if(span)span.textContent=eb.length?'('+eb.length+' 題)':'';
+}
+
+function openErrorBook(){
+  var raw=localStorage.getItem('fc_errorbook');
+  var eb=raw?JSON.parse(raw):[];
+  if(eb.length===0){alert('錯題本是空的\n請先讓家長標記錯題');return;}
+  errorBookData=eb.slice();
+  errorBookMode=true;
+  updateSetup();
+}
+
+var wbCtx=null,wbPainting=false;
+
+function wbInit(){
+  var canvas=document.getElementById('wbCanvas');
+  canvas.width=canvas.parentElement.clientWidth||360;
+  wbCtx=canvas.getContext('2d');
+  wbCtx.strokeStyle='#1e293b';wbCtx.lineWidth=2.5;wbCtx.lineCap='round';wbCtx.lineJoin='round';
+  function pos(e){
+    var r=canvas.getBoundingClientRect();
+    var src=e.touches?e.touches[0]:e;
+    return{x:(src.clientX-r.left)*(canvas.width/r.width),y:(src.clientY-r.top)*(canvas.height/r.height)};
+  }
+  function down(e){e.preventDefault();wbPainting=true;var p=pos(e);wbCtx.beginPath();wbCtx.moveTo(p.x,p.y);}
+  function move(e){e.preventDefault();if(!wbPainting)return;var p=pos(e);wbCtx.lineTo(p.x,p.y);wbCtx.stroke();}
+  function up(){wbPainting=false;}
+  canvas.addEventListener('mousedown',down);
+  canvas.addEventListener('mousemove',move);
+  canvas.addEventListener('mouseup',up);
+  canvas.addEventListener('mouseleave',up);
+  canvas.addEventListener('touchstart',down,{passive:false});
+  canvas.addEventListener('touchmove',move,{passive:false});
+  canvas.addEventListener('touchend',up);
+  document.getElementById('wbClear').addEventListener('click',wbClearCanvas);
+}
+
+function wbClearCanvas(){
+  if(!wbCtx)return;
+  var c=document.getElementById('wbCanvas');
+  wbCtx.clearRect(0,0,c.width,c.height);
+}
+
+function wbDataUrl(){
+  if(!wbCtx)return'';
+  return document.getElementById('wbCanvas').toDataURL('image/png');
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  card=document.getElementById('card');
+
+  var fr=document.getElementById('filterRow');
+  CATS.forEach(function(cat){
+    var btn=document.createElement('button');
+    btn.className='filter-btn';btn.textContent=cat;
+    btn.addEventListener('click',function(){
+      this.classList.toggle('active');
+      if(this.classList.contains('active')){if(activeFilters.indexOf(cat)<0)activeFilters.push(cat);}
+      else{activeFilters=activeFilters.filter(function(c){return c!==cat;});}
+      updateSetup();
+    });
+    fr.appendChild(btn);
+  });
+  updateSetup();
+
+  document.getElementById('startBtn').addEventListener('click',startQuiz);
+  document.getElementById('prevBtn').addEventListener('click',prevCard);
+  document.getElementById('nextBtn').addEventListener('click',nextCard);
+  document.getElementById('homeBtn').addEventListener('click',function(){
+    errorBookMode=false;
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('setupSection').classList.remove('hidden');
+    updateSetup();
+    updateEbCount();
+  });
+  document.getElementById('countMinus').addEventListener('click',function(){
+    var inp=document.getElementById('countInput');
+    if(parseInt(inp.value)>1)inp.value=parseInt(inp.value)-1;
+  });
+  document.getElementById('countPlus').addEventListener('click',function(){
+    var inp=document.getElementById('countInput');
+    if(parseInt(inp.value)<parseInt(inp.max))inp.value=parseInt(inp.value)+1;
+  });
+  document.getElementById('errorBookBtn').addEventListener('click',openErrorBook);
+  updateEbCount();
+  wbInit();
+  initTitleClick();
+  document.getElementById('parentClose').addEventListener('click',function(){
+    hideAllSections();
+    document.getElementById('setupSection').classList.remove('hidden');
+  });
+});
 </script>
 </body>
 </html>

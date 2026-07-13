@@ -2,234 +2,637 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>小數乘法（乘數是二位數以上）學習卡</title>
-<style>*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;background:#f1f5f9;min-height:100vh;-webkit-user-select:none;user-select:none;}
-.page{max-width:700px;margin:0 auto;padding:16px 16px 60px;}
-.hero{background:linear-gradient(135deg,#2563eb,#1d4ed8);border-radius:0 0 3rem 3rem;margin:-16px -16px 0;padding:28px 20px 80px;text-align:center;}
-.hero h1{color:white;font-size:1.7rem;font-weight:900;margin-bottom:4px;}
-.hero p{color:rgba(255,255,255,0.8);font-size:0.9rem;}
-.setup-card{background:white;border-radius:2rem;padding:36px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
-.setup-icon{width:64px;height:64px;background:#eff6ff;border-radius:1.2rem;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-size:1.6rem;}
-.setup-title{font-size:1.4rem;font-weight:900;color:#1e293b;margin-bottom:6px;}
-.setup-sub{color:#64748b;font-size:0.9rem;margin-bottom:24px;}
-.setup-sub b{color:#2563eb;font-weight:800;}
-.input-label{font-size:0.7rem;font-weight:700;color:#94a3b8;letter-spacing:0.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
-.count-input{width:100%;background:#f1f5f9;border:none;border-radius:1rem;padding:14px;font-size:1.3rem;font-weight:800;text-align:center;outline:none;margin-bottom:16px;color:#1e293b;}
-.start-btn{width:100%;background:#2563eb;color:white;border:none;border-radius:1rem;padding:16px;font-size:1.1rem;font-weight:800;cursor:pointer;}
-.start-btn:active{background:#1d4ed8;}
-.result-card{background:white;border-radius:2rem;padding:40px 24px;box-shadow:0 20px 50px rgba(0,0,0,0.15);text-align:center;margin-top:-50px;}
-.result-card .trophy{font-size:3.5rem;margin-bottom:16px;}
-.result-card h2{font-size:1.6rem;font-weight:900;color:#1e293b;margin-bottom:8px;}
-.result-card p{font-size:1rem;color:#475569;margin-bottom:24px;line-height:1.8;}
-.btn-review{display:block;width:100%;background:#ef4444;color:white;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;margin-bottom:10px;}
-.btn-home{display:block;width:100%;background:#e2e8f0;color:#334155;border:none;border-radius:1rem;padding:14px;font-size:1rem;font-weight:800;cursor:pointer;}
-.progress-wrap{margin-bottom:14px;}
-.progress-row{display:flex;justify-content:space-between;color:white;font-size:0.75rem;font-weight:700;margin-bottom:6px;}
-.progress-track{height:7px;background:rgba(255,255,255,0.25);border-radius:99px;overflow:hidden;}
-.progress-fill{height:100%;background:white;border-radius:99px;transition:width 0.4s;}
-.card-wrap{perspective:1400px;height:500px;margin-bottom:18px;}
-.card{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform 0.55s cubic-bezier(0.23,1,0.32,1);}
-.card.flipped{transform:rotateY(180deg);}
-.card-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:2rem;background:white;box-shadow:0 20px 50px rgba(0,0,0,0.18);overflow:hidden;}
-.card-back{transform:rotateY(180deg);background:#fafafa;}
-.corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#2563eb;font-weight:800;background:rgba(37,99,235,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
-.back-corner-tag{position:absolute;top:20px;left:24px;font-size:0.85rem;color:#6366f1;font-weight:800;background:rgba(99,102,241,0.1);padding:5px 14px;border-radius:10px;z-index:2;}
-.face-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 28px 24px;overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.face-inner::-webkit-scrollbar{display:none;}
-.q-text{font-size:1.1rem;font-weight:700;color:#1e293b;margin-bottom:6px;line-height:1.7;text-align:center;white-space:pre-wrap;}
-.opts{display:flex;flex-direction:column;gap:10px;width:100%;margin-top:12px;}
-.opt-btn{font-size:1rem;font-weight:600;color:#475569;background:#f8fafc;padding:12px 20px;border-radius:1rem;border:2px solid #e2e8f0;cursor:pointer;text-align:left;position:relative;-webkit-tap-highlight-color:transparent;}
-.opt-btn.selected{background:#eff6ff;border-color:#2563eb;color:#1d4ed8;}
-.opt-btn.correct{background:#dcfce7!important;border-color:#22c55e!important;color:#166534!important;}
-.opt-btn.wrong{background:#fee2e2!important;border-color:#ef4444!important;color:#991b1b!important;}
-.answer-box{border:2px solid #2563eb;border-radius:1rem;padding:14px 20px;width:100%;text-align:center;font-size:1.2rem;font-weight:800;color:#1d4ed8;background:#eff6ff;margin-top:14px;display:none;white-space:pre-wrap;line-height:1.8;}
-.self-judge{display:none;justify-content:center;gap:12px;margin-top:14px;}
-.btn-correct{background:#dcfce7;border:2px solid #22c55e;color:#166534;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
-.btn-wrong-j{background:#fee2e2;border:2px solid #ef4444;color:#991b1b;border-radius:1rem;padding:12px 24px;font-size:1.1rem;font-weight:800;cursor:pointer;}
-.explanation{background:#f1f5f9;padding:20px;border-radius:1.2rem;width:100%;font-size:1.05rem;color:#475569;line-height:1.8;border-left:6px solid #2563eb;white-space:pre-wrap;overflow-y:auto;max-height:360px;-webkit-overflow-scrolling:touch;margin-top:8px;}
-.back-title{font-size:0.75rem;font-weight:700;color:#2563eb;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:12px;}
-.action-row{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;padding-bottom:20px;}
-.action-btn{background:white;border-radius:1.2rem;padding:14px 10px;box-shadow:0 8px 20px rgba(0,0,0,0.1);min-width:70px;display:flex;flex-direction:column;align-items:center;gap:4px;border:none;cursor:pointer;font-size:0.65rem;font-weight:700;color:#64748b;-webkit-tap-highlight-color:transparent;}
-.action-btn:disabled{opacity:0.4;cursor:not-allowed;}
-.action-btn .icon{font-size:1.3rem;}
-.btn-check-style{background:#10b981;color:white;}
-.btn-flip-style{background:#6366f1;color:white;}
-.hidden{display:none!important;}</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#f0f9ff;font-family:-apple-system,"Helvetica Neue",Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center}
+
+/* ── Header ── */
+.header{width:100%;background:linear-gradient(135deg,#0ea5e9,#0284c7);padding:18px 24px 60px;text-align:center;position:relative}
+.header h1{color:#fff;font-size:1.6rem;font-weight:900;letter-spacing:.5px}
+.header p{color:rgba(255,255,255,.75);font-size:.85rem;margin-top:4px}
+
+/* ── Main card lifts over header ── */
+.main-wrap{width:100%;max-width:680px;padding:0 16px 60px;margin-top:-44px}
+
+/* ── Setup screen ── */
+.setup-card{background:#fff;border-radius:2rem;padding:32px 28px 28px;box-shadow:0 20px 60px rgba(14,165,233,.15)}
+.setup-icon{font-size:2.6rem;text-align:center;margin-bottom:8px}
+.setup-card h2{text-align:center;font-size:1.2rem;font-weight:800;color:#0c4a6e;margin-bottom:4px}
+.deck-count{text-align:center;color:#64748b;font-size:.88rem;margin-bottom:24px}
+
+.filter-row{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:22px}
+.filter-btn{padding:7px 18px;border-radius:99px;border:2px solid #e0f2fe;background:#f0f9ff;color:#0ea5e9;font-size:.82rem;font-weight:700;cursor:pointer;transition:all .2s}
+.filter-btn.active{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
+
+.count-row{display:flex;align-items:center;justify-content:center;gap:14px;margin-bottom:24px}
+.count-label{font-size:.88rem;color:#64748b;font-weight:600}
+.count-box{display:flex;align-items:center;gap:8px;background:#f0f9ff;border-radius:1rem;padding:8px 16px}
+.count-box input{width:52px;text-align:center;font-size:1.1rem;font-weight:800;color:#0c4a6e;border:none;background:transparent;outline:none}
+.count-adj{width:32px;height:32px;border-radius:50%;border:2px solid #bae6fd;background:#fff;color:#0ea5e9;font-size:1.1rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s}
+.count-adj:hover{background:#0ea5e9;border-color:#0ea5e9;color:#fff}
+
+.start-btn{width:100%;padding:15px;border-radius:1.2rem;border:none;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-size:1.05rem;font-weight:800;cursor:pointer;letter-spacing:.5px;box-shadow:0 8px 24px rgba(14,165,233,.35);transition:transform .15s,box-shadow .15s}
+.start-btn:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(14,165,233,.45)}
+.start-btn:active{transform:translateY(0)}
+
+/* ── Progress bar ── */
+.progress-wrap{margin-bottom:18px}
+.progress-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-meta span{font-size:.82rem;font-weight:700;color:#64748b}
+.progress-meta .p-num{color:#0284c7;font-size:.95rem}
+.progress-track{height:8px;background:#e0f2fe;border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:linear-gradient(90deg,#38bdf8,#0284c7);border-radius:99px;transition:width .4s cubic-bezier(.4,0,.2,1)}
+
+/* ── Flip card ── */
+.card-scene{perspective:1400px;height:420px;margin-bottom:18px}
+.card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.23,1,.32,1);cursor:pointer}
+.card.flipped{transform:rotateY(180deg)}
+.card-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:2rem;display:flex;flex-direction:column;padding:28px 24px 20px}
+.card-front{background:#fff;box-shadow:0 16px 48px rgba(14,165,233,.12)}
+.card-back{background:linear-gradient(160deg,#f0f9ff,#e0f2fe);box-shadow:0 16px 48px rgba(14,165,233,.12);transform:rotateY(180deg)}
+
+.card-tag{display:inline-block;background:#e0f2fe;color:#0284c7;font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:99px;margin-bottom:14px;align-self:flex-start}
+.card-tag.back-tag{background:#bae6fd;color:#0369a1}
+
+.q-num{font-size:.78rem;font-weight:700;color:#94a3b8;margin-bottom:6px}
+.q-text{font-size:1.1rem;font-weight:700;color:#0c4a6e;line-height:1.7;white-space:pre-wrap;flex:1;overflow-y:auto}
+
+.opts{display:flex;flex-direction:column;gap:9px;margin-top:14px}
+.opt-btn{padding:11px 18px;border-radius:1rem;border:2px solid #e0f2fe;background:#f8fbff;color:#0c4a6e;font-size:.92rem;font-weight:600;text-align:left;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:10px}
+.opt-btn:hover:not(:disabled){border-color:#7dd3fc;background:#f0f9ff}
+.opt-btn .opt-sym{width:26px;height:26px;border-radius:50%;background:#e0f2fe;color:#0284c7;font-size:.8rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.opt-btn.correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.opt-btn.correct .opt-sym{background:#22c55e;color:#fff}
+.opt-btn.wrong{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+.opt-btn.wrong .opt-sym{background:#ef4444;color:#fff}
+.opt-btn:disabled{cursor:default}
+
+/* fill-in answer box */
+.answer-reveal{background:#fff;border:3px solid #0ea5e9;border-radius:1.2rem;padding:16px 20px;text-align:center;margin-top:16px}
+.answer-reveal .label{font-size:.78rem;color:#64748b;font-weight:700;margin-bottom:4px}
+.answer-reveal .ans{font-size:1.5rem;font-weight:900;color:#0284c7}
+
+/* self-judge */
+.self-judge{display:flex;gap:10px;margin-top:auto;padding-top:14px}
+.sj-btn{flex:1;padding:11px;border-radius:1rem;border:2px solid;font-size:.88rem;font-weight:700;cursor:pointer;transition:all .2s}
+.sj-correct{border-color:#22c55e;background:#f0fdf4;color:#166534}
+.sj-correct:hover{background:#22c55e;color:#fff}
+.sj-wrong{border-color:#ef4444;background:#fef2f2;color:#991b1b}
+.sj-wrong:hover{background:#ef4444;color:#fff}
+
+/* back content */
+.expl-label{font-size:.75rem;font-weight:800;color:#0369a1;letter-spacing:.5px;margin-bottom:8px}
+.explanation{font-size:1rem;line-height:1.8;color:#0c4a6e;flex:1;overflow-y:auto;padding-right:4px}
+.explanation::-webkit-scrollbar{width:4px}
+.explanation::-webkit-scrollbar-thumb{background:#bae6fd;border-radius:2px}
+
+/* ── Action row ── */
+.action-row{display:flex;gap:10px;justify-content:center;margin-bottom:10px}
+.action-btn{flex:1;max-width:140px;background:#fff;border:2px solid #e0f2fe;border-radius:1.2rem;padding:13px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all .2s;box-shadow:0 4px 12px rgba(14,165,233,.08)}
+.action-btn:hover{border-color:#7dd3fc;box-shadow:0 6px 16px rgba(14,165,233,.18);transform:translateY(-2px)}
+.action-btn .icon{font-size:1.2rem}
+.action-btn .label{font-size:.65rem;font-weight:800;color:#64748b;letter-spacing:.3px}
+.action-btn.reveal-btn{border-color:#22c55e;background:#f0fdf4}
+.action-btn.reveal-btn .label{color:#16a34a}
+.action-btn.flip-btn{border-color:#a5b4fc;background:#f5f3ff}
+.action-btn.flip-btn .label{color:#6366f1}
+
+/* ── Result screen ── */
+.result-card{background:#fff;border-radius:2rem;padding:40px 28px 32px;box-shadow:0 20px 60px rgba(14,165,233,.15);text-align:center}
+.trophy{font-size:3.5rem;margin-bottom:12px}
+.result-card h2{font-size:1.3rem;font-weight:800;color:#0c4a6e;margin-bottom:6px}
+.score-big{font-size:3.2rem;font-weight:900;color:#0284c7;line-height:1;margin:12px 0 6px}
+.score-sub{font-size:.9rem;color:#64748b;margin-bottom:28px}
+.result-btns{display:flex;flex-direction:column;gap:10px}
+.result-btn{padding:14px;border-radius:1.2rem;border:none;font-size:.95rem;font-weight:800;cursor:pointer;transition:all .15s}
+.result-btn.retry{background:linear-gradient(135deg,#f43f5e,#e11d48);color:#fff;box-shadow:0 6px 18px rgba(244,63,94,.3)}
+.result-btn.home{background:#f1f5f9;color:#475569}
+.result-btn:hover{transform:translateY(-2px)}
+
+/* ── Error Book ── */
+.errorbook-btn{width:100%;padding:13px;border-radius:1.2rem;border:2px solid #fca5a5;background:#fff5f5;color:#ef4444;font-size:.95rem;font-weight:800;cursor:pointer;margin-top:10px;transition:all .15s;min-height:44px}
+.errorbook-btn:hover{background:#ef4444;color:#fff}
+.eb-count{font-size:.78rem;opacity:.75;margin-left:6px}
+
+/* ── Parent Review ── */
+.parent-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+.parent-hdr h2{font-size:1.2rem;font-weight:800;color:#0c4a6e}
+.parent-close{padding:10px 20px;border-radius:99px;border:2px solid #e0f2fe;background:#fff;color:#64748b;font-size:.85rem;font-weight:700;cursor:pointer;min-height:44px}
+.review-item{background:#fff;border-radius:1.5rem;padding:22px 20px 16px;margin-bottom:16px;box-shadow:0 8px 24px rgba(14,165,233,.1)}
+.review-q-num{font-size:.75rem;color:#94a3b8;font-weight:700;margin-bottom:6px}
+.review-opts{display:flex;flex-direction:column;gap:6px;margin-bottom:10px}
+.review-opt{padding:9px 14px;border-radius:.8rem;font-size:.88rem;display:flex;gap:8px;align-items:center;border:2px solid #e0f2fe}
+.review-opt-sym{width:26px;height:26px;border-radius:50%;background:#e0f2fe;color:#0284c7;font-size:.78rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.review-opt.r-correct{border-color:#22c55e;background:#f0fdf4}
+.review-opt.r-correct .review-opt-sym{background:#22c55e;color:#fff}
+.review-opt.r-wrong{border-color:#ef4444;background:#fef2f2}
+.review-opt.r-wrong .review-opt-sym{background:#ef4444;color:#fff}
+.review-wb{max-width:100%;border-radius:.8rem;border:1px solid #e0f2fe;margin:10px 0;display:block}
+.review-status{font-size:.88rem;font-weight:700;margin-bottom:10px}
+.review-status.s-correct{color:#16a34a}
+.review-status.s-wrong{color:#dc2626}
+.review-status.s-fillin{color:#0284c7}
+.review-btns{display:flex;gap:8px;flex-wrap:wrap}
+.review-flip-btn{flex:1;min-height:44px;padding:9px;border-radius:1rem;border:2px solid #a5b4fc;background:#f5f3ff;color:#6366f1;font-size:.82rem;font-weight:700;cursor:pointer}
+.review-flip-btn:hover{background:#6366f1;color:#fff}
+.review-err-btn{flex:1;min-height:44px;padding:9px;border-radius:1rem;border:2px solid #fca5a5;background:#fff5f5;color:#ef4444;font-size:.82rem;font-weight:700;cursor:pointer}
+.review-err-btn:hover{background:#ef4444;color:#fff}
+.review-err-btn.eb-added{border-color:#22c55e;background:#f0fdf4;color:#16a34a;pointer-events:none}
+.review-ans-box{background:#f0f9ff;border-radius:1rem;padding:14px 16px;margin-top:10px}
+.review-ans-label{font-size:.75rem;font-weight:800;color:#0369a1;margin-bottom:4px}
+.review-ans-text{font-size:1.1rem;font-weight:800;color:#0284c7}
+.no-session{text-align:center;padding:40px 20px;color:#94a3b8;font-size:.95rem;line-height:1.8}
+
+/* ── Whiteboard ── */
+.wb-wrap{background:#fff;border:2px solid #e0f2fe;border-radius:1.2rem;overflow:hidden;margin-bottom:14px;box-shadow:0 4px 12px rgba(14,165,233,.08)}
+#wbCanvas{display:block;width:100%;touch-action:none;cursor:crosshair;background:#fafafa}
+.wb-bar{display:flex;justify-content:flex-end;padding:6px 12px;border-top:1px solid #e0f2fe}
+.wb-clear{padding:8px 18px;border-radius:99px;border:2px solid #fca5a5;background:#fff5f5;color:#ef4444;font-size:.82rem;font-weight:700;cursor:pointer;min-height:44px}
+.wb-clear:hover{background:#ef4444;color:#fff}
+
+.hidden{display:none!important}
+</style>
 </head>
 <body>
-<div class="hero"><h1>小數乘法 學習卡</h1><p>乘數是二位數以上</p></div>
-<div class="page">
-  <div id="setupSection" class="setup-card">
-    <div class="setup-icon">🔢</div>
-    <div class="setup-title">設定測驗範圍</div>
-    <div class="setup-sub">題庫共有 <b>115</b> 題</div>
-    <label class="input-label">欲測驗題目數量</label>
-    <input type="number" id="countInput" class="count-input" value="10" min="1" max="115">
-    <button class="start-btn" id="startBtn">開始測驗</button>
+
+<div class="header">
+  <h1>小數乘法 學習卡</h1>
+  <p>乘數是二位數以上</p>
+</div>
+
+<div class="main-wrap">
+
+  <!-- Setup -->
+  <div id="setupSection">
+    <div class="setup-card">
+      <div class="setup-icon">🎯</div>
+      <h2>準備開始測驗</h2>
+      <p class="deck-count">題庫共 <strong id="totalCount">5</strong> 題</p>
+
+      <div class="filter-row" id="filterRow"></div>
+
+      <div class="count-row">
+        <span class="count-label">出題數量</span>
+        <div class="count-box">
+          <button class="count-adj" id="countMinus">−</button>
+          <input type="number" id="countInput" value="5" min="1" max="5">
+          <button class="count-adj" id="countPlus">＋</button>
+        </div>
+      </div>
+
+      <button class="start-btn" id="startBtn">開始測驗 →</button>
+      <button class="errorbook-btn" id="errorBookBtn">錯題本 <span class="eb-count" id="ebCount"></span></button>
+    </div>
   </div>
-  <div id="resultSection" class="result-card hidden">
-    <div class="trophy">🏆</div>
-    <h2>測驗完成！</h2>
-    <p id="scoreText"></p>
-    <button id="reviewBtn" class="btn-review hidden">重測錯題</button>
-    <button id="homeBtn" class="btn-home">返回首頁</button>
-  </div>
+
+  <!-- Quiz -->
   <div id="studySection" class="hidden">
     <div class="progress-wrap">
-      <div class="progress-row">
-        <span id="modeText">Normal Mode</span>
-        <span id="progressText">0 / 0</span>
+      <div class="progress-meta">
+        <span id="modeLabel">選擇題</span>
+        <span class="p-num"><span id="curNum">1</span> / <span id="totNum">5</span></span>
       </div>
       <div class="progress-track">
-        <div class="progress-fill" id="progressBar" style="width:0%"></div>
+        <div class="progress-fill" id="progressFill" style="width:0%"></div>
       </div>
     </div>
-    <div class="card-wrap">
+
+    <div class="card-scene">
       <div class="card" id="card">
-        <div class="card-face">
-          <div class="corner-tag" id="frontTag"></div>
-          <div class="face-inner">
-            <div id="frontMain"></div>
-            <div class="opts" id="optsArea"></div>
-            <div class="answer-box" id="answerBox"></div>
-            <div class="self-judge" id="selfJudge">
-              <button class="btn-correct" id="correctBtn">✓ 我答對了</button>
-              <button class="btn-wrong-j" id="wrongBtn">✗ 我答錯了</button>
-            </div>
-          </div>
+        <!-- Front -->
+        <div class="card-face card-front">
+          <span class="card-tag" id="frontTag">選擇題</span>
+          <div class="q-num" id="qNum">第 1 題</div>
+          <div class="q-text" id="frontMain"></div>
+          <div class="opts" id="optsWrap"></div>
         </div>
+        <!-- Back -->
         <div class="card-face card-back">
-          <div class="back-corner-tag">答案</div>
-          <div class="face-inner">
-            <div class="back-title">詳細解析</div>
-            <div class="explanation" id="explanation"></div>
-          </div>
+          <span class="card-tag back-tag">詳解</span>
+          <div class="expl-label">EXPLANATION</div>
+          <div class="explanation" id="explanation"></div>
         </div>
       </div>
     </div>
+
+    <div class="wb-wrap" id="wbWrap">
+      <canvas id="wbCanvas" height="220"></canvas>
+      <div class="wb-bar">
+        <button class="wb-clear" id="wbClear">清除白板</button>
+      </div>
+    </div>
+
     <div class="action-row">
-      <button class="action-btn" id="prevBtn"><span class="icon">◀</span>PREV</button>
-      <button class="action-btn btn-check-style" id="checkBtn"><span class="icon">📢</span>公布答案</button>
-      <button class="action-btn btn-flip-style" id="flipBtn" disabled><span class="icon">📖</span>FLIP詳解</button>
-      <button class="action-btn" id="nextBtn"><span class="icon">▶</span>NEXT</button>
+      <button class="action-btn" id="prevBtn">
+        <span class="icon">◀</span>
+        <span class="label">上一題</span>
+      </button>
+      <button class="action-btn" id="nextBtn" style="flex:3;max-width:none">
+        <span class="icon">💾</span>
+        <span class="label">儲存並下一題</span>
+      </button>
     </div>
   </div>
+
+  <!-- Result -->
+  <div id="resultSection" class="hidden">
+    <div class="result-card">
+      <div class="trophy" style="font-size:3.5rem;margin-bottom:12px">✏️</div>
+      <h2>練習完成！</h2>
+      <p class="score-sub" style="margin-bottom:28px">請把平板交給爸爸媽媽對答案</p>
+      <div class="result-btns">
+        <button class="result-btn home" id="homeBtn">返回首頁</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Parent Review -->
+  <div id="parentSection" class="hidden">
+    <div class="parent-hdr">
+      <h2>📋 家長對答模式</h2>
+      <button class="parent-close" id="parentClose">關閉</button>
+    </div>
+    <div id="reviewList"></div>
+  </div>
+
 </div>
+
 <script>
 var DECK=[["小數乘法", "選擇題", "一杯奶茶　0.7　公升，飲料店今天泡了　250　杯，共泡了幾公升的奶茶？", "17.5 公升", "175 公升", "1750 公升", "17500 公升", "2\n解析：0.7×250＝175"], ["小數乘法", "選擇題", "弟弟的體重是　7.3　公斤，舅舅的體重是弟弟的　14　倍，舅舅的體重是多少公斤？", "103.2 公斤", "102.2 公斤", "101.2 公斤", "100.2 公斤", "2\n解析：7.3×14＝102.2"], ["小數乘法", "選擇題", "小華拿了一張數字卡，上面的數字是　3.4，小芳拿了一張數字卡，上面的數字是　50，把兩張數字卡的數字相乘，得到的積是多少？", "1.7", "17", "170", "1700", "3\n解析：3.4×50＝170"], ["小數乘法", "選擇題", "28×34＝952，不要計算，想一想，如果現在被乘數改為　2.8，則答案會變成下列哪一個數？", "9.52", "9.56", "95.2", "95.6", "3\n解析：2.8×34＝95.2。被乘數變成一位小數，答案也會變成一位小數。"], ["小數乘法", "選擇題", "小凡家裡種了一些番茄，每公斤的售價是　9.8　元，他採收了　25　公斤的番茄，共可賣得多少元？", "210 元", "245 元", "250 元", "285 元", "2\n解析：9.8×25＝245"], ["小數乘法", "選擇題", "一杯綠茶　0.7　公升，藍藍飲料店今天賣出　169　杯，共賣出幾公升的綠茶？", "11.83 公升", "18.13 公升", "118.3 公升", "181.3 公升", "3\n解析：0.7×169＝118.3"], ["小數乘法", "選擇題", "瑄瑄抽到一張數字是　9.8　的數字卡，玲玲抽了一張數字是　80　的數字卡，將兩張數字卡相乘，得到的積是多少？", "78400", "7840", "784", "78.4", "3\n解析：9.8×80＝784"], ["小數乘法", "選擇題", "一顆煎餃賣　7.5　元，爸爸中午買了　22　顆，共要付幾元？", "15 元", "16.5 元", "150 元", "165 元", "4\n解析：7.5×22＝165"], ["小數乘法", "選擇題", "56×96＝5376，當被乘數改成　5.6，答案會是下列哪一個數？", "5376", "537.6", "53.76", "5.376", "2\n解析：5.6×96，5.6 是 56 個 0.1，56×96＝5376，5376 個 0.1 是 537.6"], ["小數乘法", "選擇題", "隆慶包子店一天用掉　21.5　公斤的麵粉，30　天共用掉多少公斤的麵粉？", "64.5 公斤", "65.5 公斤", "645 公斤", "665.5 公斤", "3\n解析：21.5×30＝645"], ["小數乘法", "選擇題", "每根鋼筋的重量是　2.5　公斤，整個工程需要　500　根鋼筋，建築公司共需要運送幾公斤的鋼筋？", "1000 公斤", "1150 公斤", "1250 公斤", "1300 公斤", "3\n解析：2.5×500＝1250"], ["小數乘法", "選擇題", "一個砝碼重　0.6　公斤，28　個砝碼共重多少公斤？", "15.8 公斤", "16.8 公斤", "17.8 公斤", "18.8 公斤", "2\n解析：0.6×28＝16.8"], ["小數乘法", "選擇題", "每包影印紙重　2.5　公斤，光光國小計畫購買　200　包，購買的影印紙共重多少公斤？", "400 公斤", "450 公斤", "500 公斤", "600 公斤", "3\n解析：2.5×200＝500"], ["小數乘法", "選擇題", "一顆水餃　4.5　元，奶奶買了　180　顆，共要付多少元？", "815 元", "810 元", "805 元", "800 元", "2\n解析：4.5×180＝810"], ["小數乘法", "選擇題", "有甲、乙兩數，甲數是　8.9，甲數乘以　20　就是乙數，乙數是多少？", "1780", "178", "17.8", "1.78", "2\n解析：8.9×20＝178"], ["小數乘法", "選擇題", "四方水餃館一顆水餃賣　6.5　元，小青吃了　12　顆，弟弟吃了　18　顆，兩人共要付多少元？", "78 元", "115 元", "117 元", "195 元", "4\n解析：12＋18＝30（顆），6.5×30＝195（元）"], ["小數乘法", "選擇題", "奇奇電子工廠每個電子元件重　0.7　公斤，每天生產　250　個，30　天共可以生產多少公斤？", "5250 公斤", "5750 公斤", "5850 公斤", "5950 公斤", "1\n解析：0.7×250＝175，175×30＝5250"], ["小數乘法", "選擇題", "一塊長　26.8　公尺、寬　16　公尺的長方形花圃，面積是多少平方公尺？", "428.8 平方公尺", "416.2 平方公尺", "405.3 平方公尺", "398.6 平方公尺", "1\n解析：26.8×16＝428.8"], ["小數乘法", "選擇題", "一箱飲料有　15　瓶，一瓶飲料有　0.7　公升，四年甲班小朋友喝了　2　箱飲料，共喝了多少公升？", "21 公升", "20.5 公升", "11 公升", "10.5 公升", "1\n解析：0.7×15＝10.5，10.5×2＝21"], ["小數乘法", "填充題", "一箱貨物的重量是　1.2　公斤，輪船上載了　151　箱同樣的貨物，共載了多少公斤的貨物？", "", "", "", "", "181.2（1.2×151＝181.2）"], ["小數乘法", "填充題", "不要計算想一想，306×39＝11934，則　30.6×39＝？", "", "", "", "", "1193.4（可將 30.6 看作 306 個 0.1，再把小數點加上去）"], ["小數乘法", "填充題", "小紫走一步的步長約　0.7　公尺，她繞操場外圍走了　325　步，操場外圍大約長多少公尺？", "", "", "", "", "227.5（0.7×325＝227.5）"], ["小數乘法", "填充題", "一本筆記簿的厚度是　1.7　公分，老師將　36　本筆記簿疊成一疊，這疊筆記簿的厚度是多少公分？", "", "", "", "", "61.2（1.7×36＝61.2）"], ["小數乘法", "填充題", "珮柔的一步長大約是　0.8　公尺，她繞院子走一圈共走了　124　步，院子的周長大約是多少公尺？", "", "", "", "", "99.2（0.8×124＝99.2）"], ["小數乘法", "填充題", "一瓶橄欖油　0.8　公升，餐廳老闆買了　24　瓶，共買了多少公升的橄欖油？", "", "", "", "", "19.2（0.8×24＝19.2）"], ["小數乘法", "填充題", "一張壁紙的面積是　2.8　平方公尺，小優將工作室牆壁貼滿壁紙，用了　14　張，共用了多少平方公尺的壁紙？", "", "", "", "", "39.2（2.8×14＝39.2）"], ["小數乘法", "填充題", "一本字典的厚度是　6.8　公分，書局店員將　15　本相同的字典疊在一起，厚度共是多少公分？", "", "", "", "", "102（6.8×15＝102）"], ["小數乘法", "填充題", "學校新蓋的正心樓安裝了　15　臺飲水機，每臺飲水機每天平均消耗　28.8　公升的水；行政大樓所有的飲水機合起來每天共消耗　446　公升的水。\n(１)正心樓的飲水機每天共消耗多少公升的水？\n(２)哪一棟飲水機總用水量消耗比較多？", "", "", "", "", "(１) 432（28.8×15＝432）；(２) 行政大樓（432＜446）"], ["小數乘法", "填充題", "老林農場有　36　頭乳牛，小陳農場有　27　頭乳牛，每頭乳牛每天平均產　25.5　公斤牛奶。\n(１)老林的農場每天生產多少公斤牛奶？\n(２)小陳的農場每天生產多少公斤牛奶？\n(３)誰的農場每天生產的牛奶量比較多？", "", "", "", "", "(１) 918（25.5×36）；(２) 688.5（25.5×27）；(３) 老林的農場（918＞688.5）"], ["小數乘法", "填充題", "五年級每位學生每週平均回收　3.2　公斤塑膠瓶，共　120　名學生；六年級每週平均　4.1　公斤，共　90　名學生。\n(１)五年級全部學生每週共回收多少公斤塑膠瓶？\n(２)六年級全部學生每週共回收多少公斤塑膠瓶？\n(３)哪個年級每週回收較多？", "", "", "", "", "(１) 384（3.2×120）；(２) 369（4.1×90）；(３) 五年級（384＞369）"], ["小數乘法", "填充題", "A＝0.8×10，B＝0.8×100，C＝0.8×1，請將　A、B、C　由大到小排列。", "", "", "", "", "B＞A＞C（A＝8，B＝80，C＝0.8；被乘數相同，乘數越大，積越大）"], ["小數乘法", "填充題", "一根鐵條的長度剛好等於　12　根木棍的長度，已知一根木棍長　0.6　公尺，兩根鐵條長多少公尺？", "", "", "", "", "14.4（0.6×12＝7.2；7.2×2＝14.4）"], ["小數乘法", "填充題", "一般燈泡（60W）一天耗電　1.5　度；省電燈泡（17W）一天耗電　0.4　度。\n(１)一般燈泡一個月（30天）共耗電多少度？\n(２)省電燈泡一個月共耗電多少度？\n(３)兩種燈泡一個月耗電量相差多少度？", "", "", "", "", "(１) 45（1.5×30）；(２) 12（0.4×30）；(３) 33（45－12）"], ["小數乘法", "填充題", "計算下列三個算式，並由答案大到小填入代號。\nA：70.8×55　B：69.2×45　C：25.8×105", "", "", "", "", "A＞B＞C（A＝3894；B＝3114；C＝2709）"], ["小數乘法", "填充題", "計算下列三個算式，並由答案大到小填入代號。\nA：16.5×26　B：10.6×36　C：15.2×33", "", "", "", "", "C＞A＞B（A＝429；B＝381.6；C＝501.6）"], ["小數乘法", "計算題", "5.4×711", "", "", "", "", "3839.4"], ["小數乘法", "計算題", "0.8×14", "", "", "", "", "11.2"], ["小數乘法", "計算題", "3.8×19", "", "", "", "", "72.2"], ["小數乘法", "計算題", "7.1×20", "", "", "", "", "142"], ["小數乘法", "計算題", "0.9×705", "", "", "", "", "634.5"], ["小數乘法", "計算題", "8.8×40", "", "", "", "", "352"], ["小數乘法", "計算題", "1.8×15", "", "", "", "", "27"], ["小數乘法", "計算題", "1.3×650", "", "", "", "", "845"], ["小數乘法", "計算題", "5.7×102", "", "", "", "", "581.4"], ["小數乘法", "計算題", "8.9×108", "", "", "", "", "961.2"], ["小數乘法", "計算題", "58.6×19", "", "", "", "", "1113.4"], ["小數乘法", "計算題", "0.7×58", "", "", "", "", "40.6"], ["小數乘法", "計算題", "0.4×85", "", "", "", "", "34"], ["小數乘法", "計算題", "1.7×23", "", "", "", "", "39.1"], ["小數乘法", "計算題", "6.8×119", "", "", "", "", "809.2"], ["小數乘法", "計算題", "7.6×98", "", "", "", "", "744.8"], ["小數乘法", "計算題", "18.7×23", "", "", "", "", "430.1"], ["小數乘法", "計算題", "0.3×21", "", "", "", "", "6.3"], ["小數乘法", "計算題", "30.8×56", "", "", "", "", "1724.8"], ["小數乘法", "計算題", "24.3×46", "", "", "", "", "1117.8"], ["小數乘法", "計算題", "13.2×42", "", "", "", "", "554.4"], ["小數乘法", "計算題", "6.9×80", "", "", "", "", "552"], ["小數乘法", "計算題", "6.4×25", "", "", "", "", "160"], ["小數乘法", "計算題", "23.4×56", "", "", "", "", "1310.4"], ["小數乘法", "計算題", "12.3×18", "", "", "", "", "221.4"], ["小數乘法", "計算題", "5.3×15", "", "", "", "", "79.5"], ["小數乘法", "計算題", "0.7×37", "", "", "", "", "25.9"], ["小數乘法", "計算題", "7.8×45", "", "", "", "", "351"], ["小數乘法", "計算題", "(１) 2.5×40\n(２) 0.8×25", "", "", "", "", "(１) 100；(２) 20"], ["小數乘法", "計算題", "(１) 9.4×216\n(２) 5.7×111", "", "", "", "", "(１) 2030.4；(２) 632.7"], ["小數乘法", "計算題", "(１) 0.7×700\n(２) 6.2×500", "", "", "", "", "(１) 490；(２) 3100"], ["小數乘法", "計算題", "(１) 7.5×27\n(２) 1.4×568", "", "", "", "", "(１) 202.5；(２) 795.2"], ["小數乘法", "計算題", "(１) 5.6×29\n(２) 0.6×105", "", "", "", "", "(１) 162.4；(２) 63"], ["小數乘法", "計算題", "(１) 1.8×85\n(２) 0.6×213", "", "", "", "", "(１) 153；(２) 127.8"], ["小數乘法", "計算題", "(１) 6.5×202\n(２) 3.3×109", "", "", "", "", "(１) 1313；(２) 359.7"], ["小數乘法", "應用題", "兒童節時，學校發給每個班級一包糖果，一包糖果重　3.7　公斤，全校有　23　個班，共要發多少公斤的糖果？", "", "", "", "", "3.7×23＝85.1；答：85.1 公斤"], ["小數乘法", "應用題", "繞公園走一圈是　15.5　公里，小明一星期走了　12　圈，共走了幾公里？", "", "", "", "", "15.5×12＝186；答：186 公里"], ["小數乘法", "應用題", "一張數位相片的沖洗費　4.5　元，沖洗　26　張要付多少元？", "", "", "", "", "4.5×26＝117；答：117 元"], ["小數乘法", "應用題", "一箱巧克力牛奶重　5.6　公斤，倉庫裡放了　105　箱，共重幾公斤？", "", "", "", "", "5.6×105＝588；答：588 公斤"], ["小數乘法", "應用題", "哥哥每天喝　2.6　公升的水，14　天共喝掉幾公升的水？", "", "", "", "", "2.6×14＝36.4；答：36.4 公升"], ["小數乘法", "應用題", "一本故事書厚　2.8　公分，52　本相同的故事書疊在一起，厚度共是多少公分？", "", "", "", "", "2.8×52＝145.6；答：145.6 公分"], ["小數乘法", "應用題", "一包飼料重　3.2　公斤，賣場進貨　102　包，共重幾公斤？", "", "", "", "", "3.2×102＝326.4；答：326.4 公斤"], ["小數乘法", "應用題", "一公升的　98　無鉛汽油　33.3　元，阿米加了　40　公升，共要付多少元？", "", "", "", "", "33.3×40＝1332；答：1332 元"], ["小數乘法", "應用題", "一個原味鍋貼　5.5　元，小梅買了　28　個，共要付多少元？", "", "", "", "", "5.5×28＝154；答：154 元"], ["小數乘法", "應用題", "有甲、乙兩個數，甲數是　7.6，乙數是甲數的　207　倍，乙數是多少？", "", "", "", "", "7.6×207＝1573.2；答：1573.2"], ["小數乘法", "應用題", "本週　98　無鉛汽油每公升　36.2　元，爸爸的車加了　45　公升，要付多少元？", "", "", "", "", "36.2×45＝1629；答：1629 元"], ["小數乘法", "應用題", "一盒太陽餅重　0.9　公斤，社區志工團訂購了　150　盒，共重幾公斤？", "", "", "", "", "0.9×150＝135；答：135 公斤"], ["小數乘法", "應用題", "一瓶鮮奶的容量為　1.8　公升，賣場進貨　160　瓶，共進貨多少公升的鮮奶？", "", "", "", "", "1.8×160＝288；答：288 公升"], ["小數乘法", "應用題", "叔叔的汽車加滿一公升的油可跑　15.6　公里，加滿　44　公升的油可跑幾公里？", "", "", "", "", "15.6×44＝686.4；答：686.4 公里"], ["小數乘法", "應用題", "餐廳裡的每個茶桶都裝了　9.3　公升的綠茶，有　36　個茶桶，最多可以裝幾公升的綠茶？", "", "", "", "", "9.3×36＝334.8；答：334.8 公升"], ["小數乘法", "應用題", "一桶水有　5.8　公升，倉庫裡有　78　桶水，共有幾公升的水？", "", "", "", "", "5.8×78＝452.4；答：452.4 公升"], ["小數乘法", "應用題", "明儀家每天固定吃掉　0.4　公斤的米，9　月分明儀家共吃掉幾公斤的米？", "", "", "", "", "0.4×30＝12；答：12 公斤（9月有30天）"], ["小數乘法", "應用題", "哥哥每天喝　0.5　公升的優酪乳，他在　7　月分共喝了幾公升的優酪乳？", "", "", "", "", "0.5×31＝15.5；答：15.5 公升（7月有31天）"], ["小數乘法", "應用題", "95　無鉛汽油每公升　35.1　元，榮勤的爸爸加油加了　30　公升，他要付多少元？", "", "", "", "", "35.1×30＝1053；答：1053 元"], ["小數乘法", "應用題", "玩具火車的每條軌道長　30.6　公分，將　13　條相同長度的軌道連接起來，連接後的軌道共長幾公分？", "", "", "", "", "30.6×13＝397.8；答：397.8 公分"], ["小數乘法", "應用題", "可可一家人到餐廳吃水餃，一顆水餃　4.5　元，他們共點了　52　顆，要付多少元？", "", "", "", "", "4.5×52＝234；答：234 元"], ["小數乘法", "應用題", "一杯紅茶　0.7　公升，老闆今天賣了　350　杯紅茶，共賣了幾公升的紅茶？", "", "", "", "", "0.7×350＝245；答：245 公升"], ["小數乘法", "應用題", "一卷緞帶長　22.5　公尺，80　卷共長幾公尺？", "", "", "", "", "22.5×80＝1800；答：1800 公尺"], ["小數乘法", "應用題", "箱子重　0.8　公斤，箱子內有　24　罐果醬，一罐果醬重　1.8　公斤，共重多少公斤？", "", "", "", "", "1.8×24＝43.2；0.8＋43.2＝44；答：44 公斤"], ["小數乘法", "應用題", "一盒手工餅乾重　0.2　公斤，箱子裡裝了　94　盒，共裝了幾公斤的手工餅乾？", "", "", "", "", "0.2×94＝18.8；答：18.8 公斤"], ["小數乘法", "應用題", "水龍頭一分鐘大約流　26.8　公升的水，一小時後大約流出多少公升的水？", "", "", "", "", "26.8×60＝1608；答：大約 1608 公升（1小時＝60分鐘）"], ["小數乘法", "應用題", "一包木炭重　4.5　公斤，主辦單位買了　142　包木炭，共買了幾公斤的木炭？", "", "", "", "", "4.5×142＝639；答：639 公斤"], ["小數乘法", "應用題", "一條緞帶長　28.5　公分，老師買了　42　條緞帶，共長多少公分？", "", "", "", "", "28.5×42＝1197；答：1197 公分"], ["小數乘法", "應用題", "每杯巧克力牛奶加了　20.5　公克的可可粉，媽媽準備了　13　杯，共需要多少公克的可可粉？", "", "", "", "", "20.5×13＝266.5；答：266.5 公克"], ["小數乘法", "應用題", "嘉明做了　28　塊手工皂，每塊的重量是　0.2　公斤，這些手工皂共重幾公斤？", "", "", "", "", "0.2×28＝5.6；答：5.6 公斤"], ["小數乘法", "應用題", "織一條圍巾大約需要　21.6　公尺長的毛線，織　31　條圍巾大約需要幾公尺長的毛線？", "", "", "", "", "21.6×31＝669.6；答：669.6 公尺"], ["小數乘法", "應用題", "小沛製作　15　個檸檬口味的杯子蛋糕。\n(１)需要多少杯麵粉（每個需要1.4杯）？\n(２)需要多少杯檸檬汁（每個需要0.2杯）？", "", "", "", "", "(１) 1.4×15＝21，答：21杯；(２) 0.2×15＝3，答：3杯"], ["小數乘法", "應用題", "游泳池注水口每分鐘注入　125.5　公升的水，蓄滿需　64　分鐘，每　16　公升水費　8.5　元，蓄滿游泳池需幾元？", "", "", "", "", "125.5×64＝8032；8032÷16＝502；8.5×502＝4267；答：4267 元"], ["小數乘法", "應用題", "水餃一顆　3.5　元，爸爸吃了　26　顆，媽媽吃了　18　顆，小傑吃了　16　顆，共花了多少元？", "", "", "", "", "3.5×(26＋18＋16)＝3.5×60＝210；答：210 元"], ["小數乘法", "應用題", "政府預計在植樹節當天種植　250　棵樹，每棵樹每週需澆水　4.5　公升，四週共需要澆水幾公升？", "", "", "", "", "4.5×250＝1125；1125×4＝4500；答：4500 公升"], ["小數乘法", "應用題", "小泳晚餐：水餃18顆（每顆0.1克鈉）、五香豆干6片（每片0.4克鈉）、紫菜湯2碗（每碗0.5克鈉），共攝取多少公克的鈉？", "", "", "", "", "0.1×18＝1.8；0.4×6＝2.4；0.5×2＝1；1.8＋2.4＋1＝5.2；答：5.2 公克"], ["小數乘法", "應用題", "弟弟每天喝　0.6　公升的豆漿，4　月分共喝了幾公升的豆漿？", "", "", "", "", "0.6×30＝18；答：18 公升（4月有30天）"], ["小數乘法", "應用題", "小熹穿美規7.5號球鞋（腳掌長25.5公分），用腳掌量出牆面寬約有19個腳掌長，牆面寬度大約是多少公分？", "", "", "", "", "25.5×19＝484.5；答：大約 484.5 公分"], ["小數乘法", "應用題", "小紅租休旅車，租金一天　1750　元，每公里加收　3.2　元里程費，三天共行駛　150　公里，租車費用共花多少元？", "", "", "", "", "3.2×150＝480；1750×3＝5250；480＋5250＝5730；答：5730 元"], ["小數乘法", "應用題", "薄荷草最初高度　2.5　公分，每天長高　0.2　公分，十天之後的總高度是多少公分？", "", "", "", "", "0.2×10＝2；2.5＋2＝4.5；答：4.5 公分"], ["小數乘法", "應用題", "小官一分鐘可以走　20.7　公尺，用一樣的速度連續走　1　小時，共走了幾公尺？", "", "", "", "", "20.7×60＝1242；答：1242 公尺（1小時＝60分鐘）"], ["小數乘法", "應用題", "省水馬桶小號每次沖水量約　2.8　公升，每天小號大約沖水　8　次，3　月分由小號產生的總沖水量是幾公升？", "", "", "", "", "2.8×8＝22.4；22.4×31＝694.4；答：694.4 公升（3月有31天）"], ["小數乘法", "應用題", "翰林國小四年級　12　個班級參與義賣活動，每班製作　75　個紀念品，每個紀念品成本　2.8　元，總成本是多少元？", "", "", "", "", "2.8×75＝210；210×12＝2520；答：2520 元"], ["小數乘法", "應用題", "小虎每天跑步　2.5　公里，小雲每天跑步　2.8　公里，比賽前一個月（31天），兩人分別跑了多少公里？", "", "", "", "", "小虎：2.5×31＝77.5 公里；小雲：2.8×31＝86.8 公里"], ["小數乘法", "應用題", "橘子每公斤　13.7　元，蘿蔔每公斤　6.8　元，小樂買了　10　公斤橘子和　15　公斤蘿蔔，各花多少元？共花多少元？", "", "", "", "", "13.7×10＝137；6.8×15＝102；137＋102＝239；答：137元；102元；共239元"]];
-var currentDeck=[],wrongDeck=[],currentIndex=0;
-var selectedIdx=null,isAnswered=false,isReview=false;
-var card=document.getElementById('card');
+
+var activeFilters=[];var CATS=[];
+(function(){var seen={};for(var i=0;i<DECK.length;i++){var c=DECK[i][0];if(!seen[c]){seen[c]=1;CATS.push(c);}}})();
+function getFilteredDeck(){
+  if(errorBookMode)return errorBookData.slice();
+  if(activeFilters.length===0)return DECK.slice();
+  return DECK.filter(function(d){return activeFilters.indexOf(d[0])>=0;});
+}
+function updateSetup(){
+  var fd=getFilteredDeck();
+  document.getElementById('totalCount').textContent=fd.length;
+  var inp=document.getElementById('countInput');
+  inp.max=fd.length;
+  if(parseInt(inp.value)>fd.length)inp.value=fd.length;
+}
+
+var quiz=[],idx=0,revealed=false;
+var card;
+var sessionAnswers=[];
+var currentChoice='';
+var errorBookMode=false;
+var errorBookData=[];
 
 function startQuiz(){
-  var n=parseInt(document.getElementById('countInput').value)||10;
-  n=Math.min(n,DECK.length);
-  var tmp=DECK.slice();tmp.sort(function(){return Math.random()-0.5;});
-  currentDeck=tmp.slice(0,n);
-  isReview=false;currentIndex=0;wrongDeck=[];
+  var fd=getFilteredDeck();
+  var n=Math.min(parseInt(document.getElementById('countInput').value)||5,fd.length);
+  var tmp=fd.slice();
+  for(var i=tmp.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=tmp[i];tmp[i]=tmp[j];tmp[j]=t;}
+  quiz=tmp.slice(0,n);idx=0;sessionAnswers=new Array(n);
+  document.getElementById('totNum').textContent=n;
   document.getElementById('setupSection').classList.add('hidden');
   document.getElementById('studySection').classList.remove('hidden');
   showCard();
 }
-function startReview(){
-  isReview=true;currentDeck=wrongDeck.slice();currentIndex=0;wrongDeck=[];
-  document.getElementById('resultSection').classList.add('hidden');
-  document.getElementById('studySection').classList.remove('hidden');
-  showCard();
-}
+
 function showCard(){
-  isAnswered=false;selectedIdx=null;
-  card.classList.remove('flipped');
-  document.getElementById('flipBtn').disabled=true;
-  document.getElementById('checkBtn').disabled=false;
-  document.getElementById('answerBox').style.display='none';
-  document.getElementById('selfJudge').style.display='none';
-  document.getElementById('optsArea').innerHTML='';
-  var d=currentDeck[currentIndex];
-  document.getElementById('frontTag').textContent=d[0]+'｜'+d[1];
-  var fm=document.getElementById('frontMain');
-  fm.innerHTML='';
-  var lines=d[2].split('
-');
-  for(var i=0;i<lines.length;i++){
-    var line=lines[i].trim();
-    if(!line)continue;
-    var p=document.createElement('p');
-    p.className='q-text';p.textContent=line;
-    fm.appendChild(p);
-  }
-  var oa=document.getElementById('optsArea');
-  var hasOpts=false;
-  for(var j=3;j<=6;j++){
-    if(d[j]&&d[j].trim()){
-      hasOpts=true;
+  wbClearCanvas();
+  currentChoice='';
+  var d=quiz[idx];
+  revealed=false;
+  if(card.classList.contains('flipped'))card.classList.remove('flipped');
+
+  document.getElementById('frontTag').textContent=d[0];
+  document.getElementById('qNum').textContent='第 '+(idx+1)+' 題';
+  document.getElementById('curNum').textContent=idx+1;
+  document.getElementById('modeLabel').textContent=d[1];
+  document.getElementById('progressFill').style.width=((idx)/quiz.length*100)+'%';
+
+  renderContent(document.getElementById('frontMain'),d[2]);
+  renderContent(document.getElementById('explanation'),d[8]||d[7]);
+
+  var opts=document.getElementById('optsWrap');
+  opts.innerHTML='';
+
+  if(d[1]==='選擇題'){
+    opts.classList.remove('hidden');
+    ['①','②','③','④'].forEach(function(sym,i){
+      if(!d[3+i])return;
       var btn=document.createElement('button');
-      btn.className='opt-btn';btn.textContent=d[j];
-      (function(idx,b){b.addEventListener('click',function(){selectOpt(idx,b);});})(j-2,btn);
-      oa.appendChild(btn);
-    }
-  }
-  card.dataset.qtype=hasOpts?'choice':'write';
-  document.getElementById('explanation').textContent='正確答案：'+d[7];
-  var pct=((currentIndex+1)/currentDeck.length*100).toFixed(0);
-  document.getElementById('progressBar').style.width=pct+'%';
-  document.getElementById('progressText').textContent=(currentIndex+1)+' / '+currentDeck.length;
-  document.getElementById('modeText').textContent=isReview?'Review Mode':'Normal Mode';
-}
-function selectOpt(idx,el){
-  if(isAnswered)return;
-  selectedIdx=idx;
-  var btns=document.querySelectorAll('.opt-btn');
-  for(var i=0;i<btns.length;i++)btns[i].classList.remove('selected');
-  el.classList.add('selected');
-}
-function checkAnswer(){
-  if(isAnswered)return;
-  isAnswered=true;
-  var d=currentDeck[currentIndex];
-  if(card.dataset.qtype==='choice'){
-    if(selectedIdx===null){isAnswered=false;alert('請先選擇一個選項！');return;}
-    var ci=parseInt(d[7]);
-    var btns=document.querySelectorAll('.opt-btn');
-    btns[ci-1].classList.add('correct');
-    if(selectedIdx!==ci){btns[selectedIdx-1].classList.add('wrong');if(wrongDeck.indexOf(d)===-1)wrongDeck.push(d);}
+      btn.className='opt-btn';
+      var sp=document.createElement('span');sp.className='opt-sym';sp.textContent=sym;
+      btn.appendChild(sp);
+      var tx=document.createElement('span');tx.textContent=d[3+i];
+      btn.appendChild(tx);
+      btn.addEventListener('click',(function(ans,b){
+        return function(){checkAnswer(ans,b);};
+      })(String(i+1),btn));
+      opts.appendChild(btn);
+    });
   } else {
-    var ab=document.getElementById('answerBox');
-    ab.textContent='正確答案：'+d[7];
-    ab.style.display='block';
-    document.getElementById('selfJudge').style.display='flex';
+    opts.classList.add('hidden');
   }
-  document.getElementById('checkBtn').disabled=true;
-  document.getElementById('flipBtn').disabled=false;
 }
-function selfJudgeCorrect(){document.getElementById('selfJudge').style.display='none';}
-function selfJudgeWrong(){
-  document.getElementById('selfJudge').style.display='none';
-  var d=currentDeck[currentIndex];if(wrongDeck.indexOf(d)===-1)wrongDeck.push(d);
+
+function checkAnswer(chosen,btn){
+  if(revealed)return;
+  revealed=true;
+  currentChoice=chosen;
+  var all=document.querySelectorAll('.opt-btn');
+  all.forEach(function(b){b.disabled=true;});
+  btn.style.borderColor='#0ea5e9';
+  btn.style.background='#e0f2ff';
+  btn.querySelector('.opt-sym').style.background='#0ea5e9';
+  btn.querySelector('.opt-sym').style.color='#fff';
 }
-function flipCard(){if(isAnswered)card.classList.toggle('flipped');}
-function nextCard(){if(currentIndex<currentDeck.length-1){currentIndex++;showCard();}else showResults();}
-function prevCard(){if(currentIndex>0){currentIndex--;showCard();}}
-function showResults(){
+
+function saveCurrentCard(){
+  var d=quiz[idx];
+  var isFillin=d[1]!=='選擇題';
+  sessionAnswers[idx]={
+    chosen:currentChoice,
+    correct:d[7],
+    isCorrect:isFillin?null:(currentChoice!==''&&currentChoice===d[7]),
+    wb:wbDataUrl()
+  };
+}
+
+function nextCard(){
+  saveCurrentCard();
+  if(idx<quiz.length-1){idx++;showCard();}
+  else showResult();
+}
+function prevCard(){if(idx>0){idx--;showCard();}}
+
+function showResult(){
+  errorBookMode=false;
+  saveCurrentCard();
+  localStorage.setItem('fc_session',JSON.stringify({
+    timestamp:Date.now(),
+    cards:quiz,
+    answers:sessionAnswers
+  }));
   document.getElementById('studySection').classList.add('hidden');
   document.getElementById('resultSection').classList.remove('hidden');
-  var t=currentDeck.length,w=wrongDeck.length;
-  document.getElementById('scoreText').innerHTML='本次測驗：<b>'+t+' 題</b><br>答對：<b style="color:#22c55e">'+(t-w)+'</b>　答錯：<b style="color:#ef4444">'+w+'</b>';
-  var rb=document.getElementById('reviewBtn');
-  if(w>0)rb.classList.remove('hidden');else rb.classList.add('hidden');
 }
+
+function hideAllSections(){
+  ['setupSection','studySection','resultSection','parentSection'].forEach(function(id){
+    var el=document.getElementById(id);if(el)el.classList.add('hidden');
+  });
+}
+
+function renderContent(el,text){
+  el.innerHTML='';
+  if(!text){return;}
+  var lines=text.split(/\\n|\n/),i=0;
+  while(i<lines.length){
+    var ln=lines[i].trim();
+    if(!ln){i++;continue;}
+    if(ln.startsWith('data:image')){
+      var row=document.createElement('div');row.style.textAlign='center';
+      while(i<lines.length&&lines[i].trim().startsWith('data:image')){
+        (function(src){
+          var img=document.createElement('img');img.src=src;
+          img.style.maxWidth='100%';img.style.borderRadius='8px';
+          img.onload=function(){if(this.naturalWidth>100){this.style.display='block';this.style.margin='8px auto';}};
+          row.appendChild(img);
+        })(lines[i].trim());i++;
+      }
+      el.appendChild(row);
+    } else {
+      var p=document.createElement('p');p.className='q-text';p.textContent=ln;el.appendChild(p);i++;
+    }
+  }
+}
+
+var titleClickCount=0,titleClickTimer=null;
+
+function initTitleClick(){
+  var h1=document.querySelector('.header h1');
+  h1.addEventListener('click',function(){
+    titleClickCount++;
+    if(titleClickTimer)clearTimeout(titleClickTimer);
+    if(titleClickCount>=5){titleClickCount=0;openParentReview();}
+    else titleClickTimer=setTimeout(function(){titleClickCount=0;},2000);
+  });
+}
+
+function openParentReview(){
+  var raw=localStorage.getItem('fc_session');
+  if(!raw){
+    document.getElementById('reviewList').innerHTML='<div class="no-session">尚無練習記錄<br>請讓孩子先完成一次練習</div>';
+  } else {
+    buildReviewList(JSON.parse(raw));
+  }
+  hideAllSections();
+  document.getElementById('parentSection').classList.remove('hidden');
+}
+
+function buildReviewList(session){
+  var list=document.getElementById('reviewList');
+  list.innerHTML='';
+  var cards=session.cards||[];
+  var answers=session.answers||[];
+  cards.forEach(function(d,i){
+    var ans=answers[i]||{};
+    var isFillin=d[1]!=='選擇題';
+    var item=document.createElement('div');
+    item.className='review-item';
+    var qnum=document.createElement('div');
+    qnum.className='review-q-num';
+    qnum.textContent='第 '+(i+1)+' 題';
+    item.appendChild(qnum);
+    var qBox=document.createElement('div');
+    qBox.className='q-text';
+    qBox.style.marginBottom='12px';
+    renderContent(qBox,d[2]);
+    item.appendChild(qBox);
+    if(!isFillin){
+      var optsDiv=document.createElement('div');
+      optsDiv.className='review-opts';
+      ['①','②','③','④'].forEach(function(sym,j){
+        if(!d[3+j])return;
+        var optDiv=document.createElement('div');
+        optDiv.className='review-opt';
+        var symSpan=document.createElement('span');
+        symSpan.className='review-opt-sym';
+        symSpan.textContent=sym;
+        var txtSpan=document.createElement('span');
+        txtSpan.textContent=d[3+j];
+        optDiv.appendChild(symSpan);optDiv.appendChild(txtSpan);
+        if(String(j+1)===d[7])optDiv.classList.add('r-correct');
+        else if(String(j+1)===ans.chosen)optDiv.classList.add('r-wrong');
+        optsDiv.appendChild(optDiv);
+      });
+      item.appendChild(optsDiv);
+    }
+    if(ans.wb&&ans.wb.length>100){
+      var img=document.createElement('img');
+      img.src=ans.wb;img.className='review-wb';
+      item.appendChild(img);
+    }
+    var status=document.createElement('div');
+    status.className='review-status';
+    if(isFillin){
+      status.classList.add('s-fillin');
+      status.textContent='填充題 — 請對照白板與答案';
+    } else if(ans.isCorrect===true){
+      status.classList.add('s-correct');
+      status.textContent='✓ 答對了';
+    } else if(ans.isCorrect===false){
+      status.classList.add('s-wrong');
+      status.textContent='✗ 答錯了';
+    } else {
+      status.textContent='未作答';
+    }
+    item.appendChild(status);
+    var ansBox=document.createElement('div');
+    ansBox.className='review-ans-box hidden';
+    var ansLabel=document.createElement('div');
+    ansLabel.className='review-ans-label';
+    ansLabel.textContent='正確答案';
+    var ansText=document.createElement('div');
+    ansText.className='review-ans-text';
+    if(isFillin){
+      ansText.textContent=d[7];
+    } else {
+      var ci=parseInt(d[7])-1;
+      ansText.textContent=['①','②','③','④'][ci]+' '+d[3+ci];
+    }
+    ansBox.appendChild(ansLabel);ansBox.appendChild(ansText);
+    var btns=document.createElement('div');btns.className='review-btns';
+    var flipBtn=document.createElement('button');
+    flipBtn.className='review-flip-btn';
+    flipBtn.textContent='翻牌看答案';
+    (function(ab,fb){
+      fb.addEventListener('click',function(){
+        ab.classList.toggle('hidden');
+        fb.textContent=ab.classList.contains('hidden')?'翻牌看答案':'收起答案';
+      });
+    })(ansBox,flipBtn);
+    var errBtn=document.createElement('button');
+    errBtn.className='review-err-btn';
+    errBtn.textContent='加入錯題本';
+    (function(deckRow,eb){
+      eb.addEventListener('click',function(){
+        addToErrorBook(deckRow);
+        eb.textContent='已加入 ✓';
+        eb.classList.add('eb-added');
+      });
+    })(d,errBtn);
+    btns.appendChild(flipBtn);btns.appendChild(errBtn);
+    item.appendChild(btns);
+    item.appendChild(ansBox);
+    list.appendChild(item);
+  });
+}
+
+function addToErrorBook(deckRow){
+  var raw=localStorage.getItem('fc_errorbook');
+  var eb=raw?JSON.parse(raw):[];
+  var exists=eb.some(function(r){return r[2]===deckRow[2];});
+  if(!exists)eb.push(deckRow);
+  localStorage.setItem('fc_errorbook',JSON.stringify(eb));
+  updateEbCount();
+}
+
+function updateEbCount(){
+  var raw=localStorage.getItem('fc_errorbook');
+  var eb=raw?JSON.parse(raw):[];
+  var span=document.getElementById('ebCount');
+  if(span)span.textContent=eb.length?'('+eb.length+' 題)':'';
+}
+
+function openErrorBook(){
+  var raw=localStorage.getItem('fc_errorbook');
+  var eb=raw?JSON.parse(raw):[];
+  if(eb.length===0){alert('錯題本是空的\n請先讓家長標記錯題');return;}
+  errorBookData=eb.slice();
+  errorBookMode=true;
+  updateSetup();
+}
+
+var wbCtx=null,wbPainting=false;
+
+function wbInit(){
+  var canvas=document.getElementById('wbCanvas');
+  canvas.width=canvas.parentElement.clientWidth||360;
+  wbCtx=canvas.getContext('2d');
+  wbCtx.strokeStyle='#1e293b';wbCtx.lineWidth=2.5;wbCtx.lineCap='round';wbCtx.lineJoin='round';
+  function pos(e){
+    var r=canvas.getBoundingClientRect();
+    var src=e.touches?e.touches[0]:e;
+    return{x:(src.clientX-r.left)*(canvas.width/r.width),y:(src.clientY-r.top)*(canvas.height/r.height)};
+  }
+  function down(e){e.preventDefault();wbPainting=true;var p=pos(e);wbCtx.beginPath();wbCtx.moveTo(p.x,p.y);}
+  function move(e){e.preventDefault();if(!wbPainting)return;var p=pos(e);wbCtx.lineTo(p.x,p.y);wbCtx.stroke();}
+  function up(){wbPainting=false;}
+  canvas.addEventListener('mousedown',down);
+  canvas.addEventListener('mousemove',move);
+  canvas.addEventListener('mouseup',up);
+  canvas.addEventListener('mouseleave',up);
+  canvas.addEventListener('touchstart',down,{passive:false});
+  canvas.addEventListener('touchmove',move,{passive:false});
+  canvas.addEventListener('touchend',up);
+  document.getElementById('wbClear').addEventListener('click',wbClearCanvas);
+}
+
+function wbClearCanvas(){
+  if(!wbCtx)return;
+  var c=document.getElementById('wbCanvas');
+  wbCtx.clearRect(0,0,c.width,c.height);
+}
+
+function wbDataUrl(){
+  if(!wbCtx)return'';
+  return document.getElementById('wbCanvas').toDataURL('image/png');
+}
+
 document.addEventListener('DOMContentLoaded',function(){
+  card=document.getElementById('card');
+
+  var fr=document.getElementById('filterRow');
+  CATS.forEach(function(cat){
+    var btn=document.createElement('button');
+    btn.className='filter-btn';btn.textContent=cat;
+    btn.addEventListener('click',function(){
+      this.classList.toggle('active');
+      if(this.classList.contains('active')){if(activeFilters.indexOf(cat)<0)activeFilters.push(cat);}
+      else{activeFilters=activeFilters.filter(function(c){return c!==cat;});}
+      updateSetup();
+    });
+    fr.appendChild(btn);
+  });
+  updateSetup();
+
   document.getElementById('startBtn').addEventListener('click',startQuiz);
-  document.getElementById('checkBtn').addEventListener('click',checkAnswer);
-  document.getElementById('flipBtn').addEventListener('click',flipCard);
   document.getElementById('prevBtn').addEventListener('click',prevCard);
   document.getElementById('nextBtn').addEventListener('click',nextCard);
-  document.getElementById('correctBtn').addEventListener('click',selfJudgeCorrect);
-  document.getElementById('wrongBtn').addEventListener('click',selfJudgeWrong);
-  document.getElementById('reviewBtn').addEventListener('click',startReview);
-  document.getElementById('homeBtn').addEventListener('click',function(){location.reload();});
+  document.getElementById('homeBtn').addEventListener('click',function(){
+    errorBookMode=false;
+    document.getElementById('resultSection').classList.add('hidden');
+    document.getElementById('setupSection').classList.remove('hidden');
+    updateSetup();
+    updateEbCount();
+  });
+  document.getElementById('countMinus').addEventListener('click',function(){
+    var inp=document.getElementById('countInput');
+    if(parseInt(inp.value)>1)inp.value=parseInt(inp.value)-1;
+  });
+  document.getElementById('countPlus').addEventListener('click',function(){
+    var inp=document.getElementById('countInput');
+    if(parseInt(inp.value)<parseInt(inp.max))inp.value=parseInt(inp.value)+1;
+  });
+  document.getElementById('errorBookBtn').addEventListener('click',openErrorBook);
+  updateEbCount();
+  wbInit();
+  initTitleClick();
+  document.getElementById('parentClose').addEventListener('click',function(){
+    hideAllSections();
+    document.getElementById('setupSection').classList.remove('hidden');
+  });
 });
 </script>
 </body>
