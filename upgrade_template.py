@@ -91,10 +91,10 @@ def main():
         name = os.path.relpath(fp, FLASHCARDS_DIR)
         ok, err = upgrade_file(fp, template_html)
         if ok:
-            print(f'  ✓ {name}')
+            print(f'  OK {name}')
             success += 1
         else:
-            print(f'  ✗ {name}：{err}')
+            print(f'  FAIL {name}: {err}')
             failed.append((name, err))
 
     print(f'\n完成：{success} 個升級成功，{len(failed)} 個失敗')

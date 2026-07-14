@@ -393,7 +393,7 @@ function updateSetup(){
   if(parseInt(inp.value)>fd.length)inp.value=fd.length;
 }
 
-var quiz=[],idx=0,revealed=false;
+var quiz=[],idx=0;
 var card;
 var sessionAnswers=[];
 var currentChoice='';
@@ -416,7 +416,6 @@ function showCard(){
   wbClearCanvas();
   currentChoice='';
   var d=quiz[idx];
-  revealed=false;
   if(card.classList.contains('flipped'))card.classList.remove('flipped');
 
   document.getElementById('frontTag').textContent=d[0];
@@ -452,11 +451,13 @@ function showCard(){
 }
 
 function checkAnswer(chosen,btn){
-  if(revealed)return;
-  revealed=true;
   currentChoice=chosen;
-  var all=document.querySelectorAll('.opt-btn');
-  all.forEach(function(b){b.disabled=true;});
+  document.querySelectorAll('.opt-btn').forEach(function(b){
+    b.style.borderColor='';
+    b.style.background='';
+    b.querySelector('.opt-sym').style.background='';
+    b.querySelector('.opt-sym').style.color='';
+  });
   btn.style.borderColor='#0ea5e9';
   btn.style.background='#e0f2ff';
   btn.querySelector('.opt-sym').style.background='#0ea5e9';
